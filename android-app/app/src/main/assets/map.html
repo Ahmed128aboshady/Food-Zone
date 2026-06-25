@@ -305,6 +305,11 @@ body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;overflow:hidde
 </div>
 
 <!-- Leaflet JS -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-db.js"></script>
 <script src="js/app.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -314,37 +319,42 @@ body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;overflow:hidde
 // ===================================================
 const COOKS = [];
 
-// Load dynamic cooks from localStorage
-try {
-  const users = JSON.parse(localStorage.getItem('fz_users')) || [];
-  users.forEach(user => {
-    if (user.type === 'seller' || (user.cookType && user.cookType !== null)) {
-      if (!COOKS.some(c => c.id === user.id)) {
-        const flag = user.country === 'EG' ? '🇪🇬' : (user.country === 'ES' ? '🇪🇸' : (user.country === 'NL' ? '🇳🇱' : (user.country === 'FR' ? '🇫🇷' : (user.country === 'DE' ? '🇩🇪' : (user.country === 'IT' ? '🇮🇹' : (user.country === 'PL' ? '🇵🇱' : '🇪🇺'))))));
-        COOKS.push({
-          id: user.id,
-          initials: user.avatar || user.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(),
-          name: user.name,
-          city: `${user.city || 'Cairo'} ${flag}`,
-          cuisine: (user.cuisines && user.cuisines.length > 0) ? user.cuisines.join(' / ') : 'Home Cook',
-          type: user.cookType === 'business' ? 'Business' : 'Hobby',
-          rating: 5.0,
-          reviews: 0,
-          dish: 'Special Kitchen Menu',
-          price: '€10',
-          prep: '30 min',
-          open: true,
-          color: '#FFB800',
-          color2: '#FF6B35',
-          latOff: (Math.random() - 0.5) * 0.02,
-          lngOff: (Math.random() - 0.5) * 0.02
-        });
+function populateCooks() {
+  COOKS.length = 0;
+  try {
+    const users = JSON.parse(localStorage.getItem('fz_users')) || [];
+    users.forEach(user => {
+      if (user.type === 'seller' || (user.cookType && user.cookType !== null)) {
+        if (!COOKS.some(c => c.id === user.id)) {
+          const flag = user.country === 'EG' ? '🇪🇬' : (user.country === 'ES' ? '🇪🇸' : (user.country === 'NL' ? '🇳🇱' : (user.country === 'FR' ? '🇫🇷' : (user.country === 'DE' ? '🇩🇪' : (user.country === 'IT' ? '🇮🇹' : (user.country === 'PL' ? '🇵🇱' : '🇪🇺'))))));
+          COOKS.push({
+            id: user.id,
+            initials: user.avatar || user.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(),
+            name: user.name,
+            city: `${user.city || 'Cairo'} ${flag}`,
+            cuisine: (user.cuisines && user.cuisines.length > 0) ? user.cuisines.join(' / ') : 'Home Cook',
+            type: user.cookType === 'business' ? 'Business' : 'Hobby',
+            rating: user.rating || 5.0,
+            reviews: user.reviews || 0,
+            dish: user.dish || 'Special Kitchen Menu',
+            price: user.price || '€10',
+            prep: user.prep || '30 min',
+            open: user.open !== undefined ? user.open : true,
+            color: user.color || '#FFB800',
+            color2: user.color2 || '#FF6B35',
+            latOff: user.latOff || (Math.random() - 0.5) * 0.02,
+            lngOff: user.lngOff || (Math.random() - 0.5) * 0.02
+          });
+        }
       }
-    }
-  });
-} catch (e) {
-  console.error("Error loading dynamic cooks in map:", e);
+    });
+  } catch (e) {
+    console.error("Error loading dynamic cooks in map:", e);
+  }
 }
+
+// Initial populate from cache
+populateCooks();
 
 // ===================================================
 // STATE
@@ -711,7 +721,15 @@ function showToast(msg, type) {
 // ===================================================
 // AUTO-INIT: check URL params or geolocation permission
 // ===================================================
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  if (window.FzDb) {
+    try {
+      await window.FzDb.getUsers();
+      populateCooks();
+    } catch(e) {
+      console.error("FzDb getUsers map load failed, using cache:", e);
+    }
+  }
   const params = new URLSearchParams(window.location.search);
   const lat = parseFloat(params.get('lat'));
   const lng = parseFloat(params.get('lng'));

@@ -327,6 +327,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-db.js"></script>
 <script>
 function switchTab(name, el) {
   document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
@@ -458,6 +463,9 @@ window.saveNewAd = function(event) {
     var ads = JSON.parse(localStorage.getItem('fz_ads')) || [];
     ads.unshift(newAd);
     localStorage.setItem('fz_ads', JSON.stringify(ads));
+    if (window.FzDb) {
+      window.FzDb.saveAd(newAd).catch(e => console.error("FzDb saveAd failed:", e));
+    }
     
     window.closeCreateAdModal();
     alert('Promotion ad created successfully and is now active on the homepage!');
@@ -484,6 +492,9 @@ window.loadAdsTable = function() {
       { id: 'ad_mock2', cookId: session.id, cookName: session.name, dishName: 'Churros Weekend Deal', discount: '15%', description: '15% off delicious warm Churros!', bg: 'linear-gradient(135deg,#6C63FF,#FF3366)', status: 'Reviewing', impressions: 3180, clicks: 198, budget: '€19/week' }
     ];
     localStorage.setItem('fz_ads', JSON.stringify(defaultAds));
+    if (window.FzDb) {
+      defaultAds.forEach(ad => window.FzDb.saveAd(ad).catch(e => console.error("FzDb saveAd failed:", e)));
+    }
     ads = defaultAds;
   }
   
@@ -526,7 +537,14 @@ window.loadAdsTable = function() {
 };
 
 // Update name dynamically if logged in
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  if (window.FzDb) {
+    try {
+      await Promise.all([window.FzDb.getUsers(), window.FzDb.getAds()]);
+    } catch(e) {
+      console.error("FzDb sync failed, using local cache:", e);
+    }
+  }
   try {
     const session = JSON.parse(localStorage.getItem('fz_session'));
     if (session) {

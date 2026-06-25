@@ -844,7 +844,12 @@
   </div>
 
   <!-- External scripts -->
-  <script src="js/app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-db.js"></script>
+<script src="js/app.js"></script>
 
   <!-- ══════════════════════════════════════════ INLINE SCRIPT ══ -->
   <script>
@@ -1880,6 +1885,9 @@
 
         // Save
         localStorage.setItem('fz_users', JSON.stringify(users));
+        if (window.FzDb) {
+          window.FzDb.saveUser(users[userIdx]).catch(e => console.error("FzDb saveUser failed:", e));
+        }
 
         // Update session
         session.bio = users[userIdx].bio;
@@ -1934,6 +1942,9 @@
 
         user.dishes.push(newDish);
         localStorage.setItem('fz_users', JSON.stringify(users));
+        if (window.FzDb) {
+          window.FzDb.saveUser(user).catch(e => console.error("FzDb saveUser failed:", e));
+        }
 
         // Reset Form & Close
         document.getElementById('addDishForm').reset();
@@ -1961,6 +1972,9 @@
         if (user.dishes) {
           user.dishes = user.dishes.filter(function(d){ return d.id !== dishId; });
           localStorage.setItem('fz_users', JSON.stringify(users));
+          if (window.FzDb) {
+            window.FzDb.saveUser(user).catch(e => console.error("FzDb saveUser failed:", e));
+          }
           if (typeof showToast === 'function') showToast('Dish removed from menu.', 'info');
           if (window.loadMyProfile) window.loadMyProfile();
         }
@@ -1994,6 +2008,9 @@
 
         user.reels.push(newReel);
         localStorage.setItem('fz_users', JSON.stringify(users));
+        if (window.FzDb) {
+          window.FzDb.saveUser(user).catch(e => console.error("FzDb saveUser failed:", e));
+        }
 
         // Reset Form & Close
         document.getElementById('addReelForm').reset();
@@ -2019,8 +2036,11 @@
 
         var user = users[userIdx];
         if (user.reels) {
-          user.reels = user.reels.filter(function(r){ return r.id !== reelId; });
+           user.reels = user.reels.filter(function(r){ return r.id !== reelId; });
           localStorage.setItem('fz_users', JSON.stringify(users));
+          if (window.FzDb) {
+            window.FzDb.saveUser(user).catch(e => console.error("FzDb saveUser failed:", e));
+          }
           if (typeof showToast === 'function') showToast('Reel deleted.', 'info');
           if (window.loadMyProfile) window.loadMyProfile();
         }
@@ -2188,6 +2208,9 @@
 
         // Save back to fz_users
         localStorage.setItem(DB_KEY, JSON.stringify(users));
+        if (window.FzDb) {
+          window.FzDb.saveUser(cook).catch(e => console.error("FzDb saveUser failed:", e));
+        }
 
         if (typeof showToast === 'function') showToast('Thank you! Your review has been submitted.', 'success');
 
@@ -2227,6 +2250,17 @@
         });
       } catch(e) {
         console.error(e);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.FzDb) {
+        try {
+          await window.FzDb.getUsers();
+          if (window.loadMyProfile) window.loadMyProfile();
+        } catch(e) {
+          console.error("FzDb getUsers profile load error:", e);
+        }
       }
     });
   </script>

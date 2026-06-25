@@ -1335,7 +1335,12 @@
   </main>
 
   <!-- ==================== EXTERNAL JS ==================== -->
-  <script src="js/app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-db.js"></script>
+<script src="js/app.js"></script>
 
   <!-- ==================== INLINE REGISTRATION JS ==================== -->
   <script>
@@ -1444,7 +1449,7 @@
     }
 
     /* ─────────── Step flow ─────────── */
-    function nextStep() {
+    async function nextStep() {
       if (currentStep === 3) {
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
@@ -1479,10 +1484,15 @@
         // Check if email already exists
         const DB_KEY = 'fz_users';
         let users = [];
-        try {
+        if (window.FzDb) {
+          try {
+            users = await window.FzDb.getUsers();
+          } catch(e) {
+            console.error(e);
+            users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+          }
+        } else {
           users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
-        } catch(e) {
-          users = [];
         }
 
         const exists = users.find(u => u.email === email);
@@ -1526,7 +1536,16 @@
         };
 
         users.push(newUser);
-        localStorage.setItem(DB_KEY, JSON.stringify(users));
+        if (window.FzDb) {
+          try {
+            await window.FzDb.saveUser(newUser);
+          } catch(e) {
+            console.error(e);
+            localStorage.setItem(DB_KEY, JSON.stringify(users));
+          }
+        } else {
+          localStorage.setItem(DB_KEY, JSON.stringify(users));
+        }
 
         // Auto-login (save session)
         const SESSION_KEY = 'fz_session';
@@ -1550,7 +1569,16 @@
         const DB_KEY = 'fz_users';
         const SESSION_KEY = 'fz_session';
         let users = [];
-        try { users = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+        if (window.FzDb) {
+          try {
+            users = await window.FzDb.getUsers();
+          } catch(e) {
+            console.error(e);
+            users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+          }
+        } else {
+          users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+        }
         
         let session = null;
         try { session = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) {}
@@ -1570,10 +1598,33 @@
 
             const profileImg = document.querySelector('#photoCircle img.profile-preview');
             if (profileImg) {
-              users[userIdx].avatarUrl = profileImg.src;
+              if (window.pendingProfileFile && window.FzDb && window.FzDb.isEnabled()) {
+                try {
+                  const downloadUrl = await window.FzDb.uploadFile(`avatars/${session.id}_avatar`, window.pendingProfileFile);
+                  users[userIdx].avatarUrl = downloadUrl;
+                  window.pendingProfileFile = null;
+                } catch (err) {
+                  console.error("Failed to upload avatar to storage, using base64 fallback:", err);
+                  users[userIdx].avatarUrl = profileImg.src;
+                }
+              } else {
+                users[userIdx].avatarUrl = profileImg.src;
+              }
             }
 
-            localStorage.setItem(DB_KEY, JSON.stringify(users));
+            if (window.FzDb) {
+              try {
+                await window.FzDb.saveUser(users[userIdx]);
+              } catch(e) {
+                console.error(e);
+                localStorage.setItem(DB_KEY, JSON.stringify(users));
+              }
+            } else {
+              localStorage.setItem(DB_KEY, JSON.stringify(users));
+            }
+            
+            // Sync active session
+            localStorage.setItem(SESSION_KEY, JSON.stringify(users[userIdx]));
             if (typeof showToast === 'function') showToast('✅ Profile setup completed!', 'success');
           }
         }
@@ -1637,6 +1688,7 @@
     function handlePhotoUpload(event) {
       var file = event.target.files[0];
       if (!file) return;
+      window.pendingProfileFile = file;
       var reader = new FileReader();
       reader.onload = function(e) {
         var circle = document.getElementById('photoCircle');

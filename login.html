@@ -546,6 +546,11 @@
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-db.js"></script>
 <script>
 // ── URL-based Database Reset Helper ──
 (function checkResetParam() {
@@ -625,14 +630,27 @@ const DB_KEY = 'fz_users';      // list of registered users
 const SESSION_KEY = 'fz_session'; // active session
 
 // --- Load users from storage ---
-function getUsers() {
+async function getUsers() {
+  if (window.FzDb) {
+    try { return await window.FzDb.getUsers(); }
+    catch(e) { console.error("FzDb getUsers failed, fallback to local:", e); }
+  }
   try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; }
   catch(e) { return []; }
 }
 
 // --- Save users ---
-function saveUsers(users) {
+async function saveUsers(users) {
   localStorage.setItem(DB_KEY, JSON.stringify(users));
+  if (window.FzDb) {
+    for (let u of users) {
+      try {
+        await window.FzDb.saveUser(u);
+      } catch(e) {
+        console.error("FzDb saveUser failed:", e);
+      }
+    }
+  }
 }
 
 // --- Simple hash (not for production!) ---
@@ -675,12 +693,12 @@ function logout() {
 }
 
 // --- Seed a demo account if none exists ---
-(function seedDemo() {
+(async function seedDemo() {
   const initState = localStorage.getItem('fz_db_initialized');
   // 'reset' = user explicitly cleared → stay empty; 'true' = already seeded → skip
   if (initState) return;
 
-  const users = getUsers();
+  const users = await getUsers();
 
   // Seed Demo User
   const demoExists = users.some(u => u.email === 'demo@foodzone.eu');
@@ -754,7 +772,7 @@ function logout() {
     }
   });
 
-  saveUsers(users);
+  await saveUsers(users);
   localStorage.setItem('fz_db_initialized', 'true');
 })();
 
@@ -816,7 +834,7 @@ async function handleLogin(e) {
   setLoading(btn, false);
 
   // --- Real auth check against localStorage ---
-  const users = getUsers();
+  const users = await getUsers();
   const user = users.find(u => u.email === email);
 
   if (!user) {
@@ -883,7 +901,7 @@ async function handleRegister(e) {
   setLoading(btn, false);
 
   // --- Check if email already exists ---
-  const users = getUsers();
+  const users = await getUsers();
   const exists = users.find(u => u.email === email);
   if (exists) {
     showError('registerError', 'registerErrorText',
@@ -901,7 +919,7 @@ async function handleRegister(e) {
     createdAt: new Date().toISOString()
   };
   users.push(newUser);
-  saveUsers(users);
+  await saveUsers(users);
 
   // ✅ Auto-login after register
   saveSession(newUser);
