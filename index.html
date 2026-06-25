@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Zone — Home Food. Handcrafted. Delivered.</title>
+<meta name="description" content="Discover talented home cooks near you across Europe. Order authentic, handcrafted meals delivered fresh to your door.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh; position: relative; display: flex; align-items: center;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255,107,53,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(255,51,102,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 60% 80%, rgba(108,99,255,0.08) 0%, transparent 50%),
+              #0A0A0F;
+  overflow: hidden; padding-top: 70px;
+}
+.hero-particle {
+  position: absolute; font-size: 2.5rem; opacity: 0.12;
+  animation: float 4s ease-in-out infinite;
+  pointer-events: none; user-select: none;
+}
+.hero-content { position: relative; z-index: 2; max-width: 780px; }
+.hero-title { margin-bottom: 24px; }
+.hero-title .line { display: block; }
+.hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.65); max-width: 560px; margin-bottom: 36px; line-height: 1.75; }
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px; }
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-stat-num { font-size: 1.8rem; font-weight: 800; color: #FF6B35; display: block; }
+.hero-stat-label { font-size: 0.82rem; color: rgba(255,255,255,0.5); font-weight: 500; margin-top: 2px; }
+.hero-stat-divider { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; }
+.hero-search {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 9999px; padding: 6px 6px 6px 20px; max-width: 520px;
+  backdrop-filter: blur(10px);
+}
+.hero-search input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: #fff; font-size: 0.95rem; font-family: inherit;
+}
+.hero-search input::placeholder { color: rgba(255,255,255,0.35); }
+
+/* ===== ADS CAROUSEL ===== */
+.ads-section { padding: 40px 0 20px; background: #0A0A0F; }
+.ad-carousel-wrapper { position: relative; overflow: hidden; border-radius: 20px; }
+.ad-carousel { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+.ad-card {
+  min-width: 100%; padding: 32px; display: flex; align-items: center;
+  gap: 28px; border-radius: 20px; position: relative; overflow: hidden;
+}
+.ad-card::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
+.ad-card-content { position: relative; z-index: 1; display: flex; align-items: center; gap: 28px; width: 100%; }
+.ad-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 800; color: #fff;
+  background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.4);
+  flex-shrink: 0; backdrop-filter: blur(10px);
+}
+.ad-info { flex: 1; }
+.ad-info h3 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.ad-info p { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 12px; }
+.ad-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+.ad-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s;
+}
+.ad-dot.active { background: #FF6B35; width: 24px; border-radius: 4px; }
+
+/* ===== COOK CARDS ===== */
+.cooks-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
+.cooks-scroll::-webkit-scrollbar { display: none; }
+.cook-card {
+  min-width: 280px; background: #1A1A28; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 24px; position: relative;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1); flex-shrink: 0;
+}
+.cook-card:hover { transform: translateY(-6px); border-color: rgba(255,107,53,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.cook-heart {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1rem; transition: all 0.25s;
+}
+.cook-heart:hover, .cook-heart.favorited { background: rgba(255,51,102,0.15); border-color: rgba(255,51,102,0.3); }
+.cook-avatar { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 14px; position: relative; }
+.cook-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
+.cook-location { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+.cook-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; font-size: 0.88rem; }
+.cook-rating .stars { color: #FFB800; }
+.cook-cuisine { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+.cook-dish { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.cook-price { color: #FF6B35; font-weight: 700; }
+.cook-prep { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
+
+/* ===== REELS GRID ===== */
+.reels-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.reel-card {
+  position: relative; border-radius: 16px; overflow: hidden;
+  aspect-ratio: 9/14; cursor: pointer; transition: transform 0.3s;
+}
+.reel-card:hover { transform: scale(1.02); }
+.reel-card:hover .reel-play { transform: translate(-50%, -50%) scale(1.1); }
+.reel-bg { position: absolute; inset: 0; z-index: 0; }
+.reel-emoji-bg { position: absolute; font-size: 4.5rem; opacity: 0.18; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 1; pointer-events: none; }
+.reel-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(255,255,255,0.18); backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3); z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: #fff; transition: transform 0.25s;
+  padding-left: 4px;
+}
+.reel-bottom { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; z-index: 3; background: linear-gradient(transparent, rgba(0,0,0,0.85)); }
+.reel-cook-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.reel-cook-avatar { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,107,53,0.8); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.reel-cook-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
+.reel-meta { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+.reel-badge { position: absolute; top: 12px; right: 12px; z-index: 4; }
+
+/* ===== HOW IT WORKS ===== */
+.how-card { text-align: center; position: relative; }
+.how-emoji { font-size: 3.5rem; margin-bottom: 16px; display: block; }
+.how-step-num { display: inline-flex; margin-bottom: 12px; }
+.how-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+.how-card p { color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.65; }
+.how-connector {
+  position: absolute; top: 2.5rem; right: -40px; width: 80px; height: 2px;
+  border-top: 2px dashed rgba(255,107,53,0.3); z-index: 0;
+}
+
+/* ===== MAP TEASER ===== */
+.map-teaser { background: linear-gradient(135deg, #0F1A1A, #0A0F1A); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; overflow: hidden; }
+.map-placeholder { position: relative; height: 280px; background: linear-gradient(135deg, #0A1F1A 0%, #0A1A0F 100%); overflow: hidden; }
+.map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,208,132,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,208,132,0.06) 1px, transparent 1px); background-size: 30px 30px; }
+.map-pin-mock { position: absolute; background: #FF6B35; color: #fff; border-radius: 9999px; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 16px rgba(255,107,53,0.4); animation: float 3s ease-in-out infinite; white-space: nowrap; }
+.map-pin-mock::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #FF6B35; }
+
+/* ===== COOK CTA ===== */
+.cook-cta-section {
+  background: radial-gradient(ellipse at 20% 50%, rgba(255,107,53,0.1) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 50%, rgba(108,99,255,0.08) 0%, transparent 60%),
+              #0F0F1A;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.cta-benefit { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 0.95rem; }
+.cta-benefit-icon { width: 24px; height: 24px; border-radius: 50%; background: rgba(0,208,132,0.15); border: 1px solid rgba(0,208,132,0.3); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #00D084; flex-shrink: 0; }
+.earnings-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 28px; backdrop-filter: blur(20px); }
+.mini-bars { display: flex; align-items: flex-end; gap: 6px; height: 60px; margin-top: 16px; }
+.mini-bar { flex: 1; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #FF6B35, #FF3366); }
+
+/* ===== TESTIMONIALS ===== */
+.testimonial-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px; }
+.testimonial-quote { font-size: 0.95rem; color: rgba(255,255,255,0.75); line-height: 1.7; margin: 14px 0 20px; font-style: italic; }
+
+/* ===== FOOTER ===== */
+.footer { background: #080810; border-top: 1px solid rgba(255,255,255,0.06); padding: 64px 0 0; }
+.footer-grid { display: grid; grid-template-columns: 1fr repeat(4, auto); gap: 40px; margin-bottom: 48px; }
+.footer-brand { max-width: 260px; }
+.footer-tagline { color: rgba(255,255,255,0.45); font-size: 0.875rem; margin-top: 10px; line-height: 1.6; }
+.footer-col h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a { color: rgba(255,255,255,0.6); font-size: 0.88rem; transition: color 0.2s; }
+.footer-col ul a:hover { color: #FF6B35; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding: 20px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all 0.25s; }
+.footer-social a:hover { background: rgba(255,107,53,0.15); border-color: rgba(255,107,53,0.3); }
+
+/* ===== COOKIE BANNER ===== */
+#cookieConsent {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 9998; width: calc(100% - 48px); max-width: 700px;
+  background: rgba(26,26,40,0.97); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 16px;
+  padding: 20px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: slideUp 0.4s ease;
+}
+#cookieConsent.hidden { display: none; }
+#cookieConsent p { flex: 1; font-size: 0.875rem; color: rgba(255,255,255,0.7); min-width: 200px; }
+#cookieConsent p a { color: #FF6B35; }
+.cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+
+@media (max-width: 768px) {
+  .hero-ctas { flex-direction: column; }
+  .hero-stats { gap: 20px; }
+  .reels-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: span 2; }
+}
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">🔥 Food<span class="logo-accent">Zone</span></a>
+    <ul class="navbar-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="map.html">Explore</a></li>
+      <li><a href="reels.html">Reels</a></li>
+      <li><a href="map.html">Map</a></li>
+    </ul>
+    <div class="navbar-right">
+      <!-- Mobile Search Toggle (TikTok style top right) -->
+      <button class="navbar-icon-btn mobile-search-toggle" id="mobileSearchToggle" onclick="toggleMobileSearchInput()" title="Search" style="display:none">
+        🔍
+      </button>
+      <div class="navbar-search">
+        <span class="navbar-search-icon">🔍</span>
+        <input type="text" id="navbarSearchInput" placeholder="Search cooks, dishes..." onkeydown="if(event.key==='Enter')triggerNavbarSearch()">
+      </div>
+      <button class="navbar-icon-btn" title="Notifications">
+        🔔<span class="notif-badge"></span>
+      </button>
+      <a href="order.html" class="navbar-icon-btn" title="Cart">
+        🛒<span class="cart-badge cart-count">0</span>
+      </a>
+      <select class="navbar-lang" id="langSelect" title="Language">
+        <option value="en">🌍 EN</option>
+        <option value="es">🇪🇸 ES</option>
+        <option value="fr">🇫🇷 FR</option>
+        <option value="de">🇩🇪 DE</option>
+        <option value="it">🇮🇹 IT</option>
+        <option value="pl">🇵🇱 PL</option>
+        <option value="nl">🇳🇱 NL</option>
+      </select>
+      <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Sign Up</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">🏠 Home</a>
+  <a href="map.html">🗺 Explore</a>
+  <a href="reels.html">🎬 Reels</a>
+  <a href="map.html">📍 Map</a>
+  <div class="mobile-menu-divider"></div>
+  <div class="mobile-menu-btns">
+    <a href="login.html" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center">Login</a>
+    <a href="register.html" class="btn btn-primary btn-sm" style="flex:1;justify-content:center">Sign Up</a>
+  </div>
+</div>
+
+<!-- COOKIE CONSENT -->
+<div id="cookieConsent">
+  <p>🍪 We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Cookie Policy</a> and <a href="#">Privacy Policy</a> (GDPR compliant).</p>
+  <div class="cookie-btns">
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('cookieConsent').classList.add('hidden')">Manage</button>
+    <button class="btn btn-primary btn-sm" id="acceptCookies">Accept All</button>
+  </div>
+</div>
+
+<!-- ADS BANNER -->
+<section class="ads-section">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:20px">
+      <h2 class="heading-3">🌟 Featured Sponsors</h2>
+    </div>
+    <div class="ad-carousel-wrapper">
+      <div class="ad-carousel" id="adCarousel">
+        <!-- Ad 1 -->
+        <div class="ad-card" style="background:linear-gradient(135deg,#FF6B35,#FF3366)">
+          <div class="ad-card-content">
+            <div class="ad-avatar">CM</div>
+            <div class="ad-info">
+              <span class="badge badge-gold" style="margin-bottom:8px">SPONSORED</span>
+              <h3>Chef Marco</h3>
+              <p>🍝 Authentic Italian Pasta — Fresh from Rome's finest recipe</p>
+              <a href="profile.html" class="btn btn-sm" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;backdrop-filter:blur(10px)">Order Now →</a>
+            </div>
+          </div>
+        </div>
+        <!-- Ad 2 -->
+        <div class="ad-card" style="background:linear-gradient(135deg,#6C63FF,#FF3366)">
+          <div class="ad-card-content">
+            <div class="ad-avatar">AK</div>
+            <div class="ad-info">
+              <span class="badge badge-gold" style="margin-bottom:8px">SPONSORED</span>
+              <h3>Amira K.</h3>
+              <p>🧆 Lebanese Mezze Platter — A feast of flavors from Beirut</p>
+              <a href="profile.html" class="btn btn-sm" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;backdrop-filter:blur(10px)">Order Now →</a>
+            </div>
+          </div>
+        </div>
+        <!-- Ad 3 -->
+        <div class="ad-card" style="background:linear-gradient(135deg,#00D084,#0097FF)">
+          <div class="ad-card-content">
+            <div class="ad-avatar">HB</div>
+            <div class="ad-info">
+              <span class="badge badge-gold" style="margin-bottom:8px">SPONSORED</span>
+              <h3>Hans B.</h3>
+              <p>🌭 Traditional German Sausages — Authentic Bavarian flavors</p>
+              <a href="profile.html" class="btn btn-sm" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;backdrop-filter:blur(10px)">Order Now →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ad-dots" id="adDots">
+      <div class="ad-dot active" data-index="0"></div>
+      <div class="ad-dot" data-index="1"></div>
+      <div class="ad-dot" data-index="2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-particle" style="top:15%;left:8%;animation-delay:0s">🍕</div>
+  <div class="hero-particle" style="top:70%;left:5%;animation-delay:0.8s;font-size:2rem">🥘</div>
+  <div class="hero-particle" style="top:20%;right:10%;animation-delay:1.5s">🍰</div>
+  <div class="hero-particle" style="top:60%;right:6%;animation-delay:0.4s;font-size:2rem">🥗</div>
+  <div class="hero-particle" style="top:40%;right:20%;animation-delay:2s;font-size:1.8rem">🍜</div>
+  <div class="hero-particle" style="top:80%;right:15%;animation-delay:1s">🥩</div>
+  <div class="container">
+    <div class="hero-content animate-on-scroll">
+      <h1 class="display-1 hero-title">
+        <span class="line">Home Food.</span>
+        <span class="line text-gradient">Handcrafted.</span>
+        <span class="line">Delivered.</span>
+      </h1>
+      <p class="hero-subtitle">Connect with passionate home cooks across 48 European countries. Fresh, authentic meals — from their kitchen to your door.</p>
+      <div class="hero-ctas">
+        <a href="map.html" class="btn btn-primary btn-lg">📍 Find Cooks Near Me →</a>
+        <a href="register.html?type=seller" class="btn btn-outline btn-lg">Start Cooking for Others</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span class="hero-stat-num">12,400+</span>
+          <span class="hero-stat-label">Home Cooks</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div>
+          <span class="hero-stat-num">48</span>
+          <span class="hero-stat-label">Countries</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div>
+          <span class="hero-stat-num">⭐ 4.8</span>
+          <span class="hero-stat-label">Avg Rating</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div>
+          <span class="hero-stat-num">850K</span>
+          <span class="hero-stat-label">Orders Delivered</span>
+        </div>
+      </div>
+      <div class="hero-search">
+        <input type="text" id="heroSearch" placeholder="📍 Enter your city or enable location..." onkeydown="if(event.key==='Enter')goSearch()">
+        <button onclick="goSearch()" class="btn btn-primary" style="border-radius:9999px;flex-shrink:0">🔍 Search</button>
+      </div>
+      <div style="margin-top:12px">
+        <a href="#" id="heroLocateBtn" onclick="heroLocate(event)" style="color:rgba(255,255,255,0.5);font-size:0.82rem;transition:color 0.2s" onmouseover="this.style.color='#FF6B35'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">📡 Use My Location</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section-sm" style="background:#0D0D14;border-top:1px solid rgba(255,255,255,0.06)">
+  <div class="container">
+    <div class="h-scroll" id="categoryBar" style="padding:4px 0 8px">
+      <button class="category-tag active" data-category="all">All</button>
+      <button class="category-tag" data-category="italian">🍕 Italian</button>
+      <button class="category-tag" data-category="middle-eastern">🥘 Middle Eastern</button>
+      <button class="category-tag" data-category="desserts">🍰 Desserts</button>
+      <button class="category-tag" data-category="vegan">🥗 Vegan</button>
+      <button class="category-tag" data-category="asian">🍜 Asian</button>
+      <button class="category-tag" data-category="bbq">🥩 BBQ & Grills</button>
+      <button class="category-tag" data-category="bakery">🥐 Bakery</button>
+      <button class="category-tag" data-category="soups">🫕 Soups</button>
+      <button class="category-tag" data-category="bento">🍱 Bento & Japanese</button>
+    </div>
+  </div>
+</section>
+
+<!-- TOP COOKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="heading-1">🏆 Top Rated Cooks This Week</h2>
+      <a href="map.html" class="section-link">See All Cooks →</a>
+    </div>
+    <div class="cooks-scroll">
+      <div class="no-cooks-placeholder" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.4); width: 100%; font-family: 'Inter', sans-serif;">
+        🍳 No cooks nearby yet. Be the first to <a href="register.html" style="color: #FF6B35; text-decoration: underline; font-weight: 600;">Become a Cook</a>!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REELS PREVIEW -->
+<section class="section" style="background:#0D0D14">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px">
+      <h2 class="heading-1">🎬 Trending Cooking Reels</h2>
+      <p class="text-muted" style="margin-top:10px;font-size:1rem">Watch cooks in action before you order</p>
+    </div>
+    <div class="reels-grid">
+
+      <div class="reel-card animate-on-scroll">
+        <div class="reel-bg" style="background:linear-gradient(135deg,#1a0505,#FF6B35 150%)"></div>
+        <div class="reel-emoji-bg">🥘</div>
+        <div class="reel-play">▶</div>
+        <span class="reel-badge badge badge-primary">HOT 🔥</span>
+        <div class="reel-bottom">
+          <div class="reel-cook-row">
+            <div class="reel-cook-avatar">MS</div>
+            <span class="reel-cook-name">Maria Sanchez</span>
+          </div>
+          <div style="font-size:0.88rem;color:#fff;font-weight:600;margin-bottom:2px">Perfect Paella Recipe 🥘</div>
+          <div class="reel-meta">👁 28.4K views · ❤️ 4.2K</div>
+        </div>
+      </div>
+
+      <div class="reel-card animate-on-scroll" style="animation-delay:0.1s">
+        <div class="reel-bg" style="background:linear-gradient(135deg,#050d1a,#6C63FF 150%)"></div>
+        <div class="reel-emoji-bg">🍜</div>
+        <div class="reel-play">▶</div>
+        <span class="reel-badge badge badge-success">NEW ✨</span>
+        <div class="reel-bottom">
+          <div class="reel-cook-row">
+            <div class="reel-cook-avatar" style="background:#6C63FF">YT</div>
+            <span class="reel-cook-name">Yuki Tanaka</span>
+          </div>
+          <div style="font-size:0.88rem;color:#fff;font-weight:600;margin-bottom:2px">Homemade Ramen Broth 🍜</div>
+          <div class="reel-meta">👁 14.1K views · ❤️ 2.8K</div>
+        </div>
+      </div>
+
+      <div class="reel-card animate-on-scroll" style="animation-delay:0.15s">
+        <div class="reel-bg" style="background:linear-gradient(135deg,#1a0510,#FF3366 150%)"></div>
+        <div class="reel-emoji-bg">🫕</div>
+        <div class="reel-play">▶</div>
+        <span class="reel-badge badge badge-primary">HOT 🔥</span>
+        <div class="reel-bottom">
+          <div class="reel-cook-row">
+            <div class="reel-cook-avatar" style="background:#FF3366">FA</div>
+            <span class="reel-cook-name">Fatima Al-Hassan</span>
+          </div>
+          <div style="font-size:0.88rem;color:#fff;font-weight:600;margin-bottom:2px">Lamb Tagine Secrets 🫕</div>
+          <div class="reel-meta">👁 31.7K views · ❤️ 5.1K</div>
+        </div>
+      </div>
+
+      <div class="reel-card animate-on-scroll" style="animation-delay:0.2s">
+        <div class="reel-bg" style="background:linear-gradient(135deg,#0d1a05,#00D084 150%)"></div>
+        <div class="reel-emoji-bg">🍝</div>
+        <div class="reel-play">▶</div>
+        <span class="reel-badge badge badge-success">NEW ✨</span>
+        <div class="reel-bottom">
+          <div class="reel-cook-row">
+            <div class="reel-cook-avatar" style="background:#00D084">SR</div>
+            <span class="reel-cook-name">Sofia Romano</span>
+          </div>
+          <div style="font-size:0.88rem;color:#fff;font-weight:600;margin-bottom:2px">Fresh Pasta from Scratch 🍝</div>
+          <div class="reel-meta">👁 19.3K views · ❤️ 3.4K</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center" style="margin-top:32px">
+      <a href="reels.html" class="btn btn-outline btn-lg">🎬 See All Reels →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:56px">
+      <h2 class="heading-1">How Food Zone Works</h2>
+      <p class="text-muted" style="margin-top:12px;font-size:1rem;max-width:480px;margin-left:auto;margin-right:auto">From browsing to biting — in three simple steps</p>
+    </div>
+    <div class="grid-3" style="max-width:900px;margin:0 auto">
+      <div class="card how-card animate-on-scroll" style="position:relative">
+        <span class="how-emoji">🔍</span>
+        <span class="badge badge-primary how-step-num">Step 1</span>
+        <h3>Discover Local Cooks</h3>
+        <p>Use our map or browse profiles to find talented home cooks near you. Filter by cuisine, rating, or distance.</p>
+        <div class="how-connector" style="display:none"></div>
+      </div>
+      <div class="card how-card animate-on-scroll" style="animation-delay:0.15s">
+        <span class="how-emoji">🛒</span>
+        <span class="badge badge-primary how-step-num">Step 2</span>
+        <h3>Order Your Favorites</h3>
+        <p>Pick dishes, choose your delivery time, and pay securely via PayPal or card. It's that simple.</p>
+      </div>
+      <div class="card how-card animate-on-scroll" style="animation-delay:0.3s">
+        <span class="how-emoji">🚀</span>
+        <span class="badge badge-primary how-step-num">Step 3</span>
+        <h3>Get It Delivered</h3>
+        <p>Real-time tracking from kitchen to your door. Fresh, hot, and straight from a passionate home cook.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP TEASER -->
+<section class="section" style="background:#0D0D14">
+  <div class="container">
+    <div class="map-teaser">
+      <div class="grid-2" style="align-items:center;gap:0">
+        <div class="map-placeholder">
+          <div class="map-grid"></div>
+          <div class="map-pin-mock" style="top:30%;left:25%;animation-delay:0s">👨‍🍳 Maria · ⭐4.9 · 0.8km</div>
+          <div class="map-pin-mock" style="top:55%;left:50%;animation-delay:1s;background:#6C63FF;box-shadow:0 4px 16px rgba(108,99,255,0.4)">👨‍🍳 Yuki · ⭐4.8 · 1.2km</div>
+          <div class="map-pin-mock" style="top:20%;left:60%;animation-delay:2s;background:#FF3366;box-shadow:0 4px 16px rgba(255,51,102,0.4)">👩‍🍳 Fatima · ⭐4.9 · 2.1km</div>
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:0.8rem;color:rgba(255,255,255,0.4)">📍 Your City</div>
+        </div>
+        <div style="padding:40px">
+          <h2 class="heading-1" style="margin-bottom:16px">🗺 Find Cooks Near You</h2>
+          <p class="text-muted" style="margin-bottom:24px;line-height:1.7">Browse an interactive map of home cooks in your area. See reviews, menus, and delivery zones instantly.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> Live cook availability indicators</div>
+            <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> Filter by cuisine & delivery radius</div>
+            <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> See ratings and reviews on the map</div>
+          </div>
+          <a href="map.html" class="btn btn-primary">Open Full Map →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COOK CTA -->
+<section class="section cook-cta-section">
+  <div class="container">
+    <div class="grid-2" style="align-items:center;gap:64px">
+      <div class="animate-on-scroll">
+        <span class="badge badge-primary" style="margin-bottom:16px">For Cooks</span>
+        <h2 class="heading-1" style="margin-bottom:20px">Turn Your Kitchen Into a Business</h2>
+        <p class="text-muted" style="margin-bottom:28px;line-height:1.75">Join thousands of home cooks across Europe who are turning their passion for food into a sustainable income. No restaurant needed.</p>
+        <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> Set your own prices and cooking hours</div>
+        <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> Keep 85% of every order you receive</div>
+        <div class="cta-benefit"><div class="cta-benefit-icon">✓</div> Free marketing through our Reels platform</div>
+        <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
+          <a href="register.html?type=seller&cook=hobby" class="btn btn-outline">Start as Hobby Cook</a>
+          <a href="register.html?type=seller&cook=business" class="btn btn-gold">💼 Register as Business</a>
+        </div>
+      </div>
+      <div class="earnings-card animate-on-scroll" style="animation-delay:0.2s">
+        <div style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);margin-bottom:6px">📊 This Month</div>
+        <div style="font-size:3rem;font-weight:900;color:#FFB800;line-height:1.1;margin-bottom:4px">€2,840</div>
+        <div style="font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:20px">Total earnings · +18% vs last month</div>
+        <div style="display:flex;gap:24px;margin-bottom:20px">
+          <div><div style="font-size:1.4rem;font-weight:800;color:#fff">147</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.4)">Orders</div></div>
+          <div><div style="font-size:1.4rem;font-weight:800;color:#FFB800">⭐ 4.9</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.4)">Rating</div></div>
+          <div><div style="font-size:1.4rem;font-weight:800;color:#00D084">1,243</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.4)">Followers</div></div>
+        </div>
+        <div class="mini-bars">
+          <div class="mini-bar" style="height:35%"></div>
+          <div class="mini-bar" style="height:55%"></div>
+          <div class="mini-bar" style="height:42%"></div>
+          <div class="mini-bar" style="height:70%"></div>
+          <div class="mini-bar" style="height:90%"></div>
+          <div class="mini-bar" style="height:75%"></div>
+          <div class="mini-bar" style="height:85%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:rgba(255,255,255,0.3);margin-top:4px">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:48px">
+      <h2 class="heading-1">What People Are Saying</h2>
+    </div>
+    <div class="grid-3">
+      <div class="testimonial-card animate-on-scroll">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar avatar-md" style="background:linear-gradient(135deg,#6C63FF,#FF3366)">JD</div>
+          <div><div style="font-weight:700">James D.</div><div style="font-size:0.8rem;color:rgba(255,255,255,0.4)">London 🇬🇧</div></div>
+          <div style="margin-left:auto;color:#FFB800;font-size:0.9rem">⭐⭐⭐⭐⭐</div>
+        </div>
+        <p class="testimonial-quote">"Food Zone changed how I eat! Maria's paella is better than any restaurant I've been to. Fresh, authentic, and delivered in under an hour!"</p>
+      </div>
+      <div class="testimonial-card animate-on-scroll" style="animation-delay:0.1s">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar avatar-md" style="background:linear-gradient(135deg,#FF6B35,#FFB800)">CL</div>
+          <div><div style="font-weight:700">Chloé L.</div><div style="font-size:0.8rem;color:rgba(255,255,255,0.4)">Paris 🇫🇷</div></div>
+          <div style="margin-left:auto;color:#FFB800;font-size:0.9rem">⭐⭐⭐⭐⭐</div>
+        </div>
+        <p class="testimonial-quote">"As a busy professional, this is a lifesaver. Real home cooking from real people — you can taste the love in every dish."</p>
+      </div>
+      <div class="testimonial-card animate-on-scroll" style="animation-delay:0.2s">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="avatar avatar-md" style="background:linear-gradient(135deg,#00D084,#0097FF)">PT</div>
+          <div><div style="font-weight:700">Pieter T.</div><div style="font-size:0.8rem;color:rgba(255,255,255,0.4)">Amsterdam 🇳🇱</div></div>
+          <div style="margin-left:auto;color:#FFB800;font-size:0.9rem">⭐⭐⭐⭐⭐</div>
+        </div>
+        <p class="testimonial-quote">"Yuki's ramen is absolutely incredible. I order every week now. The Reels feature lets you see the cook in action — brilliant idea!"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-size:1.4rem;font-weight:800;margin-bottom:8px">🔥 Food<span style="color:#FF6B35">Zone</span></div>
+        <p class="footer-tagline">Home Food. Handcrafted. Delivered.<br>Connecting passionate home cooks with food lovers across Europe.</p>
+        <div class="footer-social" style="margin-top:20px">
+          <a href="#">📘</a><a href="#">📸</a><a href="#">🎵</a><a href="#">🐦</a><a href="#">💼</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Cooks</h4>
+        <ul>
+          <li><a href="register.html">Become a Cook</a></li>
+          <li><a href="#">Cook Academy</a></li>
+          <li><a href="#">Success Stories</a></li>
+          <li><a href="#">Payout Info</a></li>
+          <li><a href="#">Cook App</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Customers</h4>
+        <ul>
+          <li><a href="#">How it Works</a></li>
+          <li><a href="#">Safety</a></li>
+          <li><a href="#">Gift Cards</a></li>
+          <li><a href="#">Corporate Orders</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">GDPR</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">🇪🇺 Available across all of Europe</span>
+      <span style="color:rgba(255,255,255,0.3);font-size:0.8rem">© 2026 Food Zone Technologies Ltd. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script>
+// ===== HERO LOCATION FUNCTIONS =====
+function goSearch() {
+  const q = document.getElementById('heroSearch').value.trim();
+  if (q) {
+    window.location.href = 'map.html?q=' + encodeURIComponent(q);
+  } else {
+    window.location.href = 'map.html';
+  }
+}
+
+function heroLocate(e) {
+  e.preventDefault();
+  const btn = document.getElementById('heroLocateBtn');
+  if (!navigator.geolocation) {
+    btn.textContent = '❌ Not supported';
+    return;
+  }
+  btn.textContent = '⏳ Detecting location...';
+  btn.style.color = '#FF6B35';
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      btn.textContent = '✅ Location found! Opening map...';
+      setTimeout(() => {
+        window.location.href = `map.html?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`;
+      }, 600);
+    },
+    (err) => {
+      btn.textContent = '⚠️ Permission denied — opening map anyway';
+      btn.style.color = '#FFB800';
+      setTimeout(() => { window.location.href = 'map.html'; }, 1200);
+    },
+    { enableHighAccuracy: true, timeout: 8000 }
+  );
+}
+
+// ===== RENDER DYNAMIC COOK CARDS =====
+document.addEventListener('DOMContentLoaded', () => {
+  // ===== RENDER HOMEPAGE ADS CAROUSEL =====
+  function loadHomepageAds() {
+    var carousel = document.getElementById('adCarousel');
+    var dotsContainer = document.getElementById('adDots');
+    if (!carousel || !dotsContainer) return;
+    
+    var ads = JSON.parse(localStorage.getItem('fz_ads')) || [];
+    
+    // If no ads in localStorage, use default mock sponsors
+    if (ads.length === 0) {
+      ads = [
+        { id: 'ad_mock1', cookId: 'ms', cookName: 'Chef Marco', initials: 'CM', dishName: 'Authentic Italian Pasta', discount: '20%', description: '🍝 Authentic Italian Pasta — Fresh from Rome\'s finest recipe', bg: 'linear-gradient(135deg,#FF6B35,#FF3366)', status: 'Active' },
+        { id: 'ad_mock2', cookId: 'yt', cookName: 'Yuki Tanaka', initials: 'YT', dishName: 'Lebanese Mezze Platter', discount: '25%', description: '🧆 Lebanese Mezze Platter — A feast of flavors from Beirut', bg: 'linear-gradient(135deg,#6C63FF,#FF3366)', status: 'Active' },
+        { id: 'ad_mock3', cookId: 'ak', cookName: 'Anna Kowalski', initials: 'AK', dishName: 'Traditional German Sausages', discount: '15%', description: '🌭 Traditional German Sausages — Authentic Bavarian flavors', bg: 'linear-gradient(135deg,#00D084,#0097FF)', status: 'Active' }
+      ];
+      localStorage.setItem('fz_ads', JSON.stringify(ads));
+    }
+    
+    var activeAds = ads.filter(function(ad) { return ad.status === 'Active'; });
+    
+    var cardsHtml = '';
+    var dotsHtml = '';
+    
+    activeAds.forEach(function(ad, idx) {
+      var initials = ad.initials || ad.cookName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      var badgeText = ad.discount ? `${ad.discount} OFF DEAL` : 'SPONSORED';
+      var orderUrl = ad.cookId ? `profile.html?cook_id=${ad.cookId}` : 'map.html';
+      
+      cardsHtml += `
+        <div class="ad-card" style="background:${ad.bg}">
+          <div class="ad-card-content">
+            <div class="ad-avatar">${initials}</div>
+            <div class="ad-info">
+              <span class="badge badge-gold" style="margin-bottom:8px">${badgeText}</span>
+              <h3>${ad.cookName}</h3>
+              <p>${ad.description}</p>
+              <a href="${orderUrl}" class="btn btn-sm" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;backdrop-filter:blur(10px)">Order Now →</a>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      var activeClass = idx === 0 ? 'active' : '';
+      dotsHtml += `<div class="ad-dot ${activeClass}" data-index="${idx}"></div>`;
+    });
+    
+    carousel.innerHTML = cardsHtml;
+    dotsContainer.innerHTML = dotsHtml;
+    
+    initCarouselBehavior(activeAds.length);
+  }
+  
+  function initCarouselBehavior(totalSlides) {
+    var carousel = document.getElementById('adCarousel');
+    var dots = document.querySelectorAll('.ad-dot');
+    if (!carousel || dots.length === 0) return;
+    
+    var currentIdx = 0;
+    
+    function showSlide(index) {
+      currentIdx = index;
+      carousel.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === index);
+      });
+    }
+    
+    dots.forEach(function(dot) {
+      dot.onclick = function(e) {
+        var idx = parseInt(e.target.dataset.index);
+        showSlide(idx);
+      };
+    });
+    
+    if (window.adCarouselInterval) clearInterval(window.adCarouselInterval);
+    window.adCarouselInterval = setInterval(function() {
+      var nextIdx = (currentIdx + 1) % totalSlides;
+      showSlide(nextIdx);
+    }, 4000);
+  }
+  
+  try {
+    loadHomepageAds();
+  } catch(err) {
+    console.error("Error loading homepage ads:", err);
+  }
+
+  try {
+    const cooksScroll = document.querySelector('.cooks-scroll');
+    if (cooksScroll) {
+      window.renderCooksList = function(filterCategory = 'all') {
+        cooksScroll.innerHTML = '';
+        
+        const users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        const sellers = users.filter(user => user.type === 'seller' || (user.cookType && user.cookType !== null));
+        
+        const filteredSellers = sellers.filter(user => {
+          if (filterCategory === 'all') return true;
+          const cuisines = (user.cuisines || []).map(c => c.toLowerCase());
+          const dish = (user.dish || '').toLowerCase();
+          const desc = (user.bio || '').toLowerCase();
+          const cat = filterCategory.toLowerCase().trim();
+          
+          if (cat === 'italian') {
+            return cuisines.includes('italian') || dish.includes('pasta') || dish.includes('pizza') || dish.includes('ragu') || dish.includes('tagliatelle');
+          }
+          if (cat === 'middle-eastern' || cat === 'middleeastern') {
+            return cuisines.includes('middle eastern') || cuisines.includes('lebanese') || cuisines.includes('moroccan') || cuisines.includes('arabic') || dish.includes('tagine') || dish.includes('mezze') || dish.includes('lamb') || dish.includes('kebab');
+          }
+          if (cat === 'desserts') {
+            return cuisines.includes('desserts') || cuisines.includes('bakery') || dish.includes('cake') || dish.includes('pastry') || dish.includes('sweet') || dish.includes('baklava');
+          }
+          if (cat === 'vegan') {
+            return cuisines.includes('vegan') || cuisines.includes('vegetarian') || dish.includes('salad') || dish.includes('vegan') || dish.includes('vegetarian');
+          }
+          if (cat === 'asian') {
+            return cuisines.includes('asian') || cuisines.includes('japanese') || cuisines.includes('chinese') || cuisines.includes('thai') || cuisines.includes('korean') || dish.includes('ramen') || dish.includes('sushi') || dish.includes('bento');
+          }
+          if (cat === 'bbq') {
+            return cuisines.includes('bbq') || cuisines.includes('grills') || cuisines.includes('german') || cuisines.includes('bavarian') || dish.includes('schnitzel') || dish.includes('sausage') || dish.includes('grill') || dish.includes('meat') || dish.includes('steak') || dish.includes('lamb');
+          }
+          if (cat === 'bakery') {
+            return cuisines.includes('bakery') || dish.includes('bread') || dish.includes('pastry') || dish.includes('croissant') || dish.includes('pierogi');
+          }
+          if (cat === 'soups') {
+            return cuisines.includes('soups') || dish.includes('soup') || dish.includes('ramen') || dish.includes('stew') || dish.includes('tagine');
+          }
+          if (cat === 'bento') {
+            return cuisines.includes('japanese') || cuisines.includes('bento') || dish.includes('ramen') || dish.includes('sushi') || dish.includes('bento');
+          }
+          
+          return cuisines.some(c => c.includes(cat)) || dish.includes(cat) || desc.includes(cat);
+        });
+        
+        if (filteredSellers.length > 0) {
+          filteredSellers.forEach(user => {
+            const flag = user.country === 'EG' ? '🇪🇬' : (user.country === 'ES' ? '🇪🇸' : (user.country === 'NL' ? '🇳🇱' : (user.country === 'FR' ? '🇫🇷' : (user.country === 'DE' ? '🇩🇪' : (user.country === 'IT' ? '🇮🇹' : (user.country === 'PL' ? '🇵🇱' : '🇪🇺'))))));
+            const badgeClass = user.cookType === 'business' ? 'badge-gold' : 'badge-blue';
+            const badgeText = user.cookType === 'business' ? 'Business' : 'Hobby';
+            
+            const card = document.createElement('div');
+            card.className = 'cook-card';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            
+            card.innerHTML = `
+              <button class="cook-heart heart-btn" data-id="cook-${user.id}" title="Favourite">❤️</button>
+              <div class="cook-avatar" style="background:linear-gradient(135deg,#FFB800,#FF6B35)">${user.avatar || user.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()}</div>
+              <div class="cook-name">${user.name}</div>
+              <div class="cook-location">${user.city || 'Cairo'} ${flag}</div>
+              <div style="margin-bottom:10px"><span class="badge ${badgeClass}">${badgeText}</span></div>
+              <div class="cook-rating"><span class="stars">⭐⭐⭐⭐⭐</span> <strong>${user.rating || '5.0'}</strong> <span style="color:rgba(255,255,255,0.4)">(${user.reviews || 0})</span></div>
+              <div class="cook-cuisine">${(user.cuisines || []).join(' / ') || 'Home Cook'}</div>
+              <div class="cook-dish">${user.dish || 'Special Kitchen Menu'} <span class="cook-price">${user.price || '€10'}</span></div>
+              <div class="cook-prep">⏱ Ready in ${user.prep || '30 min'}</div>
+              <a href="profile.html?cook_id=${user.id}" class="btn btn-primary btn-sm w-full" style="justify-content:center">View Profile</a>
+            `;
+            cooksScroll.appendChild(card);
+          });
+          
+          // Re-initialize heart buttons click handlers for dynamic elements
+          cooksScroll.querySelectorAll('.heart-btn').forEach(btn => {
+            btn.onclick = function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              const isLiked = this.dataset.liked === 'true';
+              this.dataset.liked = !isLiked;
+              this.textContent = isLiked ? '🤍' : '❤️';
+              this.style.transform = 'scale(1.3)';
+              setTimeout(() => { this.style.transform = 'scale(1)'; }, 200);
+            };
+          });
+        } else {
+          cooksScroll.innerHTML = `
+            <div class="no-cooks-placeholder" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.4); width: 100%; font-family: 'Inter', sans-serif;">
+              🍳 No cooks under this category yet. Be the first to <a href="register.html" style="color: #FF6B35; text-decoration: underline; font-weight: 600;">Become a Cook</a>!
+            </div>
+          `;
+        }
+      };
+      
+      // Initial render
+      window.renderCooksList('all');
+      
+      // Category change callback
+      window.onCategoryChanged = function(category) {
+        window.renderCooksList(category);
+      };
+    }
+  } catch (e) {
+    console.error("Error rendering dynamic cooks on homepage:", e);
+  }
+});
+
+// Search Functions
+function triggerMobileTopSearch() {
+  const q = document.getElementById('mobileTopSearchInput').value.trim();
+  if (q) {
+    window.location.href = 'map.html?q=' + encodeURIComponent(q);
+  } else {
+    window.location.href = 'map.html';
+  }
+}
+
+function triggerNavbarSearch() {
+  const q = document.getElementById('navbarSearchInput').value.trim();
+  if (q) {
+    window.location.href = 'map.html?q=' + encodeURIComponent(q);
+  } else {
+    window.location.href = 'map.html';
+  }
+}
+
+function toggleMobileSearchInput() {
+  const searchBar = document.getElementById('mobileTopSearch');
+  if (searchBar) {
+    searchBar.classList.toggle('active');
+    if (searchBar.classList.contains('active')) {
+      document.getElementById('mobileTopSearchInput').focus();
+    }
+  }
+}
+
+// Auto-wire mobile nav active states and plus button href
+document.addEventListener('DOMContentLoaded', () => {
+  const session = JSON.parse(localStorage.getItem('fz_session'));
+  const plusBtn = document.getElementById('mNavAdd');
+  if (plusBtn) {
+    if (session) {
+      if (session.type === 'seller') {
+        plusBtn.href = 'dashboard.html';
+      } else {
+        plusBtn.href = 'profile.html?my_profile=true';
+      }
+    } else {
+      plusBtn.href = 'register.html';
+    }
+  }
+});
+</script>
+
+<!-- MOBILE TOP DROPDOWN SEARCH -->
+<div class="mobile-top-search" id="mobileTopSearch">
+  <div class="mobile-top-search-inner">
+    <input type="text" id="mobileTopSearchInput" placeholder="Search cooks, dishes..." onkeydown="if(event.key==='Enter')triggerMobileTopSearch()">
+    <button onclick="triggerMobileTopSearch()">Search</button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV BAR -->
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="mobile-nav-item active" id="mNavHome">
+    <span class="mobile-nav-icon">🏠</span>
+    <span class="mobile-nav-label">Home</span>
+  </a>
+  <a href="map.html" class="mobile-nav-item" id="mNavMap">
+    <span class="mobile-nav-icon">🗺️</span>
+    <span class="mobile-nav-label">Map</span>
+  </a>
+  <a href="dashboard.html" class="mobile-nav-item mobile-nav-plus-btn" id="mNavAdd">
+    <div class="plus-btn-inner">
+      <span>+</span>
+    </div>
+  </a>
+  <a href="order.html" class="mobile-nav-item" id="mNavCart">
+    <span class="mobile-nav-icon" style="position:relative;">🛒<span class="cart-badge cart-count" style="position:absolute;top:-6px;right:-8px;background:#FF3366;color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:bold;">0</span></span>
+    <span class="mobile-nav-label">Cart</span>
+  </a>
+  <a href="profile.html" class="mobile-nav-item" id="mNavProfile">
+    <span class="mobile-nav-icon">👤</span>
+    <span class="mobile-nav-label">Profile</span>
+  </a>
+</div>
+
+</body>
+</html>

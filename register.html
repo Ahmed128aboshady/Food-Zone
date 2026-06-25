@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Food Zone 🔥</title>
+  <meta name="description" content="Create your Food Zone account and start ordering or selling authentic home-cooked meals across Europe." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+
+  <style>
+    /* ===================== BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0F;
+      --surface: #12121C;
+      --surface2: #1A1A28;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,107,53,0.4);
+      --primary: #FF6B35;
+      --primary-glow: rgba(255,107,53,0.15);
+      --accent: #FF3366;
+      --gold: #FFB800;
+      --green: #00D084;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.55);
+      --text-dim: rgba(255,255,255,0.35);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+
+    a { color: inherit; text-decoration: none; }
+
+    input, textarea, select {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    /* ===================== ANIMATIONS ===================== */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounceIn {
+      0%   { transform: scale(0.3); opacity: 0; }
+      50%  { transform: scale(1.1); }
+      70%  { transform: scale(0.95); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(255,107,53,0.4); }
+      70%  { box-shadow: 0 0 0 12px rgba(255,107,53,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,107,53,0); }
+    }
+
+    /* ===================== NAVBAR ===================== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 72px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo span.fire { font-size: 1.5rem; }
+    .nav-logo span.brand { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 24px;
+    }
+    .nav-links a {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-spacer { flex: 1; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Search */
+    .nav-search {
+      display: flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 12px;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .nav-search:focus-within { border-color: var(--primary); }
+    .nav-search input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 0.85rem;
+      width: 160px;
+    }
+    .nav-search input::placeholder { color: var(--text-dim); }
+    .nav-search svg { color: var(--text-dim); flex-shrink: 0; }
+
+    /* Icon buttons */
+    .nav-icon-btn {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      font-size: 1.1rem;
+    }
+    .nav-icon-btn:hover { border-color: var(--primary); background: rgba(255,107,53,0.1); }
+    .nav-icon-btn .badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* Lang selector */
+    .lang-selector {
+      position: relative;
+    }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+    }
+    .lang-btn:hover { border-color: var(--primary); }
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px;
+      display: none;
+      min-width: 120px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      z-index: 999;
+    }
+    .lang-selector:hover .lang-dropdown { display: block; }
+    .lang-dropdown a {
+      display: block;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+    }
+    .lang-dropdown a:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+    /* Auth buttons */
+    .btn-nav-login {
+      padding: 7px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-nav-login:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+    .btn-nav-signup {
+      padding: 7px 16px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-nav-signup:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 20px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      background: rgba(10,10,15,0.97);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      padding: 24px;
+      overflow-y: auto;
+      animation: fadeIn 0.2s ease;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu-links { display: flex; flex-direction: column; gap: 4px; margin-bottom: 24px; }
+    .mobile-menu-links a {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .mobile-menu-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); border-color: var(--border); }
+    .mobile-menu-search {
+      display: flex; align-items: center;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+    .mobile-menu-search input {
+      background: none; border: none; outline: none;
+      color: var(--text); font-size: 0.95rem; flex: 1;
+    }
+    .mobile-menu-search input::placeholder { color: var(--text-dim); }
+    .mobile-menu-actions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .mobile-menu-actions button {
+      width: 100%; padding: 13px; border-radius: var(--radius);
+      font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .mobile-lang-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      margin-bottom: 16px;
+    }
+    .mobile-lang-item {
+      padding: 8px 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mobile-lang-item:hover, .mobile-lang-item.active { border-color: var(--primary); color: var(--primary); }
+
+    /* ===================== PAGE LAYOUT ===================== */
+    .page-wrapper {
+      padding-top: 100px;
+      padding-bottom: 80px;
+      min-height: 100vh;
+    }
+
+    .reg-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===================== PROGRESS BAR ===================== */
+    .progress-section {
+      margin-bottom: 36px;
+    }
+
+    .step-counter {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .step-track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: all 0.3s;
+      background: transparent;
+      color: var(--text-muted);
+    }
+    .step-dot.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      animation: pulse-ring 1.5s infinite;
+    }
+    .step-dot.done {
+      background: rgba(0,208,132,0.2);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .step-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .step-dot.active + .step-label,
+    .step-item:has(.step-dot.active) .step-label { color: var(--primary); }
+    .step-item:has(.step-dot.done) .step-label { color: var(--green); }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 22px;
+      transition: background 0.4s;
+    }
+    .step-line.done { background: var(--primary); }
+
+    /* ===================== FORM CARD ===================== */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      margin-bottom: 24px;
+    }
+
+    .step-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .step-subtext {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    /* ===================== REG CARDS ===================== */
+    .reg-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .reg-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .reg-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .reg-card.selected {
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 0 4px rgba(255,107,53,0.1);
+    }
+
+    .reg-card-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      display: block;
+      line-height: 1;
+    }
+
+    .reg-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .reg-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Cook type cards */
+    .reg-card[data-cooktype="hobby"].selected {
+      border-color: #4A9EFF;
+      box-shadow: 0 0 0 4px rgba(74,158,255,0.12);
+    }
+    .reg-card[data-cooktype="business"].selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(255,184,0,0.12);
+    }
+
+    /* ===================== STEP PANEL ===================== */
+    .step-panel { animation: slideUp 0.35s ease; }
+
+    /* ===================== FORM FIELDS ===================== */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .form-input::placeholder { color: var(--text-dim); }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-select option { background: #1A1A28; }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    /* Password wrapper */
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper .form-input {
+      padding-right: 44px;
+    }
+    .pwd-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      padding: 4px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .pwd-toggle:hover { color: var(--text); }
+
+    /* Tooltip */
+    .tooltip-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .tooltip-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: help;
+    }
+    .tooltip-box {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2A2A3C;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 260px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 100;
+      line-height: 1.6;
+    }
+    .tooltip-box::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #2A2A3C;
+    }
+    .tooltip-wrap:hover .tooltip-box { opacity: 1; }
+
+    /* Business reg field */
+    #businessRegField {
+      display: none;
+      padding: 16px;
+      background: rgba(255,184,0,0.05);
+      border: 1px solid rgba(255,184,0,0.2);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+
+    /* ===================== STEP 4: PROFILE ===================== */
+
+    /* Photo upload */
+    .photo-upload-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .photo-circle {
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      border: 2px dashed rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative;
+      background: var(--surface2);
+      transition: border-color 0.3s;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .photo-circle:hover { border-color: var(--primary); }
+    .photo-initials {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 50%;
+      font-size: 1.6rem;
+    }
+    .photo-circle:hover .photo-overlay { opacity: 1; }
+    .photo-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Cuisine tags */
+    .cuisine-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .cuisine-tag-select {
+      padding: 8px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .cuisine-tag-select:hover { border-color: var(--primary); color: var(--text); }
+    .cuisine-tag-select.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Delivery slider */
+    .slider-wrap {
+      margin-top: 8px;
+    }
+    .slider-val {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(255,107,53,0.2);
+      transition: box-shadow 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 6px rgba(255,107,53,0.3);
+    }
+
+    /* ===================== STEP 5: SUCCESS ===================== */
+    .success-section {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .success-check {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(0,208,132,0.15);
+      border: 3px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 24px;
+      animation: bounceIn 0.6s ease;
+    }
+    .success-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .success-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .business-notice {
+      background: rgba(255,184,0,0.07);
+      border: 1px solid rgba(255,184,0,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      text-align: left;
+      display: none;
+    }
+    .business-notice-title {
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .business-notice-text {
+      font-size: 0.83rem;
+      color: rgba(255,184,0,0.75);
+      line-height: 1.55;
+    }
+    .success-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ===================== BUTTONS ===================== */
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 28px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,53,0.3); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 28px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.05); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+    /* Step nav buttons */
+    .step-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 28px;
+      gap: 12px;
+    }
+    .step-nav-single {
+      margin-top: 28px;
+    }
+
+    /* ===================== LOGIN LINK ===================== */
+    .login-link {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+    .login-link a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .login-link a:hover { opacity: 0.8; }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 16px; gap: 12px; }
+      .nav-links { display: none; }
+      .nav-search { display: none; }
+      .nav-icon-btn { display: none; }
+      .lang-selector { display: none; }
+      .btn-nav-login { display: none; }
+      .btn-nav-signup { display: none; }
+      .hamburger { display: flex; }
+
+      .form-card { padding: 28px 20px; }
+      .step-heading { font-size: 1.5rem; }
+      .reg-cards-grid { grid-template-columns: 1fr; gap: 12px; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .step-label { font-size: 0.6rem; }
+      .step-dot { width: 26px; height: 26px; font-size: 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+      .success-actions { flex-direction: column; }
+      .success-actions .btn-primary,
+      .success-actions .btn-outline { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <!-- Logo -->
+    <a href="index.html" class="nav-logo" id="navLogo">
+      <span class="fire">🔥</span>
+      <span class="brand">FoodZone</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <div class="nav-links">
+      <a href="index.html" id="navHome">Home</a>
+      <a href="map.html" id="navExplore">Explore</a>
+      <a href="reels.html" id="navReels">Reels</a>
+      <a href="map.html" id="navMap">Map</a>
+    </div>
+
+    <div class="nav-spacer"></div>
+
+    <!-- Right side -->
+    <div class="nav-right">
+      <!-- Search -->
+      <div class="nav-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="navSearchInput" placeholder="Search cooks, dishes..." aria-label="Search" />
+      </div>
+
+      <!-- Bell -->
+      <button class="nav-icon-btn" id="navBellBtn" aria-label="Notifications">
+        🔔
+        <span class="badge">3</span>
+      </button>
+
+      <!-- Cart -->
+      <button class="nav-icon-btn" id="navCartBtn" aria-label="Cart">
+        🛒
+        <span class="badge">2</span>
+      </button>
+
+      <!-- Language selector -->
+      <div class="lang-selector" id="langSelector">
+        <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+          🌐 EN
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown" role="menu">
+          <a href="#" onclick="setLang('EN'); return false;" id="langEN" role="menuitem">🇬🇧 EN — English</a>
+          <a href="#" onclick="setLang('ES'); return false;" id="langES" role="menuitem">🇪🇸 ES — Español</a>
+          <a href="#" onclick="setLang('FR'); return false;" id="langFR" role="menuitem">🇫🇷 FR — Français</a>
+          <a href="#" onclick="setLang('DE'); return false;" id="langDE" role="menuitem">🇩🇪 DE — Deutsch</a>
+          <a href="#" onclick="setLang('IT'); return false;" id="langIT" role="menuitem">🇮🇹 IT — Italiano</a>
+          <a href="#" onclick="setLang('PL'); return false;" id="langPL" role="menuitem">🇵🇱 PL — Polski</a>
+          <a href="#" onclick="setLang('NL'); return false;" id="langNL" role="menuitem">🇳🇱 NL — Nederlands</a>
+        </div>
+      </div>
+
+      <!-- Auth buttons -->
+      <a href="login.html">
+        <button class="btn-nav-login" id="navLoginBtn">Login</button>
+      </a>
+      <a href="register.html">
+        <button class="btn-nav-signup" id="navSignupBtn">Sign Up</button>
+      </a>
+
+      <!-- Hamburger -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE MENU ==================== -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+    <!-- Search -->
+    <div class="mobile-menu-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="mobileSearchInput" placeholder="Search cooks, dishes..." aria-label="Mobile search" />
+    </div>
+
+    <!-- Links -->
+    <div class="mobile-menu-links">
+      <a href="index.html" id="mobileNavHome">🏠 Home</a>
+      <a href="map.html" id="mobileNavExplore">🔍 Explore</a>
+      <a href="reels.html" id="mobileNavReels">🎬 Reels</a>
+      <a href="map.html" id="mobileNavMap">🗺️ Map</a>
+    </div>
+
+    <!-- Language -->
+    <p style="font-size:0.75rem;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Language</p>
+    <div class="mobile-lang-grid">
+      <div class="mobile-lang-item active" onclick="setLang('EN')" id="mobileLangEN">🇬🇧 EN</div>
+      <div class="mobile-lang-item" onclick="setLang('ES')" id="mobileLangES">🇪🇸 ES</div>
+      <div class="mobile-lang-item" onclick="setLang('FR')" id="mobileLangFR">🇫🇷 FR</div>
+      <div class="mobile-lang-item" onclick="setLang('DE')" id="mobileLangDE">🇩🇪 DE</div>
+      <div class="mobile-lang-item" onclick="setLang('IT')" id="mobileLangIT">🇮🇹 IT</div>
+      <div class="mobile-lang-item" onclick="setLang('PL')" id="mobileLangPL">🇵🇱 PL</div>
+      <div class="mobile-lang-item" onclick="setLang('NL')" id="mobileLangNL">🇳🇱 NL</div>
+    </div>
+
+    <div style="margin-top:24px;" class="mobile-menu-actions">
+      <a href="login.html">
+        <button class="btn-outline" id="mobileLoginBtn" style="width:100%;">Login</button>
+      </a>
+      <a href="register.html">
+        <button class="btn-primary" id="mobileSignupBtn" style="width:100%;">Sign Up</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN PAGE ==================== -->
+  <main class="page-wrapper">
+    <div class="reg-container">
+
+      <!-- Progress Bar -->
+      <div class="progress-section" aria-label="Registration progress">
+        <p class="step-counter" id="stepCounter">Step 1 of 5</p>
+        <div class="step-track">
+          <!-- Step 1 -->
+          <div class="step-item">
+            <div class="step-dot active" id="dot1">1</div>
+            <span class="step-label">Account Type</span>
+          </div>
+          <div class="step-line" id="line1"></div>
+          <!-- Step 2 -->
+          <div class="step-item">
+            <div class="step-dot" id="dot2">2</div>
+            <span class="step-label">Cook Type</span>
+          </div>
+          <div class="step-line" id="line2"></div>
+          <!-- Step 3 -->
+          <div class="step-item">
+            <div class="step-dot" id="dot3">3</div>
+            <span class="step-label">Personal</span>
+          </div>
+          <div class="step-line" id="line3"></div>
+          <!-- Step 4 -->
+          <div class="step-item">
+            <div class="step-dot" id="dot4">4</div>
+            <span class="step-label">Profile</span>
+          </div>
+          <div class="step-line" id="line4"></div>
+          <!-- Step 5 -->
+          <div class="step-item">
+            <div class="step-dot" id="dot5">5</div>
+            <span class="step-label">Done</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== STEP 1: Account Type ======== -->
+      <div id="step-1" class="step-panel" style="display:block;">
+        <div class="form-card">
+          <h1 class="step-heading">Join Food Zone 🔥</h1>
+          <p class="step-subtext">Tell us how you want to use Food Zone</p>
+
+          <div class="reg-cards-grid">
+            <!-- Buyer -->
+            <div class="reg-card type-card" data-type="buyer" id="cardBuyer" onclick="selectType('buyer')" role="button" tabindex="0" aria-pressed="false" onkeydown="if(event.key==='Enter'||event.key===' '){selectType('buyer');}">
+              <span class="reg-card-icon">🛒</span>
+              <p class="reg-card-title">I want to Order Food</p>
+              <p class="reg-card-desc">Browse cooks, order meals, enjoy authentic home cooking</p>
+            </div>
+            <!-- Seller -->
+            <div class="reg-card type-card" data-type="seller" id="cardSeller" onclick="selectType('seller')" role="button" tabindex="0" aria-pressed="false" onkeydown="if(event.key==='Enter'||event.key===' '){selectType('seller');}">
+              <span class="reg-card-icon">👨‍🍳</span>
+              <p class="reg-card-title">I want to Cook &amp; Sell</p>
+              <p class="reg-card-desc">Share your recipes, grow a customer base, earn money</p>
+            </div>
+          </div>
+
+          <div class="step-nav-single">
+            <button class="btn-primary" id="step1Next" disabled style="width:100%;" onclick="nextStep()">
+              Continue →
+            </button>
+          </div>
+        </div>
+
+        <p class="login-link">Already have an account? <a href="login.html">Log in</a></p>
+      </div>
+
+      <!-- ======== STEP 2: Cook Type ======== -->
+      <div id="step-2" style="display:none;">
+        <div class="form-card step-panel">
+          <h2 class="step-heading">What kind of cook are you?</h2>
+          <p class="step-subtext">Choose the option that best describes your cooking journey</p>
+
+          <div class="reg-cards-grid">
+            <!-- Hobby cook -->
+            <div class="reg-card cooktype-card" data-cooktype="hobby" id="cardHobby" onclick="selectCookType('hobby')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){selectCookType('hobby');}">
+              <span class="reg-card-icon">🎨</span>
+              <p class="reg-card-title">Hobby Cook</p>
+              <p class="reg-card-desc">I cook for fun and share with my community. No formal business needed.</p>
+            </div>
+            <!-- Business cook -->
+            <div class="reg-card cooktype-card" data-cooktype="business" id="cardBusiness" onclick="selectCookType('business')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){selectCookType('business');}">
+              <span class="reg-card-icon">💼</span>
+              <p class="reg-card-title">Business Cook</p>
+              <p class="reg-card-desc">I run a professional food business. I have legal registration.</p>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-ghost" onclick="prevStep()">← Back</button>
+            <button class="btn-primary" id="step2Next" onclick="nextStep()">Continue →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== STEP 3: Personal Details ======== -->
+      <div id="step-3" style="display:none;">
+        <div class="form-card step-panel">
+          <h2 class="step-heading">Personal Details</h2>
+          <p class="step-subtext">Fill in your basic information to create your account</p>
+
+          <!-- Name row -->
+          <div class="form-grid-2" style="margin-bottom:16px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="firstName">First Name</label>
+              <input type="text" class="form-input" id="firstName" name="firstName" placeholder="Maria" autocomplete="given-name" required />
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="lastName">Last Name</label>
+              <input type="text" class="form-input" id="lastName" name="lastName" placeholder="Schmidt" autocomplete="family-name" required />
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label class="form-label" for="emailInput">Email Address</label>
+            <input type="email" class="form-input" id="emailInput" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label" for="passwordInput">Password</label>
+            <div class="password-wrapper">
+              <input type="password" class="form-input" id="passwordInput" name="password" placeholder="Create a strong password" autocomplete="new-password" required />
+              <button type="button" class="pwd-toggle" id="pwdToggle" aria-label="Toggle password visibility">👁</button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password" required />
+          </div>
+
+          <!-- Business Registration Number (conditional) -->
+          <div id="businessRegField">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="businessRegNum">
+                Business Registration Number
+                <div class="tooltip-wrap" style="display:inline-flex;">
+                  <span class="tooltip-icon" aria-label="Format info">ℹ</span>
+                  <div class="tooltip-box" role="tooltip">
+                    <strong style="color:var(--text);display:block;margin-bottom:6px;">Country formats:</strong>
+                    🇩🇪 DE: HRB 123456 (Handelsregister)<br/>
+                    🇫🇷 FR: SIRET 14 digits<br/>
+                    🇵🇱 PL: KRS 10 digits<br/>
+                    🇳🇱 NL: KvK 8 digits<br/>
+                    🇮🇹 IT: REA XX-123456<br/>
+                    🇬🇧 UK: Companies House 8 digits<br/>
+                    🇪🇸 ES: NIF/CIF 9 chars
+                  </div>
+                </div>
+              </label>
+              <input type="text" class="form-input" id="businessRegNum" name="businessRegNum" placeholder="e.g. HRB 123456 / SIRET 12345678901234" />
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label class="form-label" for="phoneInput">Phone Number</label>
+            <input type="tel" class="form-input" id="phoneInput" name="phone" placeholder="+49 152 1234 5678" autocomplete="tel" />
+          </div>
+
+          <!-- Country -->
+          <div class="form-group">
+            <label class="form-label" for="countrySelect">Country</label>
+            <select class="form-select" id="countrySelect" name="country" autocomplete="country" required>
+              <option value="" disabled selected>Select your country</option>
+              <option value="AT">🇦🇹 Austria</option>
+              <option value="BE">🇧🇪 Belgium</option>
+              <option value="BG">🇧🇬 Bulgaria</option>
+              <option value="HR">🇭🇷 Croatia</option>
+              <option value="CY">🇨🇾 Cyprus</option>
+              <option value="CZ">🇨🇿 Czech Republic</option>
+              <option value="DK">🇩🇰 Denmark</option>
+              <option value="EE">🇪🇪 Estonia</option>
+              <option value="FI">🇫🇮 Finland</option>
+              <option value="FR">🇫🇷 France</option>
+              <option value="DE">🇩🇪 Germany</option>
+              <option value="GR">🇬🇷 Greece</option>
+              <option value="HU">🇭🇺 Hungary</option>
+              <option value="IE">🇮🇪 Ireland</option>
+              <option value="IT">🇮🇹 Italy</option>
+              <option value="LV">🇱🇻 Latvia</option>
+              <option value="LT">🇱🇹 Lithuania</option>
+              <option value="LU">🇱🇺 Luxembourg</option>
+              <option value="MT">🇲🇹 Malta</option>
+              <option value="NL">🇳🇱 Netherlands</option>
+              <option value="PL">🇵🇱 Poland</option>
+              <option value="PT">🇵🇹 Portugal</option>
+              <option value="RO">🇷🇴 Romania</option>
+              <option value="SK">🇸🇰 Slovakia</option>
+              <option value="SI">🇸🇮 Slovenia</option>
+              <option value="ES">🇪🇸 Spain</option>
+              <option value="SE">🇸🇪 Sweden</option>
+              <option value="GB">🇬🇧 United Kingdom</option>
+              <option value="CH">🇨🇭 Switzerland</option>
+              <option value="NO">🇳🇴 Norway</option>
+            </select>
+          </div>
+
+          <!-- City -->
+          <div class="form-group">
+            <label class="form-label" for="cityInput">City</label>
+            <input type="text" class="form-input" id="cityInput" name="city" placeholder="Berlin" autocomplete="address-level2" />
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-ghost" onclick="prevStep()">← Back</button>
+            <button class="btn-primary" id="step3Next" onclick="nextStep()">Continue →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== STEP 4: Profile Setup ======== -->
+      <div id="step-4" style="display:none;">
+        <div class="form-card step-panel">
+          <h2 class="step-heading">Set Up Your Profile</h2>
+          <p class="step-subtext">Help customers discover you with a great profile</p>
+
+          <!-- Photo upload -->
+          <div class="photo-upload-section">
+            <input type="file" id="photoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" aria-label="Upload profile photo" />
+            <div class="photo-circle" id="photoCircle" onclick="document.getElementById('photoFileInput').click()" role="button" tabindex="0" aria-label="Click to upload profile photo" onkeydown="if(event.key==='Enter'||event.key===' '){document.getElementById('photoFileInput').click();}">
+              <span class="photo-initials" id="photoInitials">MS</span>
+              <div class="photo-overlay">📷</div>
+            </div>
+            <p class="photo-label">Upload Profile Photo</p>
+          </div>
+
+          <!-- Bio -->
+          <div class="form-group">
+            <label class="form-label" for="bioTextarea">About You</label>
+            <textarea class="form-textarea" id="bioTextarea" name="bio" placeholder="Tell customers about yourself and your cooking..."></textarea>
+          </div>
+
+          <!-- Cuisine tags -->
+          <div class="form-group">
+            <label class="form-label">Cuisine Specialties <span style="color:var(--text-dim);font-weight:400;font-size:0.78rem;">(select all that apply)</span></label>
+            <div class="cuisine-tags-wrap" id="cuisineTagsWrap">
+              <button class="cuisine-tag-select" type="button" id="tagItalian">🍝 Italian</button>
+              <button class="cuisine-tag-select" type="button" id="tagMiddleEastern">🥙 Middle Eastern</button>
+              <button class="cuisine-tag-select" type="button" id="tagDesserts">🍰 Desserts</button>
+              <button class="cuisine-tag-select" type="button" id="tagVegan">🥗 Vegan</button>
+              <button class="cuisine-tag-select" type="button" id="tagAsian">🍜 Asian</button>
+              <button class="cuisine-tag-select" type="button" id="tagBBQ">🔥 BBQ &amp; Grills</button>
+              <button class="cuisine-tag-select" type="button" id="tagBakery">🥐 Bakery</button>
+              <button class="cuisine-tag-select" type="button" id="tagSoups">🍲 Soups</button>
+              <button class="cuisine-tag-select" type="button" id="tagJapanese">🍣 Japanese</button>
+            </div>
+          </div>
+
+          <!-- Kitchen address -->
+          <div class="form-group">
+            <label class="form-label" for="kitchenAddress">Kitchen Address</label>
+            <input type="text" class="form-input" id="kitchenAddress" name="kitchenAddress" placeholder="Street, City, Postcode" />
+          </div>
+
+          <!-- Delivery radius slider -->
+          <div class="form-group">
+            <label class="form-label" for="radiusSlider">Delivery Radius</label>
+            <div class="slider-wrap">
+              <span class="slider-val" id="radiusVal">Delivery radius: 5 km</span>
+              <input type="range" id="radiusSlider" name="deliveryRadius" min="1" max="30" value="5" aria-valuemin="1" aria-valuemax="30" aria-valuenow="5" />
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-ghost" onclick="prevStep()">← Back</button>
+            <button class="btn-primary" id="step4Next" onclick="nextStep()">Continue →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== STEP 5: Done ======== -->
+      <div id="step-5" style="display:none;">
+        <div class="form-card step-panel">
+          <div class="success-section">
+            <!-- Animated checkmark -->
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(0,208,132,0.15);border:3px solid #00D084;display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 24px;animation:bounceIn 0.6s ease">
+              ✓
+            </div>
+
+            <h2 class="step-heading success-heading">Welcome to Food Zone! 🎉</h2>
+            <p class="success-text">Your account has been created successfully. You're all set to start your Food Zone journey.</p>
+
+            <!-- Business verification notice (shown only for business cook type) -->
+            <div class="business-notice" id="businessVerifyNotice">
+              <p class="business-notice-title">⏳ Business Verification Pending</p>
+              <p class="business-notice-text">
+                Since you registered as a Business Cook, our compliance team will review your registration documents within <strong>1–2 business days</strong>. You'll receive an email notification once your account is verified and you can start selling. In the meantime, you can explore the platform and set up your menu.
+              </p>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="success-actions">
+              <a href="dashboard.html" class="btn-primary" id="goToDashboardBtn">Go to Dashboard →</a>
+              <a href="index.html" class="btn-outline" id="browseCooksBtn">Browse Cooks</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== EXTERNAL JS ==================== -->
+  <script src="js/app.js"></script>
+
+  <!-- ==================== INLINE REGISTRATION JS ==================== -->
+  <script>
+    /* ─────────── State ─────────── */
+    let currentStep = 1;
+    let userType    = 'buyer';
+    let cookType    = 'hobby';
+
+    /* ─────────── Navigation ─────────── */
+    function showStep(n) {
+      document.querySelectorAll('[id^="step-"]').forEach(function(el) {
+        el.style.display = 'none';
+      });
+      var s = document.getElementById('step-' + n);
+      if (s) {
+        s.style.display = 'block';
+        s.classList.add('step-panel');
+      }
+      currentStep = n;
+      updateProgress(n);
+
+      /* Show business verify notice on step 5 */
+      var notice = document.getElementById('businessVerifyNotice');
+      if (notice) {
+        notice.style.display = (n === 5 && userType === 'seller' && cookType === 'business') ? 'block' : 'none';
+      }
+
+      /* Customize step 5 buttons for buyer vs seller */
+      if (n === 5) {
+        var goToDashboardBtn = document.getElementById('goToDashboardBtn');
+        if (goToDashboardBtn) {
+          if (userType === 'buyer') {
+            goToDashboardBtn.textContent = 'Go to My Profile →';
+            goToDashboardBtn.href = 'profile.html?my_profile=true&t=' + Date.now();
+          } else {
+            goToDashboardBtn.textContent = 'Go to Dashboard →';
+            goToDashboardBtn.href = 'dashboard.html';
+          }
+        }
+      }
+    }
+
+    function updateProgress(n) {
+      /* Update dots */
+      var dots = [
+        document.getElementById('dot1'),
+        document.getElementById('dot2'),
+        document.getElementById('dot3'),
+        document.getElementById('dot4'),
+        document.getElementById('dot5')
+      ];
+      dots.forEach(function(dot, i) {
+        if (!dot) return;
+        dot.classList.remove('active', 'done');
+        if (i + 1 < n)      dot.classList.add('done');
+        else if (i + 1 === n) dot.classList.add('active');
+      });
+
+      /* Update lines */
+      var lines = [
+        document.getElementById('line1'),
+        document.getElementById('line2'),
+        document.getElementById('line3'),
+        document.getElementById('line4')
+      ];
+      lines.forEach(function(line, i) {
+        if (!line) return;
+        if (i + 1 < n) line.classList.add('done');
+        else           line.classList.remove('done');
+      });
+
+      /* Update counter */
+      var counter = document.getElementById('stepCounter');
+      if (counter) counter.textContent = 'Step ' + n + ' of 5';
+    }
+
+    /* ─────────── Type selection ─────────── */
+    function selectType(type) {
+      userType = type;
+      document.querySelectorAll('.type-card').forEach(function(c) {
+        c.classList.remove('selected');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      var card = document.querySelector('[data-type="' + type + '"]');
+      if (card) {
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+      }
+      var btn = document.getElementById('step1Next');
+      if (btn) btn.disabled = false;
+    }
+
+    function selectCookType(type) {
+      cookType = type;
+      document.querySelectorAll('.cooktype-card').forEach(function(c) {
+        c.classList.remove('selected');
+      });
+      var card = document.querySelector('[data-cooktype="' + type + '"]');
+      if (card) card.classList.add('selected');
+
+      /* Show/hide business reg field on step 3 */
+      var brf = document.getElementById('businessRegField');
+      if (brf) {
+        brf.style.display = (type === 'business') ? 'block' : 'none';
+      }
+    }
+
+    /* ─────────── Step flow ─────────── */
+    function nextStep() {
+      if (currentStep === 3) {
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('emailInput').value.trim().toLowerCase();
+        const password = document.getElementById('passwordInput').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!firstName || !lastName || !email || !password) {
+          if (typeof showToast === 'function') showToast('⚠️ Please fill out all required fields.', 'warning');
+          else alert('Please fill out all required fields.');
+          return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          if (typeof showToast === 'function') showToast('⚠️ Please enter a valid email address.', 'warning');
+          else alert('Please enter a valid email address.');
+          return;
+        }
+
+        if (password.length < 8) {
+          if (typeof showToast === 'function') showToast('⚠️ Password must be at least 8 characters long.', 'warning');
+          else alert('Password must be at least 8 characters long.');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          if (typeof showToast === 'function') showToast('⚠️ Passwords do not match.', 'warning');
+          else alert('Passwords do not match.');
+          return;
+        }
+
+        // Check if email already exists
+        const DB_KEY = 'fz_users';
+        let users = [];
+        try {
+          users = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+        } catch(e) {
+          users = [];
+        }
+
+        const exists = users.find(u => u.email === email);
+        if (exists) {
+          if (typeof showToast === 'function') showToast('❌ This email is already registered. Please log in instead.', 'error');
+          else alert('This email is already registered. Please log in instead.');
+          setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+          return;
+        }
+
+        // Simple hash (matching login.html hashPassword)
+        function hashPassword(pw) {
+          let hash = 0;
+          for (let i = 0; i < pw.length; i++) {
+            hash = ((hash << 5) - hash) + pw.charCodeAt(i);
+            hash |= 0;
+          }
+          return 'h_' + Math.abs(hash).toString(16);
+        }
+
+        // Create user object
+        const name = `${firstName} ${lastName}`;
+        const phone = document.getElementById('phoneInput').value.trim();
+        const country = document.getElementById('countrySelect').value;
+        const city = document.getElementById('cityInput').value.trim();
+        const businessReg = document.getElementById('businessRegNum') ? document.getElementById('businessRegNum').value.trim() : '';
+
+        const newUser = {
+          id: 'u_' + Date.now(),
+          name: name,
+          email: email,
+          password: hashPassword(password),
+          avatar: name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(),
+          createdAt: new Date().toISOString(),
+          type: userType, // buyer or seller
+          cookType: userType === 'seller' ? cookType : null,
+          phone: phone,
+          country: country,
+          city: city,
+          businessReg: businessReg
+        };
+
+        users.push(newUser);
+        localStorage.setItem(DB_KEY, JSON.stringify(users));
+
+        // Auto-login (save session)
+        const SESSION_KEY = 'fz_session';
+        const session = {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          avatar: newUser.avatar,
+          type: newUser.type,
+          cookType: newUser.cookType,
+          city: newUser.city,
+          country: newUser.country,
+          phone: newUser.phone,
+          loginAt: new Date().toISOString()
+        };
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        if (typeof showToast === 'function') showToast('🎉 Account created successfully!', 'success');
+      }
+
+      if (currentStep === 4) {
+        const DB_KEY = 'fz_users';
+        const SESSION_KEY = 'fz_session';
+        let users = [];
+        try { users = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+        
+        let session = null;
+        try { session = JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) {}
+
+        if (session && users.length > 0) {
+          const userIdx = users.findIndex(u => u.email === session.email);
+          if (userIdx !== -1) {
+            const selectedCuisines = [];
+            document.querySelectorAll('.cuisine-tag-select.selected').forEach(tag => {
+              selectedCuisines.push(tag.textContent.trim());
+            });
+
+            users[userIdx].bio = document.getElementById('bioTextarea').value.trim();
+            users[userIdx].kitchenAddress = document.getElementById('kitchenAddress').value.trim();
+            users[userIdx].deliveryRadius = document.getElementById('radiusSlider').value;
+            users[userIdx].cuisines = selectedCuisines;
+
+            const profileImg = document.querySelector('#photoCircle img.profile-preview');
+            if (profileImg) {
+              users[userIdx].avatarUrl = profileImg.src;
+            }
+
+            localStorage.setItem(DB_KEY, JSON.stringify(users));
+            if (typeof showToast === 'function') showToast('✅ Profile setup completed!', 'success');
+          }
+        }
+      }
+
+      var next = currentStep + 1;
+      /* Buyers skip step 2 and step 4 */
+      if (currentStep === 1 && userType === 'buyer') next = 3;
+      if (currentStep === 3 && userType === 'buyer') next = 5;
+      if (next > 5) next = 5;
+      showStep(next);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevStep() {
+      var prev = currentStep - 1;
+      /* Reverse buyer skips */
+      if (currentStep === 3 && userType === 'buyer') prev = 1;
+      if (currentStep === 5 && userType === 'buyer') prev = 3;
+      if (prev < 1) prev = 1;
+      showStep(prev);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ─────────── Cuisine tags ─────────── */
+    document.querySelectorAll('.cuisine-tag-select').forEach(function(tag) {
+      tag.addEventListener('click', function() {
+        this.classList.toggle('selected');
+      });
+    });
+
+    /* ─────────── Password toggle ─────────── */
+    (function() {
+      var pwdInput  = document.getElementById('passwordInput');
+      var pwdToggle = document.getElementById('pwdToggle');
+      if (pwdToggle && pwdInput) {
+        pwdToggle.addEventListener('click', function() {
+          if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            pwdToggle.textContent = '🙈';
+          } else {
+            pwdInput.type = 'password';
+            pwdToggle.textContent = '👁';
+          }
+        });
+      }
+    })();
+
+    /* ─────────── Delivery radius slider ─────────── */
+    (function() {
+      var radiusSlider = document.getElementById('radiusSlider');
+      var radiusVal    = document.getElementById('radiusVal');
+      if (radiusSlider && radiusVal) {
+        radiusSlider.addEventListener('input', function() {
+          radiusVal.textContent = 'Delivery radius: ' + this.value + ' km';
+        });
+      }
+    })();
+
+    /* ─────────── Photo upload preview ─────────── */
+    function handlePhotoUpload(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var circle = document.getElementById('photoCircle');
+        var initials = document.getElementById('photoInitials');
+        if (circle && initials) {
+          initials.style.display = 'none';
+          var existing = circle.querySelector('img.profile-preview');
+          if (existing) existing.remove();
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'profile-preview';
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0;';
+          circle.appendChild(img);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ─────────── Hamburger / mobile menu ─────────── */
+    (function() {
+      var hamburger  = document.getElementById('hamburgerBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      if (!hamburger || !mobileMenu) return;
+      hamburger.addEventListener('click', function() {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+        hamburger.setAttribute('aria-expanded', String(isOpen));
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+    })();
+
+    /* ─────────── Language switcher ─────────── */
+    function setLang(code) {
+      var langBtn = document.getElementById('langBtn');
+      if (langBtn) langBtn.innerHTML = '🌐 ' + code + ' <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+      /* Update mobile items */
+      document.querySelectorAll('.mobile-lang-item').forEach(function(item) {
+        item.classList.remove('active');
+      });
+      var mobileActive = document.getElementById('mobileLang' + code);
+      if (mobileActive) mobileActive.classList.add('active');
+    }
+
+    /* ─────────── Init ─────────── */
+    const params = new URLSearchParams(window.location.search);
+    const typeParam = params.get('type');
+    const cookParam = params.get('cook');
+
+    if (typeParam === 'seller') {
+      selectType('seller');
+      if (cookParam === 'hobby') {
+        selectCookType('hobby');
+        showStep(3);
+      } else if (cookParam === 'business') {
+        selectCookType('business');
+        showStep(3);
+      } else {
+        showStep(2);
+      }
+    } else if (typeParam === 'buyer') {
+      selectType('buyer');
+      showStep(3);
+    } else {
+      showStep(1);
+    }
+  </script>
+
+</body>
+</html>

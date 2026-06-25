@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Food Zone 🔥</title>
+  <meta name="description" content="Log in to your Food Zone account and discover amazing home-cooked meals near you."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0F;
+      --surface: #12121C;
+      --surface2: #1A1A28;
+      --border: rgba(255,255,255,0.08);
+      --primary: #FF6B35;
+      --primary-glow: rgba(255,107,53,0.18);
+      --accent: #FF3366;
+      --gold: #FFB800;
+      --green: #00D084;
+      --text: #FFFFFF;
+      --text-muted: rgba(255,255,255,0.55);
+      --text-dim: rgba(255,255,255,0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== ANIMATED BG ===== */
+    .bg-canvas {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    }
+    .bg-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.18; animation: blobMove 8s ease-in-out infinite alternate;
+    }
+    .bg-blob-1 { width: 600px; height: 600px; background: #FF6B35; top: -20%; left: -10%; animation-delay: 0s; }
+    .bg-blob-2 { width: 500px; height: 500px; background: #6C63FF; bottom: -15%; right: -10%; animation-delay: 2s; }
+    .bg-blob-3 { width: 350px; height: 350px; background: #FF3366; top: 40%; left: 40%; animation-delay: 4s; }
+
+    @keyframes blobMove {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, -20px) scale(1.08); }
+    }
+
+    /* Food particles */
+    .particle {
+      position: fixed; font-size: 2rem; opacity: 0.07;
+      animation: floatParticle 6s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    @keyframes floatParticle {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%       { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* ===== GRID PATTERN ===== */
+    .grid-pattern {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ===== MAIN WRAPPER ===== */
+    .login-wrapper {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 460px;
+      padding: 24px 16px;
+      animation: slideUp 0.5s ease both;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== LOGO ===== */
+    .login-logo {
+      text-align: center; margin-bottom: 28px;
+    }
+    .login-logo a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem; font-weight: 900;
+      display: inline-block;
+    }
+    .logo-fire { margin-right: 4px; }
+    .logo-accent { background: linear-gradient(135deg, #FF6B35, #FF3366); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .login-logo-sub {
+      font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;
+    }
+
+    /* ===== CARD ===== */
+    .login-card {
+      background: rgba(18, 18, 28, 0.8);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      padding: 36px 32px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,107,53,0.05);
+    }
+
+    /* ===== TABS ===== */
+    .auth-tabs {
+      display: flex; gap: 0; margin-bottom: 28px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 4px;
+    }
+    .auth-tab {
+      flex: 1; text-align: center; padding: 10px 0;
+      border-radius: 9px; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s; color: var(--text-muted);
+      border: none; background: transparent;
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, #FF6B35, #FF3366);
+      color: #fff; box-shadow: 0 4px 16px rgba(255,107,53,0.35);
+    }
+
+    /* ===== FORM TITLE ===== */
+    .form-title {
+      font-size: 1.5rem; font-weight: 800; margin-bottom: 6px;
+    }
+    .form-subtitle {
+      font-size: 0.88rem; color: var(--text-muted); margin-bottom: 24px;
+    }
+
+    /* ===== SOCIAL LOGINS ===== */
+    .social-btns {
+      display: flex; gap: 10px; margin-bottom: 20px;
+    }
+    .social-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 11px 12px; border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      cursor: pointer; transition: all 0.2s; font-size: 0.85rem;
+      font-weight: 600; color: var(--text); font-family: inherit;
+    }
+    .social-btn:hover {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+    }
+    .social-icon { font-size: 1.1rem; }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; color: var(--text-dim); font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    /* ===== FORM FIELDS ===== */
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--text-muted); margin-bottom: 7px; letter-spacing: 0.02em;
+    }
+
+    .input-wrap {
+      position: relative; display: flex; align-items: center;
+    }
+    .input-icon {
+      position: absolute; left: 14px; font-size: 1rem;
+      color: var(--text-dim); pointer-events: none; transition: color 0.2s;
+    }
+    .form-input {
+      width: 100%; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px 14px 12px 42px;
+      color: var(--text); font-size: 0.92rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    .form-input::placeholder { color: var(--text-dim); }
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+    }
+    .form-input:focus + .input-focus-ring { opacity: 1; }
+    .input-wrap:focus-within .input-icon { color: var(--primary); }
+
+    /* Password toggle */
+    .pw-toggle {
+      position: absolute; right: 14px;
+      background: none; border: none;
+      color: var(--text-dim); cursor: pointer;
+      font-size: 1rem; padding: 4px;
+      transition: color 0.2s;
+    }
+    .pw-toggle:hover { color: var(--primary); }
+
+    /* ===== ROW HELPERS ===== */
+    .form-row-between {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; margin-top: -4px;
+    }
+    .checkbox-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; color: var(--text-muted); cursor: pointer;
+    }
+    .checkbox-label input[type=checkbox] { accent-color: var(--primary); width: 15px; height: 15px; }
+    .forgot-link {
+      font-size: 0.82rem; color: var(--primary); font-weight: 600; transition: opacity 0.2s;
+    }
+    .forgot-link:hover { opacity: 0.8; }
+
+    /* ===== ERROR MSG ===== */
+    .error-msg {
+      background: rgba(255,51,102,0.1);
+      border: 1px solid rgba(255,51,102,0.25);
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 0.83rem; color: #FF6680;
+      display: none; margin-bottom: 16px;
+      align-items: center; gap: 8px;
+    }
+    .error-msg.show { display: flex; animation: shake 0.35s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60%  { transform: translateX(-5px); }
+      40%,80%  { transform: translateX(5px); }
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #FF6B35, #FF3366);
+      border: none; border-radius: 12px;
+      color: #fff; font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 28px rgba(255,107,53,0.35);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover:not(:disabled) {
+      opacity: 0.92; transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(255,107,53,0.5);
+    }
+    .btn-submit:active:not(:disabled) { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-submit .spinner {
+      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== SWITCH ACCOUNT TYPE ===== */
+    .switch-link {
+      text-align: center; margin-top: 20px;
+      font-size: 0.85rem; color: var(--text-muted);
+    }
+    .switch-link a { color: var(--primary); font-weight: 600; transition: opacity 0.2s; }
+    .switch-link a:hover { opacity: 0.8; }
+
+    /* ===== FOOTER LINKS ===== */
+    .auth-footer {
+      text-align: center; margin-top: 24px;
+      font-size: 0.78rem; color: var(--text-dim);
+    }
+    .auth-footer a { color: var(--primary); margin: 0 4px; }
+
+    /* ===== SUCCESS STATE ===== */
+    .success-overlay {
+      display: none;
+      flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; gap: 12px;
+      padding: 20px 0 8px;
+    }
+    .success-overlay.show { display: flex; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .success-icon {
+      font-size: 3.5rem; animation: bounceIn 0.5s ease;
+    }
+    @keyframes bounceIn {
+      0%   { transform: scale(0.3); opacity: 0; }
+      60%  { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .success-title { font-size: 1.3rem; font-weight: 800; color: var(--green); }
+    .success-sub { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* ===== DEMO BADGE ===== */
+    .demo-hint {
+      background: rgba(255,184,0,0.08);
+      border: 1px solid rgba(255,184,0,0.2);
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 0.8rem; color: #FFB800;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .demo-hint:hover { background: rgba(255,184,0,0.13); }
+
+    @media (max-width: 480px) {
+      .login-card { padding: 28px 20px; border-radius: 20px; }
+      .social-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Animated BG -->
+<div class="bg-canvas">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+</div>
+<div class="grid-pattern"></div>
+
+<!-- Floating food particles -->
+<div class="particle" style="top:8%;left:5%;animation-delay:0s">🍕</div>
+<div class="particle" style="top:75%;left:4%;animation-delay:1s;font-size:1.5rem">🥘</div>
+<div class="particle" style="top:15%;right:6%;animation-delay:2s">🍰</div>
+<div class="particle" style="top:65%;right:4%;animation-delay:0.5s;font-size:1.5rem">🥗</div>
+<div class="particle" style="top:45%;right:12%;animation-delay:3s;font-size:1.6rem">🍜</div>
+<div class="particle" style="bottom:10%;right:8%;animation-delay:1.5s">🥩</div>
+
+<!-- ===== MAIN WRAPPER ===== -->
+<div class="login-wrapper">
+
+  <!-- Logo -->
+  <div class="login-logo">
+    <a href="index.html">
+      <span class="logo-fire">🔥</span>Food<span class="logo-accent">Zone</span>
+    </a>
+    <div class="login-logo-sub">Home Food. Handcrafted. Delivered.</div>
+  </div>
+
+  <!-- Card -->
+  <div class="login-card">
+
+    <!-- Tabs: Login / Register -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Log In</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Sign Up</button>
+    </div>
+
+    <!-- ===== LOGIN FORM ===== -->
+    <div id="loginSection">
+      <div class="form-title">Welcome back 👋</div>
+      <div class="form-subtitle">Log in to discover amazing home-cooked meals near you.</div>
+
+      <!-- Demo hint -->
+      <div class="demo-hint" style="display:flex; justify-content:space-between; align-items:center; cursor:default; padding: 12px 16px;">
+        <div onclick="fillDemo()" style="cursor:pointer; flex:1; display:flex; align-items:center; gap:6px;">
+          💡 <span><strong>Demo:</strong> Fill credentials</span>
+        </div>
+        <div onclick="resetDatabase()" style="cursor:pointer; color:#FF3366; font-weight:bold; padding-left:12px; border-left:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; gap:4px;" title="Reset database and delete all profiles">
+          <span>🗑️</span> Reset
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div class="error-msg" id="loginError">
+        <span>⚠️</span><span id="loginErrorText">Invalid email or password.</span>
+      </div>
+
+      <!-- Social login -->
+      <div class="social-btns">
+        <button class="social-btn" onclick="socialLogin('Google')">
+          <span class="social-icon">🅖</span> Google
+        </button>
+        <button class="social-btn" onclick="socialLogin('Facebook')">
+          <span class="social-icon">📘</span> Facebook
+        </button>
+        <button class="social-btn" onclick="socialLogin('Apple')">
+          <span class="social-icon">🍎</span> Apple
+        </button>
+      </div>
+
+      <div class="divider">or continue with email</div>
+
+      <!-- Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input
+              class="form-input" type="email" id="loginEmail"
+              placeholder="you@example.com" autocomplete="email" required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input
+              class="form-input" type="password" id="loginPassword"
+              placeholder="Enter your password" autocomplete="current-password" required
+              style="padding-right: 44px;"
+            />
+            <button type="button" class="pw-toggle" id="pwToggle" onclick="togglePassword()">👁</button>
+          </div>
+        </div>
+
+        <div class="form-row-between">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe"/> Remember me
+          </label>
+          <a href="#" class="forgot-link" onclick="forgotPassword(event)">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-submit" id="loginBtn">
+          <div class="spinner"></div>
+          <span class="btn-text">🚀 Log In</span>
+        </button>
+
+      </form>
+
+      <!-- Success -->
+      <div class="success-overlay" id="loginSuccess">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Logged in!</div>
+        <div class="success-sub">Redirecting to your dashboard...</div>
+      </div>
+
+    </div>
+
+    <!-- ===== REGISTER FORM ===== -->
+    <div id="registerSection" style="display:none">
+      <div class="form-title">Create account 🎉</div>
+      <div class="form-subtitle">Join 12,400+ home cooks and food lovers across Europe.</div>
+
+      <!-- Error message -->
+      <div class="error-msg" id="registerError">
+        <span>⚠️</span><span id="registerErrorText">Please fill in all fields.</span>
+      </div>
+
+      <!-- Social -->
+      <div class="social-btns">
+        <button class="social-btn" onclick="socialLogin('Google')">
+          <span class="social-icon">🅖</span> Google
+        </button>
+        <button class="social-btn" onclick="socialLogin('Facebook')">
+          <span class="social-icon">📘</span> Facebook
+        </button>
+        <button class="social-btn" onclick="socialLogin('Apple')">
+          <span class="social-icon">🍎</span> Apple
+        </button>
+      </div>
+
+      <div class="divider">or create with email</div>
+
+      <form id="registerForm" onsubmit="handleRegister(event)" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="regName">Full name</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input class="form-input" type="text" id="regName" placeholder="Your name" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Email address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input class="form-input" type="email" id="regEmail" placeholder="you@example.com" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input class="form-input" type="password" id="regPassword" placeholder="Min. 8 characters"
+              required style="padding-right:44px" oninput="checkStrength(this.value)"/>
+            <button type="button" class="pw-toggle" onclick="toggleRegPassword()">👁</button>
+          </div>
+          <!-- Strength bar -->
+          <div id="strengthBar" style="display:none;margin-top:8px">
+            <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+              <div id="strengthFill" style="height:100%;border-radius:4px;transition:all 0.3s;width:0%"></div>
+            </div>
+            <div id="strengthLabel" style="font-size:0.75rem;color:var(--text-dim);margin-top:4px"></div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px">
+          <label class="checkbox-label" style="align-items:flex-start;gap:10px">
+            <input type="checkbox" id="agreeTerms" required style="margin-top:2px"/>
+            <span style="font-size:0.82rem;color:var(--text-muted)">
+              I agree to the <a href="#" style="color:var(--primary)">Terms of Service</a> and
+              <a href="#" style="color:var(--primary)">Privacy Policy</a>
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="registerBtn">
+          <div class="spinner"></div>
+          <span class="btn-text">🎉 Create Account</span>
+        </button>
+
+      </form>
+
+      <!-- Success -->
+      <div class="success-overlay" id="registerSuccess">
+        <div class="success-icon">🎊</div>
+        <div class="success-title">Account created!</div>
+        <div class="success-sub">Welcome to Food Zone! Redirecting...</div>
+      </div>
+
+    </div>
+
+    <!-- Switch link -->
+    <div class="switch-link" id="switchLink">
+      Don't have an account? <a href="#" onclick="switchTab('register');return false">Sign up free →</a>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    <a href="index.html">Home</a> ·
+    <a href="#">Privacy</a> ·
+    <a href="#">Terms</a> ·
+    <a href="#">Help</a>
+    <br/><br/>© 2026 Food Zone Technologies Ltd.
+  </div>
+
+</div>
+
+<script>
+// ── URL-based Database Reset Helper ──
+(function checkResetParam() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('reset') === 'true') {
+    localStorage.clear();
+    localStorage.setItem('fz_db_initialized', 'reset');
+    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+    window.location.reload();
+  }
+})();
+
+// ===== TAB SWITCHING =====
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+
+  document.getElementById('tabLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+  document.getElementById('loginSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('registerSection').style.display = isLogin ? 'none' : 'block';
+
+  document.getElementById('switchLink').innerHTML = isLogin
+    ? `Don't have an account? <a href="#" onclick="switchTab('register');return false">Sign up free →</a>`
+    : `Already have an account? <a href="#" onclick="switchTab('login');return false">← Log in</a>`;
+
+  // Clear errors
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('registerError').classList.remove('show');
+}
+
+// ===== PASSWORD VISIBILITY =====
+function togglePassword() {
+  const inp = document.getElementById('loginPassword');
+  const btn = document.getElementById('pwToggle');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+function toggleRegPassword() {
+  const inp = document.getElementById('regPassword');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+// ===== PASSWORD STRENGTH =====
+function checkStrength(val) {
+  const bar = document.getElementById('strengthBar');
+  const fill = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+
+  if (!val) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block';
+
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  const configs = [
+    { pct: '25%', color: '#FF3366', text: '⚠️ Weak' },
+    { pct: '50%', color: '#FFB800', text: '🟡 Fair' },
+    { pct: '75%', color: '#FF6B35', text: '🟠 Good' },
+    { pct: '100%', color: '#00D084', text: '✅ Strong' },
+  ];
+  const c = configs[Math.min(score - 1, 3)] || configs[0];
+  fill.style.width = c.pct;
+  fill.style.background = c.color;
+  label.textContent = c.text;
+  label.style.color = c.color;
+}
+
+// ===================================================
+// ===== AUTH SYSTEM (localStorage-based) =====
+// ===================================================
+
+const DB_KEY = 'fz_users';      // list of registered users
+const SESSION_KEY = 'fz_session'; // active session
+
+// --- Load users from storage ---
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(DB_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+// --- Save users ---
+function saveUsers(users) {
+  localStorage.setItem(DB_KEY, JSON.stringify(users));
+}
+
+// --- Simple hash (not for production!) ---
+function hashPassword(pw) {
+  let hash = 0;
+  for (let i = 0; i < pw.length; i++) {
+    hash = ((hash << 5) - hash) + pw.charCodeAt(i);
+    hash |= 0;
+  }
+  return 'h_' + Math.abs(hash).toString(16);
+}
+
+// --- Save session ---
+function saveSession(user) {
+  const session = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar || user.name.slice(0,2).toUpperCase(),
+    type: user.type || 'buyer',
+    cookType: user.cookType || null,
+    city: user.city || '',
+    country: user.country || '',
+    phone: user.phone || '',
+    loginAt: new Date().toISOString()
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+}
+
+// --- Get current session ---
+function getSession() {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY)); }
+  catch(e) { return null; }
+}
+
+// --- Logout ---
+function logout() {
+  localStorage.removeItem(SESSION_KEY);
+  window.location.href = 'login.html';
+}
+
+// --- Seed a demo account if none exists ---
+(function seedDemo() {
+  const initState = localStorage.getItem('fz_db_initialized');
+  // 'reset' = user explicitly cleared → stay empty; 'true' = already seeded → skip
+  if (initState) return;
+
+  const users = getUsers();
+
+  // Seed Demo User
+  const demoExists = users.some(u => u.email === 'demo@foodzone.eu');
+  if (!demoExists) {
+    users.push({
+      id: 'demo_001',
+      name: 'Demo User',
+      email: 'demo@foodzone.eu',
+      password: hashPassword('demo1234'),
+      avatar: 'DU',
+      type: 'buyer',
+      createdAt: new Date().toISOString()
+    });
+  }
+
+  // Seed Mock Cooks
+  const INITIAL_COOKS = [
+    {
+      id: 'ms', name: 'Maria Sanchez', email: 'maria@foodzone.eu', avatar: 'MS',
+      city: 'Madrid', country: 'ES', type: 'seller', cookType: 'business',
+      rating: 4.9, reviews: 287, dish: 'Paella Valenciana', price: '€14', prep: '45 min',
+      open: true, color: '#FF6B35', color2: '#FF3366',
+      bio: "Hi! I'm Maria, born and raised in Madrid, Spain. Cooking has been my passion since I was a child watching my grandmother prepare traditional Spanish dishes in her tiny kitchen. I specialize in authentic Iberian cuisine.",
+      cuisines: ['Spanish', 'Mediterranean'], latOff: 0.008, lngOff: -0.012
+    },
+    {
+      id: 'yt', name: 'Yuki Tanaka', email: 'yuki@foodzone.eu', avatar: 'YT',
+      city: 'Amsterdam', country: 'NL', type: 'seller', cookType: 'hobby',
+      rating: 4.8, reviews: 143, dish: 'Ramen Bowl', price: '€11', prep: '30 min',
+      open: true, color: '#00b4d8', color2: '#0077b6',
+      bio: "Hi! I'm Yuki, from Tokyo and now living in Amsterdam. I bring the authentic tastes of Japanese home cooking to your table, from slow-simmered tonkotsu ramen to hand-rolled sushi.",
+      cuisines: ['Japanese'], latOff: -0.014, lngOff: 0.018
+    },
+    {
+      id: 'fa', name: 'Fatima Al-Hassan', email: 'fatima@foodzone.eu', avatar: 'FA',
+      city: 'Paris', country: 'FR', type: 'seller', cookType: 'business',
+      rating: 4.9, reviews: 412, dish: 'Lamb Tagine', price: '€16', prep: '55 min',
+      open: false, color: '#c77dff', color2: '#7b2d8b',
+      bio: "Passionate cook specializing in Lebanese and Moroccan traditional cuisine. I prepare authentic tagines, couscous, hummuses, and fresh baklavas using family recipes passed down through generations.",
+      cuisines: ['Middle Eastern'], latOff: 0.022, lngOff: 0.009
+    },
+    {
+      id: 'km', name: 'Klaus Mueller', email: 'klaus@foodzone.eu', avatar: 'KM',
+      city: 'Berlin', country: 'DE', type: 'seller', cookType: 'hobby',
+      rating: 4.7, reviews: 98, dish: 'Schnitzel & Spätzle', price: '€13', prep: '60 min',
+      open: true, color: '#e63946', color2: '#8b0000',
+      bio: "Servus! I prepare hearty German and Bavarian dishes right here in Berlin. Try my fresh handmade spaetzle, crispy schnitzel, and traditional red cabbage.",
+      cuisines: ['German', 'Bavarian'], latOff: -0.005, lngOff: -0.025
+    },
+    {
+      id: 'sr', name: 'Sofia Romano', email: 'sofia@foodzone.eu', avatar: 'SR',
+      city: 'Rome', country: 'IT', type: 'seller', cookType: 'business',
+      rating: 4.9, reviews: 356, dish: 'Tagliatelle Ragù', price: '€12', prep: '35 min',
+      open: true, color: '#06d6a0', color2: '#1b4332',
+      bio: "Benvenuti! I am a Roman cook sharing the simple, fresh, and delicious tastes of Italian pasta and homemade sauces. Everything is freshly made from high-quality durum wheat semolina.",
+      cuisines: ['Italian'], latOff: 0.017, lngOff: -0.006
+    },
+    {
+      id: 'ak', name: 'Anna Kowalski', email: 'anna@foodzone.eu', avatar: 'AK',
+      city: 'Warsaw', country: 'PL', type: 'seller', cookType: 'hobby',
+      rating: 4.8, reviews: 201, dish: 'Pierogi Mix', price: '€10', prep: '30 min',
+      open: true, color: '#f4d03f', color2: '#e67e22',
+      bio: "Witamy! Try my handmade Polish pierogi, filled with traditional ingredients like potato and cheese, meat, or wild mushrooms. Cooked fresh every day.",
+      cuisines: ['Polish'], latOff: -0.019, lngOff: 0.028
+    }
+  ];
+
+  INITIAL_COOKS.forEach(cook => {
+    if (!users.some(u => u.id === cook.id || u.email === cook.email)) {
+      users.push(cook);
+    }
+  });
+
+  saveUsers(users);
+  localStorage.setItem('fz_db_initialized', 'true');
+})();
+
+// ===== DEMO FILL =====
+function fillDemo() {
+  document.getElementById('loginEmail').value = 'demo@foodzone.eu';
+  document.getElementById('loginPassword').value = 'demo1234';
+  showToast('💡 Demo credentials filled! Click Log In', '#FFB800');
+}
+
+// ===== RESET DATABASE =====
+function resetDatabase() {
+  if (confirm('⚠️ Are you sure you want to delete ALL profiles and start completely fresh?')) {
+    localStorage.clear();
+    localStorage.setItem('fz_db_initialized', 'reset');
+    showToast('🗑️ Database reset! All profiles deleted. Starting fresh...', '#FF3366');
+    setTimeout(() => { window.location.reload(); }, 1500);
+  }
+}
+
+// ===== SOCIAL LOGIN =====
+function socialLogin(provider) {
+  showToast(`🔗 Connecting to ${provider}...`, '#6C63FF');
+  setTimeout(() => {
+    showToast(`✅ ${provider} login coming soon!`, '#00D084');
+  }, 1200);
+}
+
+// ===== FORGOT PASSWORD =====
+function forgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  if (!email) {
+    showError('loginError', 'loginErrorText', 'Please enter your email first.');
+    return;
+  }
+  showToast(`📧 Password reset sent to ${email}`, '#00D084');
+}
+
+// ===== LOGIN HANDLER =====
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+
+  // Validation
+  if (!email || !password) {
+    showError('loginError', 'loginErrorText', '⚠️ Please enter your email and password.');
+    return;
+  }
+  if (!isValidEmail(email)) {
+    showError('loginError', 'loginErrorText', '⚠️ Please enter a valid email address.');
+    return;
+  }
+
+  setLoading(btn, true);
+  await sleep(1200); // Simulate network
+  setLoading(btn, false);
+
+  // --- Real auth check against localStorage ---
+  const users = getUsers();
+  const user = users.find(u => u.email === email);
+
+  if (!user) {
+    showError('loginError', 'loginErrorText', '❌ No account found with this email. Please sign up first.');
+    return;
+  }
+
+  if (user.password !== hashPassword(password)) {
+    showError('loginError', 'loginErrorText', '❌ Wrong password. Please try again.');
+    // Shake the password field
+    const pwField = document.getElementById('loginPassword');
+    pwField.style.animation = 'none';
+    setTimeout(() => { pwField.style.animation = ''; }, 10);
+    return;
+  }
+
+  // Remember me
+  if (document.getElementById('rememberMe').checked) {
+    localStorage.setItem('fz_remember_email', email);
+  }
+
+  // ✅ SUCCESS — save session
+  saveSession(user);
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('loginSuccess').classList.add('show');
+  document.querySelector('#loginSuccess .success-sub').textContent =
+    `Welcome back, ${user.name}! Redirecting...`;
+
+  showToast(`✅ Welcome back, ${user.name}!`, '#00D084');
+  const targetPage = user.type === 'seller' ? 'dashboard.html' : 'index.html';
+  setTimeout(() => { window.location.href = targetPage; }, 1800);
+}
+
+// ===== REGISTER HANDLER =====
+async function handleRegister(e) {
+  e.preventDefault();
+  const name     = document.getElementById('regName').value.trim();
+  const email    = document.getElementById('regEmail').value.trim().toLowerCase();
+  const password = document.getElementById('regPassword').value;
+  const agreed   = document.getElementById('agreeTerms').checked;
+  const btn      = document.getElementById('registerBtn');
+
+  // Validation
+  if (!name) {
+    showError('registerError', 'registerErrorText', '⚠️ Please enter your full name.');
+    return;
+  }
+  if (!isValidEmail(email)) {
+    showError('registerError', 'registerErrorText', '⚠️ Please enter a valid email address.');
+    return;
+  }
+  if (password.length < 8) {
+    showError('registerError', 'registerErrorText', '⚠️ Password must be at least 8 characters.');
+    return;
+  }
+  if (!agreed) {
+    showError('registerError', 'registerErrorText', '⚠️ Please agree to the Terms of Service.');
+    return;
+  }
+
+  setLoading(btn, true);
+  await sleep(1400);
+  setLoading(btn, false);
+
+  // --- Check if email already exists ---
+  const users = getUsers();
+  const exists = users.find(u => u.email === email);
+  if (exists) {
+    showError('registerError', 'registerErrorText',
+      '❌ This email is already registered. Please log in instead.');
+    return;
+  }
+
+  // --- Create new account ---
+  const newUser = {
+    id: 'u_' + Date.now(),
+    name,
+    email,
+    password: hashPassword(password),
+    avatar: name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(),
+    createdAt: new Date().toISOString()
+  };
+  users.push(newUser);
+  saveUsers(users);
+
+  // ✅ Auto-login after register
+  saveSession(newUser);
+
+  document.getElementById('registerError').classList.remove('show');
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('registerSuccess').classList.add('show');
+  document.querySelector('#registerSuccess .success-sub').textContent =
+    `Welcome, ${name}! Your account is ready 🎉`;
+
+  showToast(`🎉 Account created! Welcome, ${name}!`, '#00D084');
+  setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+}
+
+// ===== HELPERS =====
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function setLoading(btn, isLoading) {
+  btn.disabled = isLoading;
+  btn.classList.toggle('loading', isLoading);
+}
+
+function showError(containerId, textId, msg) {
+  const el = document.getElementById(containerId);
+  document.getElementById(textId).textContent = msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let toastTimeout;
+function showToast(msg, color = '#FF6B35') {
+  const existing = document.querySelector('.toast-notif');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-notif';
+  toast.textContent = msg;
+  Object.assign(toast.style, {
+    position: 'fixed', bottom: '24px', left: '50%',
+    transform: 'translateX(-50%)',
+    background: 'rgba(18,18,28,0.97)',
+    border: `1px solid ${color}40`,
+    borderRadius: '12px', padding: '12px 22px',
+    fontSize: '0.88rem', color: '#fff',
+    boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+    backdropFilter: 'blur(20px)', whiteSpace: 'nowrap',
+    zIndex: '9999', animation: 'slideUp 0.3s ease'
+  });
+  document.body.appendChild(toast);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.remove(), 3500);
+}
+
+// ===================================================
+// ===== ON LOAD: check session + URL params =====
+// ===================================================
+window.addEventListener('DOMContentLoaded', () => {
+  // If already logged in, go home
+  const session = getSession();
+  if (session) {
+    showToast(`👋 You're already logged in as ${session.name}`, '#00D084');
+    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+    return;
+  }
+
+  // Pre-select tab from URL
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tab') === 'register') switchTab('register');
+
+  // Restore remembered email
+  const rememberedEmail = localStorage.getItem('fz_remember_email');
+  if (rememberedEmail) {
+    document.getElementById('loginEmail').value = rememberedEmail;
+    document.getElementById('rememberMe').checked = true;
+  }
+});
+</script>
+</body>
+</html>
