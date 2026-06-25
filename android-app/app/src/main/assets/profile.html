@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maria Sanchez — Cook Profile | FoodZone</title>
+  <meta name="description" content="Maria Sanchez is a verified Business Cook from Madrid, Spain. Browse her authentic Spanish dishes — paella, churros, gazpacho and more. Order now on FoodZone." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+
+  <style>
+    /* ── Profile-specific styles ── */
+    .profile-banner { height:280px; background:linear-gradient(135deg,#FF6B35 0%,#FF3366 50%,#1A1A28 100%); position:relative; }
+    .profile-avatar-wrap { position:absolute; bottom:-52px; left:32px; }
+    .profile-header { background:#0F0F1A; border-bottom:1px solid rgba(255,255,255,0.08); padding:64px 0 32px; margin-bottom:0; }
+    .tabs-bar { position:sticky; top:70px; z-index:50; background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.08); }
+    .tab-nav { display:flex; gap:0; max-width:1280px; margin:0 auto; padding:0 24px; }
+    .tab-btn { padding:16px 24px; color:rgba(255,255,255,0.55); font-weight:600; font-size:0.95rem; cursor:pointer; border:none; background:transparent; border-bottom:3px solid transparent; transition:all 0.25s; }
+    .tab-btn.active { color:#FF6B35; border-bottom-color:#FF6B35; }
+    .tab-btn:hover { color:#fff; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    .product-card { background:#1A1A28; border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; transition:all 0.3s; position:relative; }
+    .product-card:hover { transform:translateY(-4px); border-color:rgba(255,107,53,0.3); box-shadow:0 16px 48px rgba(0,0,0,0.5); }
+    .product-image { width:100%; height:180px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; position:relative; }
+    .product-heart { position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.4); border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.9rem; transition:all 0.2s; }
+    .product-heart:hover { background:rgba(255,51,102,0.3); }
+    .product-body { padding:16px; }
+    .product-name { font-weight:700; font-size:1rem; margin-bottom:6px; }
+    .product-price { font-size:1.3rem; font-weight:800; color:#FF6B35; }
+    .product-meta { display:flex; gap:12px; font-size:0.78rem; color:rgba(255,255,255,0.45); margin:8px 0 12px; }
+    .review-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+    .review-bar-label { font-size:0.82rem; width:28px; color:rgba(255,255,255,0.6); flex-shrink:0; }
+    .review-bar-track { flex:1; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
+    .review-bar-fill { height:100%; background:linear-gradient(90deg,#FF6B35,#FFB800); border-radius:4px; }
+    .review-bar-pct { font-size:0.78rem; width:36px; color:rgba(255,255,255,0.5); text-align:right; flex-shrink:0; }
+    .review-card { background:#1A1A28; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px; }
+    .sticky-cart-bar { position:fixed; bottom:0; left:0; right:0; background:rgba(15,15,26,0.97); backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.1); padding:16px 24px; display:none; align-items:center; justify-content:space-between; gap:16px; z-index:200; }
+    .sticky-cart-bar.visible { display:flex; }
+    .category-filter { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+    .cat-btn { padding:8px 18px; border-radius:9999px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.6); cursor:pointer; font-size:0.85rem; font-weight:500; transition:all 0.2s; }
+    .cat-btn.active { background:#FF6B35; border-color:#FF6B35; color:#fff; }
+
+    /* ── Fallback base styles (in case main.css hasn't loaded) ── */
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { background:#0A0A0F; color:#fff; font-family:'Inter', sans-serif; line-height:1.6; }
+    h1,h2,h3,h4,h5,h6 { font-family:'Outfit', sans-serif; }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; display:block; }
+
+    /* Container */
+    .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+
+    /* Navbar fallback */
+    .navbar { position:fixed; top:0; left:0; right:0; z-index:100; height:70px; display:flex; align-items:center; background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.08); padding:0 24px; }
+    .nav-inner { width:100%; max-width:1280px; margin:0 auto; display:flex; align-items:center; gap:16px; }
+    .nav-logo { display:flex; align-items:center; gap:8px; font-family:'Outfit',sans-serif; font-weight:800; font-size:1.25rem; color:#fff; flex-shrink:0; }
+    .nav-logo-icon { font-size:1.4rem; }
+    .nav-links { display:flex; align-items:center; gap:4px; margin-left:24px; }
+    .nav-link { padding:8px 14px; color:rgba(255,255,255,0.65); font-size:0.9rem; font-weight:500; border-radius:8px; transition:all 0.2s; }
+    .nav-link:hover, .nav-link.active { color:#fff; background:rgba(255,255,255,0.06); }
+    .nav-search { flex:1; max-width:320px; margin-left:auto; position:relative; }
+    .nav-search input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:9px 16px 9px 38px; color:#fff; font-size:0.88rem; outline:none; transition:all 0.2s; }
+    .nav-search input::placeholder { color:rgba(255,255,255,0.35); }
+    .nav-search input:focus { border-color:rgba(255,107,53,0.5); background:rgba(255,255,255,0.08); }
+    .nav-search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:0.9rem; opacity:0.4; }
+    .nav-actions { display:flex; align-items:center; gap:8px; }
+    .nav-icon-btn { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; border:none; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.7); cursor:pointer; font-size:1rem; transition:all 0.2s; position:relative; }
+    .nav-icon-btn:hover { background:rgba(255,255,255,0.1); color:#fff; }
+    .cart-badge { position:absolute; top:-4px; right:-4px; background:#FF6B35; color:#fff; font-size:0.62rem; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .nav-lang { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:7px 10px; color:rgba(255,255,255,0.7); font-size:0.85rem; cursor:pointer; outline:none; }
+    .nav-lang option { background:#1A1A28; }
+    .btn-login { padding:8px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:transparent; color:rgba(255,255,255,0.8); font-size:0.88rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .btn-login:hover { background:rgba(255,255,255,0.06); color:#fff; }
+    .btn-signup { padding:8px 18px; border-radius:10px; border:none; background:linear-gradient(135deg,#FF6B35,#FF3366); color:#fff; font-size:0.88rem; font-weight:700; cursor:pointer; transition:all 0.2s; }
+    .btn-signup:hover { opacity:0.9; transform:translateY(-1px); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; border:none; background:transparent; }
+    .hamburger span { display:block; width:22px; height:2px; background:rgba(255,255,255,0.8); border-radius:2px; transition:all 0.3s; }
+    .mobile-menu { display:none; position:fixed; top:70px; left:0; right:0; background:rgba(10,10,15,0.98); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.08); padding:20px 24px; z-index:99; }
+    .mobile-menu.open { display:block; }
+    .mobile-menu .nav-link { display:block; padding:12px 0; font-size:1rem; border-bottom:1px solid rgba(255,255,255,0.06); }
+    .mobile-menu .mobile-search { margin-bottom:16px; position:relative; }
+    .mobile-menu .mobile-search input { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 16px 10px 38px; color:#fff; font-size:0.9rem; outline:none; }
+    .mobile-menu .mobile-search input::placeholder { color:rgba(255,255,255,0.35); }
+    .mobile-menu .mobile-search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:0.4; }
+    .mobile-menu .mobile-actions { display:flex; gap:10px; margin-top:16px; }
+    .mobile-menu .btn-login, .mobile-menu .btn-signup { flex:1; text-align:center; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:10px 20px; border-radius:10px; font-weight:600; font-size:0.9rem; cursor:pointer; transition:all 0.2s; border:none; font-family:'Inter',sans-serif; }
+    .btn-primary { background:linear-gradient(135deg,#FF6B35,#FF3366); color:#fff; }
+    .btn-primary:hover { opacity:0.9; transform:translateY(-1px); box-shadow:0 8px 24px rgba(255,107,53,0.35); }
+    .btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
+    .btn-outline:hover { border-color:#FF6B35; color:#FF6B35; }
+    .btn-ghost { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); }
+    .btn-ghost:hover { background:rgba(255,255,255,0.1); color:#fff; }
+    .btn-sm { padding:8px 16px; font-size:0.84rem; border-radius:8px; }
+    .btn-full { width:100%; }
+
+    /* Avatar */
+    .avatar { display:flex; align-items:center; justify-content:center; border-radius:50%; font-family:'Outfit',sans-serif; font-weight:800; color:#fff; flex-shrink:0; }
+    .avatar-2xl { width:96px; height:96px; font-size:2rem; }
+    .avatar-ring-gold { box-shadow:0 0 0 3px #FFB800, 0 0 0 6px rgba(255,184,0,0.2); }
+
+    /* Badges */
+    .badge { display:inline-flex; align-items:center; padding:4px 10px; border-radius:9999px; font-size:0.75rem; font-weight:700; }
+    .badge-gold { background:rgba(255,184,0,0.15); border:1px solid rgba(255,184,0,0.35); color:#FFB800; }
+
+    /* Availability badge */
+    .avail-badge { display:inline-block; padding:3px 10px; border-radius:9999px; font-size:0.73rem; font-weight:700; }
+    .avail-in { background:rgba(0,208,132,0.15); border:1px solid rgba(0,208,132,0.3); color:#00D084; }
+    .avail-limited { background:rgba(255,184,0,0.15); border:1px solid rgba(255,184,0,0.3); color:#FFB800; }
+
+    /* Section */
+    .section { padding:48px 0; }
+
+    /* Grid */
+    .product-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+    .reels-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+    .reviews-layout { display:grid; grid-template-columns:1fr 2fr; gap:32px; }
+    .reviews-list { display:flex; flex-direction:column; gap:16px; }
+
+    /* Reel card */
+    .reel-card { border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:all 0.3s; aspect-ratio:9/16; display:flex; align-items:flex-end; }
+    .reel-card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,0.6); }
+    .reel-card:hover .reel-play { transform:scale(1.1); }
+    .reel-emoji { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .reel-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:52px; height:52px; background:rgba(255,255,255,0.2); backdrop-filter:blur(10px); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; transition:all 0.25s; border:2px solid rgba(255,255,255,0.35); }
+    .reel-meta { position:relative; z-index:1; width:100%; padding:16px 14px 14px; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+    .reel-title { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.95rem; margin-bottom:4px; }
+    .reel-views { font-size:0.78rem; color:rgba(255,255,255,0.6); }
+
+    /* About table */
+    .about-table { border:1px solid rgba(255,255,255,0.08); border-radius:16px; overflow:hidden; }
+    .about-row { display:flex; border-bottom:1px solid rgba(255,255,255,0.06); }
+    .about-row:last-child { border-bottom:none; }
+    .about-key { padding:14px 20px; background:rgba(255,255,255,0.03); color:rgba(255,255,255,0.5); font-size:0.88rem; font-weight:600; width:200px; flex-shrink:0; }
+    .about-val { padding:14px 20px; font-size:0.9rem; color:rgba(255,255,255,0.85); }
+
+    /* Hours table */
+    .hours-table { width:100%; border-collapse:collapse; }
+    .hours-table td { padding:6px 0; font-size:0.88rem; }
+    .hours-table td:first-child { color:rgba(255,255,255,0.5); width:90px; }
+    .hours-table .closed { color:rgba(255,51,102,0.8); }
+
+    /* Responsive */
+    @media (max-width:900px) {
+      .product-grid { grid-template-columns:repeat(2, 1fr); }
+      .reels-grid { grid-template-columns:repeat(2, 1fr); }
+      .reviews-layout { grid-template-columns:1fr; }
+      .nav-links { display:none; }
+      .nav-search { display:none; }
+      .btn-login, .btn-signup { display:none; }
+      .nav-lang { display:none; }
+      .hamburger { display:flex; }
+    }
+    @media (max-width:580px) {
+      .product-grid { grid-template-columns:1fr; }
+      .reels-grid { grid-template-columns:repeat(2, 1fr); }
+      .tab-btn { padding:12px 14px; font-size:0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════ NAVBAR ══ -->
+  <nav class="navbar" id="mainNavbar" aria-label="Main navigation">
+    <div class="nav-inner">
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo" aria-label="FoodZone Home">
+        <span class="nav-logo-icon">🔥</span>
+        <span>FoodZone</span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="nav-links" role="menubar">
+        <a href="index.html"   class="nav-link" role="menuitem">Home</a>
+        <a href="map.html"     class="nav-link" role="menuitem">Explore</a>
+        <a href="reels.html"   class="nav-link" role="menuitem">Reels</a>
+        <a href="map.html"     class="nav-link" role="menuitem">Map</a>
+      </div>
+
+      <!-- Search bar -->
+      <div class="nav-search" role="search">
+        <span class="nav-search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="navSearchInput" placeholder="Search dishes, cooks…" aria-label="Search dishes and cooks" />
+      </div>
+
+      <!-- Right-side actions -->
+      <div class="nav-actions">
+        <!-- Notification bell -->
+        <button class="nav-icon-btn" id="navBellBtn" aria-label="Notifications" title="Notifications">
+          🔔
+        </button>
+
+        <!-- Cart -->
+        <button class="nav-icon-btn" id="navCartBtn" aria-label="Shopping cart" title="Cart">
+          🛒
+          <span class="cart-badge" id="navCartBadge" aria-live="polite">0</span>
+        </button>
+
+        <!-- Language selector -->
+        <select class="nav-lang" id="navLangSelect" aria-label="Select language">
+          <option value="en">🌐 EN</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="de">🇩🇪 DE</option>
+          <option value="it">🇮🇹 IT</option>
+        </select>
+
+        <!-- Auth buttons -->
+        <button class="btn-login" id="navLoginBtn" aria-label="Log in">Login</button>
+        <button class="btn-signup" id="navSignupBtn" aria-label="Sign up">Sign Up</button>
+
+        <!-- Hamburger -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════ MOBILE MENU ══ -->
+  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <div class="mobile-search">
+      <span class="mobile-search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="mobileSearchInput" placeholder="Search dishes, cooks…" aria-label="Search" />
+    </div>
+    <a href="index.html"   class="nav-link">🏠 Home</a>
+    <a href="map.html"     class="nav-link">🔍 Explore</a>
+    <a href="reels.html"   class="nav-link">🎬 Reels</a>
+    <a href="map.html"     class="nav-link">🗺 Map</a>
+    <div class="mobile-actions">
+      <button class="btn-login" style="flex:1">Login</button>
+      <button class="btn-signup" style="flex:1">Sign Up</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ HERO / PROFILE HEADER ══ -->
+  <div style="margin-top:70px">
+    <!-- Banner -->
+    <div class="profile-banner" aria-hidden="true">
+      <!-- Decorative circles -->
+      <div style="position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-80px;right:120px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.03);pointer-events:none"></div>
+    </div>
+
+    <!-- Profile header card -->
+    <div class="profile-header">
+      <div class="container">
+        <div style="position:relative">
+          <!-- Avatar -->
+          <div class="profile-avatar-wrap" style="position:relative;bottom:auto;left:auto;display:inline-flex;margin-bottom:16px">
+            <div id="profileAvatar" class="avatar avatar-2xl avatar-ring-gold" style="background:linear-gradient(135deg,#FF6B35,#FF3366);font-size:2rem" aria-label="Maria Sanchez avatar">MS</div>
+          </div>
+
+          <!-- Action buttons -->
+          <div style="float:right;display:flex;gap:10px;margin-top:0;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" id="followBtn" aria-label="Follow Maria Sanchez">♡ Follow</button>
+            <button class="btn btn-ghost btn-sm" id="messageBtn" aria-label="Message Maria Sanchez">💬 Message</button>
+            <button class="btn btn-ghost btn-sm" id="shareBtn" aria-label="Share profile">↗ Share</button>
+          </div>
+        </div>
+
+        <!-- Name, badges, stats, bio -->
+        <div style="clear:both">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+            <h1 id="profileName" style="font-size:1.8rem;font-weight:800;font-family:'Outfit',sans-serif">Maria Sanchez</h1>
+            <span style="background:rgba(0,208,132,0.15);border:1px solid rgba(0,208,132,0.3);border-radius:9999px;padding:4px 10px;font-size:0.78rem;font-weight:700;color:#00D084">✓ Verified</span>
+            <span id="profileBadge" class="badge badge-gold">Business Cook</span>
+            <span style="background:linear-gradient(135deg,#FFB800,#FF6B35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;font-size:0.9rem">🏆 Top Rated</span>
+          </div>
+
+          <div id="profileLocation" style="color:rgba(255,255,255,0.55);margin-bottom:14px">📍 Madrid, Spain 🇪🇸</div>
+
+          <div id="profileStats" style="display:flex;gap:28px;flex-wrap:wrap;margin-bottom:20px" role="list" aria-label="Profile statistics">
+            <div role="listitem"><span style="font-size:1.25rem;font-weight:800;color:#FFB800">⭐ 4.9</span> <span style="color:rgba(255,255,255,0.4);font-size:0.85rem">(356 reviews)</span></div>
+            <div role="listitem"><span style="font-size:1.1rem;font-weight:700">1,247</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Followers</span></div>
+            <div role="listitem"><span style="font-size:1.1rem;font-weight:700">892</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Orders Completed</span></div>
+            <div role="listitem"><span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Member since Jan 2024</span></div>
+          </div>
+
+          <p id="profileBio" style="color:rgba(255,255,255,0.65);max-width:600px;line-height:1.7;font-size:0.95rem">
+            Passionate home cook from Madrid sharing the authentic flavors of Spanish cuisine. My paella is made with fresh ingredients from local markets every morning. 🥘
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ INSTANT PROFILE INJECTOR — runs before anything else ══ -->
+  <script>
+  (function applySessionProfile() {
+    try {
+      var urlParams = new URLSearchParams(window.location.search);
+      var cookId   = urlParams.get('cook_id');
+      var myProf   = urlParams.get('my_profile') === 'true';
+
+      // Load session & users
+      var session = null;
+      var users   = [];
+      try { session = JSON.parse(localStorage.getItem('fz_session')); } catch(e) {}
+      try { users   = JSON.parse(localStorage.getItem('fz_users')) || []; } catch(e) {}
+
+      var user = null;
+      if (cookId) {
+        user = users.find(function(u){ return u.id === cookId; }) || null;
+      } else if (myProf || session) {
+        if (session) {
+          user = users.find(function(u){ return u.email === session.email; }) || session;
+        }
+      }
+
+      if (!user || (!cookId && !session)) return;
+
+      var isSeller = user.type === 'seller';
+      var userName = user.name || (session && session.name) || 'Your Profile';
+
+      // ── 1. Page title ──
+      document.title = userName + ' — Cook Profile | FoodZone';
+
+      // ── 2. Name ──
+      var nameEl = document.getElementById('profileName');
+      if (nameEl) nameEl.textContent = userName;
+
+      // ── 3. Avatar ──
+      var avatarEl = document.getElementById('profileAvatar');
+      if (avatarEl) {
+        var initials = user.avatar || userName.split(' ').map(function(w){ return w[0]||''; }).join('').slice(0,2).toUpperCase();
+        avatarEl.textContent = initials;
+        avatarEl.style.background = (user.color && user.color2)
+          ? 'linear-gradient(135deg,' + user.color + ',' + user.color2 + ')'
+          : (isSeller ? 'linear-gradient(135deg,#FF6B35,#FF3366)' : 'linear-gradient(135deg,#4FACFE,#6C63FF)');
+      }
+
+      // ── 4. Location (always overwrite hardcoded Madrid) ──
+      var locEl = document.getElementById('profileLocation');
+      if (locEl) {
+        if (user.city || user.country) {
+          var flags = {EG:'🇪🇬',ES:'🇪🇸',NL:'🇳🇱',FR:'🇫🇷',DE:'🇩🇪',IT:'🇮🇹',PL:'🇵🇱',GB:'🇬🇧',SA:'🇸🇦',US:'🇺🇸',TR:'🇹🇷'};
+          locEl.textContent = '📍 ' + [user.city, user.country].filter(Boolean).join(', ') + ' ' + (flags[user.country] || '🌍');
+        } else {
+          locEl.textContent = '📍 Location not set';
+        }
+      }
+
+      // ── 5. Bio ──
+      var bioEl = document.getElementById('profileBio');
+      if (bioEl) bioEl.textContent = user.bio || (isSeller ? 'Welcome to my kitchen! Fresh homemade food made with love.' : 'Welcome to my FoodZone profile!');
+
+      // ── 6. Badge ──
+      var badgeEl = document.getElementById('profileBadge');
+      if (badgeEl) {
+        if (isSeller) {
+          badgeEl.textContent  = user.cookType === 'business' ? 'Business Cook' : 'Hobby Cook';
+          badgeEl.className    = 'badge badge-gold';
+          badgeEl.style.cssText = '';
+        } else {
+          badgeEl.textContent   = 'Food Lover';
+          badgeEl.className     = 'badge';
+          badgeEl.style.cssText = 'background:rgba(79,172,254,0.15);color:#4FACFE;border:1px solid rgba(79,172,254,0.3)';
+        }
+      }
+
+      // ── 7. Stats (overwrite hardcoded Maria stats) ──
+      var statsEl = document.getElementById('profileStats');
+      if (statsEl) {
+        var memberDate = new Date(user.createdAt || Date.now()).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+        if (isSeller) {
+          statsEl.innerHTML =
+            '<div role="listitem"><span style="font-size:1.25rem;font-weight:800;color:#FFB800">⭐ ' + (user.reviews ? (user.rating || '5.0') : '0.0') + '</span> <span style="color:rgba(255,255,255,0.4);font-size:0.85rem">(' + (user.reviews || 0) + ' reviews)</span></div>' +
+            '<div role="listitem"><span style="font-size:1.1rem;font-weight:700">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Followers</span></div>' +
+            '<div role="listitem"><span style="font-size:1.1rem;font-weight:700">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Orders Completed</span></div>' +
+            '<div role="listitem"><span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Member since ' + memberDate + '</span></div>';
+        } else {
+          statsEl.innerHTML =
+            '<div role="listitem"><span style="font-size:1.15rem;font-weight:800;color:#00D084">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.85rem">Orders Placed</span></div>' +
+            '<div role="listitem"><span style="font-size:1.15rem;font-weight:800;color:#6C63FF">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Favorite Cooks</span></div>' +
+            '<div role="listitem"><span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Member since ' + memberDate + '</span></div>';
+        }
+      }
+
+      // ── 8. Menu tab (overwrite Maria's hardcoded dishes) ──
+      // Defer to after DOM is fully loaded so tab panels exist
+      document.addEventListener('DOMContentLoaded', function() {
+        var tabMenu = document.getElementById('tab-menu');
+        var tabReviews = document.getElementById('tab-btn-reviews');
+        if (tabReviews) tabReviews.style.display = isSeller ? '' : 'none';
+
+        if (tabMenu) {
+          if (isSeller) {
+            var dish  = user.dish  || 'My Signature Dish';
+            var price = user.price || '€12';
+            var prep  = user.prep  || '30 min';
+            var c1    = user.color  || '#FF6B35';
+            var c2    = user.color2 || '#FF3366';
+            tabMenu.innerHTML =
+              '<div class="container">' +
+              '<div class="category-filter" role="group"><button class="cat-btn active" onclick="filterCat(this,\'all\')">All</button></div>' +
+              '<div class="product-grid">' +
+              '<article class="product-card" data-category="mains" data-product-id="' + user.id + '_d1" data-product-name="' + dish + '" data-product-price="' + parseFloat((price+'').replace('€','')) + '">' +
+              '<div class="product-image" style="background:linear-gradient(135deg,' + c1 + ',' + c2 + ')">🍳</div>' +
+              '<div class="product-body">' +
+              '<div class="product-name">' + dish + '</div>' +
+              '<div class="product-price">' + price + '</div>' +
+              '<div class="product-meta"><span>⏱ Ready in ' + prep + '</span><span>⭐ 5.0 (new)</span></div>' +
+              '<p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">Freshly prepared homemade dish using quality local ingredients.</p>' +
+              '<button class="btn btn-primary btn-sm btn-full add-to-cart-btn" data-price="' + parseFloat((price+'').replace('€','')) + '" style="justify-content:center">+ Add to Cart</button>' +
+              '</div></article></div></div>';
+          } else {
+            tabMenu.innerHTML =
+              '<div style="text-align:center;padding:60px 20px;color:rgba(255,255,255,0.5)">' +
+              '<span style="font-size:3rem">❤️</span>' +
+              '<h3 style="color:#fff;margin:12px 0 8px">No favorite cooks yet</h3>' +
+              '<p>Explore the map to find amazing cooks near you!</p>' +
+              '<a href="map.html" style="display:inline-block;margin-top:16px;padding:10px 20px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border-radius:10px;text-decoration:none;font-weight:bold">Find Cooks 🗺️</a>' +
+              '</div>';
+            // Rename tabs for buyers
+            var btnMenu = document.getElementById('tab-btn-menu');
+            var btnReels = document.getElementById('tab-btn-reels');
+            var btnAbout = document.getElementById('tab-btn-about');
+            if (btnMenu)  btnMenu.innerHTML  = '❤️ Favorite Cooks';
+            if (btnReels) btnReels.innerHTML = '📜 Order History';
+            if (btnAbout) btnAbout.innerHTML = '👤 My Account';
+          }
+        }
+
+        // Rebind add-to-cart
+        document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
+          btn.onclick = function() {
+            var count = parseInt(document.getElementById('cartItemCount').textContent||'0') + 1;
+            var total = parseFloat(document.getElementById('cartTotal').textContent||'0') + parseFloat(this.dataset.price||0);
+            document.getElementById('cartItemCount').textContent = count;
+            document.getElementById('cartTotal').textContent = total.toFixed(2);
+            document.getElementById('navCartBadge').textContent = count;
+            document.getElementById('stickyCart').classList.add('visible');
+            var self = this; self.textContent = '✓ Added!';
+            setTimeout(function(){ self.textContent = '+ Add to Cart'; }, 1500);
+          };
+        });
+      });
+
+      console.log('[ProfileInjector] ✅ Applied full profile for:', userName, '| type:', user.type);
+    } catch(err) {
+      console.error('[ProfileInjector] Error:', err);
+    }
+  })();
+  </script>
+
+  <!-- ══════════════════════════════════════════ TABS BAR ══ -->
+  <div class="tabs-bar" role="tablist" aria-label="Profile sections">
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-menu"    data-tab="menu"    role="tab" aria-selected="true"  aria-controls="tab-menu"    onclick="switchTab('menu')">🍽 Menu</button>
+      <button class="tab-btn"        id="tab-btn-reels"   data-tab="reels"   role="tab" aria-selected="false" aria-controls="tab-reels"   onclick="switchTab('reels')">🎬 Reels</button>
+      <button class="tab-btn"        id="tab-btn-reviews" data-tab="reviews" role="tab" aria-selected="false" aria-controls="tab-reviews" onclick="switchTab('reviews')">⭐ Reviews</button>
+      <button class="tab-btn"        id="tab-btn-about"   data-tab="about"   role="tab" aria-selected="false" aria-controls="tab-about"   onclick="switchTab('about')">ℹ️ About</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ TAB PANELS ══ -->
+  <main>
+
+    <!-- ─────────── TAB: MENU ─────────── -->
+    <section class="tab-panel active section" id="tab-menu" role="tabpanel" aria-labelledby="tab-btn-menu">
+      <div class="container">
+
+        <!-- Category filter -->
+        <div class="category-filter" role="group" aria-label="Filter by category">
+          <button class="cat-btn active" id="cat-all"      onclick="filterCat(this,'all')">All</button>
+          <button class="cat-btn"        id="cat-mains"    onclick="filterCat(this,'mains')">Mains</button>
+          <button class="cat-btn"        id="cat-desserts" onclick="filterCat(this,'desserts')">Desserts</button>
+          <button class="cat-btn"        id="cat-drinks"   onclick="filterCat(this,'drinks')">Drinks</button>
+          <button class="cat-btn"        id="cat-specials" onclick="filterCat(this,'specials')">Specials</button>
+        </div>
+
+        <!-- Product grid -->
+        <div class="product-grid" id="productGrid" aria-label="Menu items">
+
+          <!-- 1. Paella Valenciana -->
+          <article class="product-card" data-category="mains" aria-label="Paella Valenciana">
+            <div class="product-image" style="background:linear-gradient(135deg,#FF6B35,#FFB800)">
+              <span aria-hidden="true">🥘</span>
+              <button class="product-heart" aria-label="Save Paella Valenciana to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Paella Valenciana</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€14.00</div>
+                <span class="avail-badge avail-in">In Stock</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 45 min</span>
+                <span>⭐ 4.9</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-paella" data-product="Paella Valenciana" data-price="14.00" aria-label="Add Paella Valenciana to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+          <!-- 2. Gazpacho Soup -->
+          <article class="product-card" data-category="mains" aria-label="Gazpacho Soup">
+            <div class="product-image" style="background:linear-gradient(135deg,#00D084,#0097FF)">
+              <span aria-hidden="true">🍅</span>
+              <button class="product-heart" aria-label="Save Gazpacho Soup to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Gazpacho Soup</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€7.00</div>
+                <span class="avail-badge avail-in">In Stock</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 10 min</span>
+                <span>⭐ 4.8</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-gazpacho" data-product="Gazpacho Soup" data-price="7.00" aria-label="Add Gazpacho Soup to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+          <!-- 3. Churros con Chocolate -->
+          <article class="product-card" data-category="desserts" aria-label="Churros con Chocolate">
+            <div class="product-image" style="background:linear-gradient(135deg,#FF3366,#FF6B35)">
+              <span aria-hidden="true">🍫</span>
+              <button class="product-heart" aria-label="Save Churros con Chocolate to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Churros con Chocolate</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€6.00</div>
+                <span class="avail-badge avail-in">In Stock</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 20 min</span>
+                <span>⭐ 5.0</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-churros" data-product="Churros con Chocolate" data-price="6.00" aria-label="Add Churros con Chocolate to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+          <!-- 4. Spanish Omelette -->
+          <article class="product-card" data-category="specials" aria-label="Spanish Omelette">
+            <div class="product-image" style="background:linear-gradient(135deg,#FFB800,#FF6B35)">
+              <span aria-hidden="true">🍳</span>
+              <button class="product-heart" aria-label="Save Spanish Omelette to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Spanish Omelette</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€8.00</div>
+                <span class="avail-badge avail-limited">Limited</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 25 min</span>
+                <span>⭐ 4.7</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-omelette" data-product="Spanish Omelette" data-price="8.00" aria-label="Add Spanish Omelette to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+          <!-- 5. Patatas Bravas -->
+          <article class="product-card" data-category="mains" aria-label="Patatas Bravas">
+            <div class="product-image" style="background:linear-gradient(135deg,#FF6B35,#6C63FF)">
+              <span aria-hidden="true">🥔</span>
+              <button class="product-heart" aria-label="Save Patatas Bravas to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Patatas Bravas</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€6.00</div>
+                <span class="avail-badge avail-in">In Stock</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 15 min</span>
+                <span>⭐ 4.8</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-patatas" data-product="Patatas Bravas" data-price="6.00" aria-label="Add Patatas Bravas to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+          <!-- 6. Crema Catalana -->
+          <article class="product-card" data-category="desserts" aria-label="Crema Catalana">
+            <div class="product-image" style="background:linear-gradient(135deg,#FFB800,#FF3366)">
+              <span aria-hidden="true">🍮</span>
+              <button class="product-heart" aria-label="Save Crema Catalana to wishlist">♡</button>
+            </div>
+            <div class="product-body">
+              <div class="product-name">Crema Catalana</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div class="product-price">€5.00</div>
+                <span class="avail-badge avail-in">In Stock</span>
+              </div>
+              <div class="product-meta">
+                <span>⏱ 5 min</span>
+                <span>⭐ 4.9</span>
+              </div>
+              <button class="btn btn-primary btn-full add-to-cart-btn" id="add-crema" data-product="Crema Catalana" data-price="5.00" aria-label="Add Crema Catalana to cart">Add to Cart +</button>
+            </div>
+          </article>
+
+        </div><!-- /product-grid -->
+      </div>
+    </section>
+
+    <!-- ─────────── TAB: REELS ─────────── -->
+    <section class="tab-panel section" id="tab-reels" role="tabpanel" aria-labelledby="tab-btn-reels">
+      <div class="container">
+        <h2 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:24px">Maria's Cooking Reels</h2>
+        <div class="reels-grid" aria-label="Cooking reels">
+
+          <!-- Reel 1 -->
+          <a href="reels.html" class="reel-card" style="background:linear-gradient(160deg,#FF6B35,#FF3366,#1A1A28)" aria-label="Watch: How I Make Paella — 128k views">
+            <div class="reel-emoji" aria-hidden="true">🥘</div>
+            <div class="reel-play" aria-hidden="true">▶</div>
+            <div class="reel-meta">
+              <div class="reel-title">How I Make Paella</div>
+              <div class="reel-views">👁 128K views</div>
+            </div>
+          </a>
+
+          <!-- Reel 2 -->
+          <a href="reels.html" class="reel-card" style="background:linear-gradient(160deg,#FFB800,#FF6B35,#1A1A28)" aria-label="Watch: Churros Secret Recipe — 89k views">
+            <div class="reel-emoji" aria-hidden="true">🍫</div>
+            <div class="reel-play" aria-hidden="true">▶</div>
+            <div class="reel-meta">
+              <div class="reel-title">Churros Secret Recipe</div>
+              <div class="reel-views">👁 89K views</div>
+            </div>
+          </a>
+
+          <!-- Reel 3 -->
+          <a href="reels.html" class="reel-card" style="background:linear-gradient(160deg,#00D084,#0097FF,#1A1A28)" aria-label="Watch: Fresh Gazpacho in 10 Min — 54k views">
+            <div class="reel-emoji" aria-hidden="true">🍅</div>
+            <div class="reel-play" aria-hidden="true">▶</div>
+            <div class="reel-meta">
+              <div class="reel-title">Fresh Gazpacho in 10 Min</div>
+              <div class="reel-views">👁 54K views</div>
+            </div>
+          </a>
+
+          <!-- Reel 4 -->
+          <a href="reels.html" class="reel-card" style="background:linear-gradient(160deg,#6C63FF,#FF3366,#1A1A28)" aria-label="Watch: Spanish Market Morning — 41k views">
+            <div class="reel-emoji" aria-hidden="true">🌅</div>
+            <div class="reel-play" aria-hidden="true">▶</div>
+            <div class="reel-meta">
+              <div class="reel-title">Spanish Market Morning</div>
+              <div class="reel-views">👁 41K views</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── TAB: REVIEWS ─────────── -->
+    <section class="tab-panel section" id="tab-reviews" role="tabpanel" aria-labelledby="tab-btn-reviews">
+      <div class="container">
+        <div class="reviews-layout">
+
+          <!-- Left: Rating breakdown -->
+          <div>
+            <div style="text-align:center;background:#1A1A28;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px 24px;margin-bottom:24px">
+              <div style="font-size:4rem;font-weight:900;font-family:'Outfit',sans-serif;line-height:1;color:#FFB800" aria-label="Rating: 4.9 out of 5">4.9</div>
+              <div style="font-size:1.6rem;margin:8px 0 4px" aria-hidden="true">⭐⭐⭐⭐⭐</div>
+              <div style="color:rgba(255,255,255,0.45);font-size:0.88rem">356 reviews</div>
+            </div>
+
+            <!-- Rating bars -->
+            <div aria-label="Rating breakdown">
+              <div class="review-bar-row">
+                <span class="review-bar-label">5⭐</span>
+                <div class="review-bar-track" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="5 stars: 78%">
+                  <div class="review-bar-fill" style="width:78%"></div>
+                </div>
+                <span class="review-bar-pct">78%</span>
+              </div>
+              <div class="review-bar-row">
+                <span class="review-bar-label">4⭐</span>
+                <div class="review-bar-track" role="progressbar" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100" aria-label="4 stars: 16%">
+                  <div class="review-bar-fill" style="width:16%"></div>
+                </div>
+                <span class="review-bar-pct">16%</span>
+              </div>
+              <div class="review-bar-row">
+                <span class="review-bar-label">3⭐</span>
+                <div class="review-bar-track" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="100" aria-label="3 stars: 4%">
+                  <div class="review-bar-fill" style="width:4%"></div>
+                </div>
+                <span class="review-bar-pct">4%</span>
+              </div>
+              <div class="review-bar-row">
+                <span class="review-bar-label">2⭐</span>
+                <div class="review-bar-track" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" aria-label="2 stars: 1%">
+                  <div class="review-bar-fill" style="width:1%"></div>
+                </div>
+                <span class="review-bar-pct">1%</span>
+              </div>
+              <div class="review-bar-row">
+                <span class="review-bar-label">1⭐</span>
+                <div class="review-bar-track" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" aria-label="1 star: 1%">
+                  <div class="review-bar-fill" style="width:1%"></div>
+                </div>
+                <span class="review-bar-pct">1%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Review cards -->
+          <div>
+            <div class="reviews-list" aria-label="Customer reviews">
+
+              <!-- Review 1 -->
+              <article class="review-card">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                  <div class="avatar" style="width:44px;height:44px;background:linear-gradient(135deg,#6C63FF,#FF3366);font-size:1rem;font-weight:700;border-radius:50%">JD</div>
+                  <div style="flex:1">
+                    <div style="font-weight:700;font-size:0.95rem">James D.</div>
+                    <div style="color:rgba(255,255,255,0.4);font-size:0.8rem">March 2026</div>
+                  </div>
+                  <div style="font-size:1.1rem" aria-label="5 out of 5 stars">⭐⭐⭐⭐⭐</div>
+                </div>
+                <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.65">
+                  The paella was absolutely incredible! Tasted like I was in Valencia itself. Every grain of rice was perfectly cooked and the saffron aroma filled the whole apartment. Will order again without a doubt!
+                </p>
+              </article>
+
+              <!-- Review 2 -->
+              <article class="review-card">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                  <div class="avatar" style="width:44px;height:44px;background:linear-gradient(135deg,#FFB800,#FF6B35);font-size:1rem;font-weight:700;border-radius:50%">SK</div>
+                  <div style="flex:1">
+                    <div style="font-weight:700;font-size:0.95rem">Sophie K.</div>
+                    <div style="color:rgba(255,255,255,0.4);font-size:0.8rem">February 2026</div>
+                  </div>
+                  <div style="font-size:1.1rem" aria-label="5 out of 5 stars">⭐⭐⭐⭐⭐</div>
+                </div>
+                <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.65">
+                  Ordered the churros for a family party — everyone was amazed. The chocolate dipping sauce was thick and rich, and the churros were perfectly crispy on the outside. Maria is truly talented!
+                </p>
+              </article>
+
+              <!-- Review 3 -->
+              <article class="review-card">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                  <div class="avatar" style="width:44px;height:44px;background:linear-gradient(135deg,#00D084,#0097FF);font-size:1rem;font-weight:700;border-radius:50%">ML</div>
+                  <div style="flex:1">
+                    <div style="font-weight:700;font-size:0.95rem">Marco L.</div>
+                    <div style="color:rgba(255,255,255,0.4);font-size:0.8rem">January 2026</div>
+                  </div>
+                  <div style="font-size:1.1rem" aria-label="4 out of 5 stars">⭐⭐⭐⭐</div>
+                </div>
+                <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.65">
+                  Good food but delivery was 15 mins late. The gazpacho was refreshing though — very authentic. I could taste the fresh tomatoes. Would order again but hope delivery timing improves.
+                </p>
+              </article>
+
+            </div>
+
+            <!-- Load more -->
+            <div style="text-align:center;margin-top:32px">
+              <button class="btn btn-outline" id="loadMoreReviewsBtn" aria-label="Load more reviews">Load More Reviews</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── TAB: ABOUT ─────────── -->
+    <section class="tab-panel section" id="tab-about" role="tabpanel" aria-labelledby="tab-btn-about">
+      <div class="container" style="max-width:800px">
+
+        <!-- Bio -->
+        <div style="background:#1A1A28;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:28px;margin-bottom:28px">
+          <h2 style="font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:14px">About Maria</h2>
+          <p style="color:rgba(255,255,255,0.65);line-height:1.8;font-size:0.95rem">
+            Hi! I'm Maria, born and raised in Madrid, Spain. Cooking has been my passion since I was a child watching my grandmother prepare traditional Spanish dishes in her tiny kitchen. I specialize in authentic Iberian cuisine using fresh, locally-sourced ingredients from La Boqueria and local Madrid markets. Every dish I prepare is made with love and a commitment to preserving traditional Spanish culinary techniques while adding my own creative flair. 🥘🍷
+          </p>
+        </div>
+
+        <!-- Info table -->
+        <h2 style="font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:16px">Cook Details</h2>
+        <div class="about-table" aria-label="Cook details">
+          <div class="about-row">
+            <div class="about-key">Cooking Since</div>
+            <div class="about-val">2019</div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Languages</div>
+            <div class="about-val">🇪🇸 Spanish &nbsp;·&nbsp; 🇬🇧 English</div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Certifications</div>
+            <div class="about-val">
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,208,132,0.1);border:1px solid rgba(0,208,132,0.25);border-radius:8px;padding:4px 12px;font-size:0.85rem;color:#00D084;font-weight:600">✓ Food Safety Certificate 2024</span>
+            </div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Delivery Radius</div>
+            <div class="about-val">8 km</div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Delivery Fee</div>
+            <div class="about-val" style="color:#FF6B35;font-weight:700">€2.50</div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Minimum Order</div>
+            <div class="about-val">€10.00</div>
+          </div>
+          <div class="about-row">
+            <div class="about-key">Opening Hours</div>
+            <div class="about-val">
+              <table class="hours-table" aria-label="Opening hours">
+                <tr>
+                  <td>Mon–Fri</td>
+                  <td>11:00 – 20:00</td>
+                </tr>
+                <tr>
+                  <td>Saturday</td>
+                  <td>10:00 – 22:00</td>
+                </tr>
+                <tr>
+                  <td>Sunday</td>
+                  <td class="closed">Closed</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════ STICKY CART BAR ══ -->
+  <div class="sticky-cart-bar" id="stickyCart" role="status" aria-live="polite" aria-label="Cart summary">
+    <div>🛒 <span id="cartItemCount">0</span> items in cart — <strong style="color:#FF6B35">€<span id="cartTotal">0.00</span></strong></div>
+    <a href="order.html" class="btn btn-primary" id="checkoutBtn">Checkout →</a>
+  </div>
+
+  <!-- External scripts -->
+  <script src="js/app.js"></script>
+
+  <!-- ══════════════════════════════════════════ INLINE SCRIPT ══ -->
+  <script>
+    /* ── Tab switching ── */
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.getElementById('tab-' + tab).classList.add('active');
+      var activeBtn = document.querySelector('[data-tab="' + tab + '"]');
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.setAttribute('aria-selected', 'true');
+      }
+    }
+
+    /* ── Category filter ── */
+    function filterCat(btn, cat) {
+      document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.product-card').forEach(function(card) {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /* ── Cart ── */
+    var cartCount = 0;
+    var cartTotal = 0;
+
+    document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        cartCount++;
+        cartTotal += parseFloat(this.dataset.price);
+        document.getElementById('cartItemCount').textContent = cartCount;
+        document.getElementById('cartTotal').textContent = cartTotal.toFixed(2);
+        document.getElementById('navCartBadge').textContent = cartCount;
+        document.getElementById('stickyCart').classList.add('visible');
+
+        var originalText = this.textContent;
+        this.textContent = '✓ Added!';
+        this.style.background = 'linear-gradient(135deg,#00D084,#0097FF)';
+        var self = this;
+        setTimeout(function() {
+          self.textContent = originalText;
+          self.style.background = '';
+        }, 1500);
+      });
+    });
+
+    /* ── Wishlist heart toggle ── */
+    document.querySelectorAll('.product-heart').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var liked = this.textContent.trim() === '♥';
+        this.textContent = liked ? '♡' : '♥';
+        this.style.color = liked ? '' : '#FF3366';
+        this.setAttribute('aria-label', liked ? 'Save to wishlist' : 'Remove from wishlist');
+      });
+    });
+
+    /* ── Follow button toggle ── */
+    var followBtn = document.getElementById('followBtn');
+    var following = false;
+    if (followBtn) {
+      followBtn.addEventListener('click', function() {
+        if (this.textContent.includes('Edit Profile')) return;
+        following = !following;
+        if (following) {
+          this.textContent = '✓ Following';
+          this.style.background = 'rgba(0,208,132,0.15)';
+          this.style.borderColor = 'rgba(0,208,132,0.4)';
+          this.style.color = '#00D084';
+        } else {
+          this.textContent = '♡ Follow';
+          this.style.background = '';
+          this.style.borderColor = '';
+          this.style.color = '';
+        }
+      });
+    }
+
+    /* ── Share button ── */
+    var shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        if (navigator.share) {
+          navigator.share({ title: document.title, url: window.location.href });
+        } else {
+          navigator.clipboard.writeText(window.location.href).then(function() {
+            alert('Profile link copied to clipboard!');
+          });
+        }
+      });
+    }
+
+    /* ── Hamburger / mobile menu ── */
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var profileMobileMenu   = document.getElementById('mobileMenu');
+    if (hamburgerBtn && profileMobileMenu) {
+      hamburgerBtn.addEventListener('click', function() {
+        var open = profileMobileMenu.classList.toggle('open');
+        this.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    /* ── Navbar scroll effect ── */
+    window.addEventListener('scroll', function() {
+      var navbar = document.getElementById('mainNavbar');
+      if (navbar) {
+        if (window.scrollY > 20) {
+          navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.5)';
+        } else {
+          navbar.style.boxShadow = '';
+        }
+      }
+    });
+
+    // ── My Profile Dynamic Loader ──
+    (function initProfileLoader() {
+      console.log("[ProfileLoader] IIFE initialized.");
+      
+      // Mock database of the other 5 hardcoded cooks for dynamic page rendering
+      const MOCK_COOKS = [
+        {
+          id:'ms', initials:'MS', name:'Maria Sanchez', city:'Madrid', country: 'ES',
+          cuisine:'Spanish / Mediterranean', type:'seller', cookType:'business', rating:4.9, reviews:287,
+          dish:'Paella Valenciana', price:'€14', prep:'45 min', open:true, color:'#FF6B35', color2:'#FF3366',
+          bio: "Hi! I'm Maria, born and raised in Madrid, Spain. Cooking has been my passion since I was a child watching my grandmother prepare traditional Spanish dishes in her tiny kitchen. I specialize in authentic Iberian cuisine."
+        },
+        {
+          id:'yt', initials:'YT', name:'Yuki Tanaka', city:'Amsterdam', country: 'NL',
+          cuisine:'Japanese', type:'seller', cookType:'hobby', rating:4.8, reviews:143,
+          dish:'Ramen Bowl', price:'€11', prep:'30 min', open:true, color:'#00b4d8', color2:'#0077b6',
+          bio: "Hi! I'm Yuki, from Tokyo and now living in Amsterdam. I bring the authentic tastes of Japanese home cooking to your table, from slow-simmered tonkotsu ramen to hand-rolled sushi."
+        },
+        {
+          id:'fa', initials:'FA', name:'Fatima Al-Hassan', city:'Paris', country: 'FR',
+          cuisine:'Middle Eastern', type:'seller', cookType:'business', rating:4.9, reviews:412,
+          dish:'Lamb Tagine', price:'€16', prep:'55 min', open:false, color:'#c77dff', color2:'#7b2d8b',
+          bio: "Passionate cook specializing in Lebanese and Moroccan traditional cuisine. I prepare authentic tagines, couscous, hummuses, and fresh baklavas using family recipes passed down through generations."
+        },
+        {
+          id:'km', initials:'KM', name:'Klaus Mueller', city:'Berlin', country: 'DE',
+          cuisine:'German / Bavarian', type:'seller', cookType:'hobby', rating:4.7, reviews:98,
+          dish:'Schnitzel & Spätzle', price:'€13', prep:'60 min', open:true, color:'#e63946', color2:'#8b0000',
+          bio: "Servus! I prepare hearty German and Bavarian dishes right here in Berlin. Try my fresh handmade spaetzle, crispy schnitzel, and traditional red cabbage."
+        },
+        {
+          id:'sr', initials:'SR', name:'Sofia Romano', city:'Rome', country: 'IT',
+          cuisine:'Italian', type:'seller', cookType:'business', rating:4.9, reviews:356,
+          dish:'Tagliatelle Ragù', price:'€12', prep:'35 min', open:true, color:'#06d6a0', color2:'#1b4332',
+          bio: "Benvenuti! I am a Roman cook sharing the simple, fresh, and delicious tastes of Italian pasta and homemade sauces. Everything is freshly made from high-quality durum wheat semolina."
+        },
+        {
+          id:'ak', initials:'AK', name:'Anna Kowalski', city:'Warsaw', country: 'PL',
+          cuisine:'Polish', type:'seller', cookType:'hobby', rating:4.8, reviews:201,
+          dish:'Pierogi Mix', price:'€10', prep:'30 min', open:true, color:'#f4d03f', color2:'#e67e22',
+          bio: "Witamy! Try my handmade Polish pierogi, filled with traditional ingredients like potato and cheese, meat, or wild mushrooms. Cooked fresh every day."
+        }
+      ];
+
+      function loadMyProfile() {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          let isMyProfile = urlParams.get('my_profile') === 'true';
+          const cookId = urlParams.get('cook_id');
+
+          // If no URL params at all but user is logged in → show their own profile
+          const session = JSON.parse(localStorage.getItem('fz_session'));
+          if (!isMyProfile && !cookId && session) {
+            isMyProfile = true;
+          }
+
+          console.log("[ProfileLoader] Checking profile trigger. isMyProfile:", isMyProfile, "cookId:", cookId);
+          
+          if (isMyProfile || cookId) {
+            const DB_KEY = 'fz_users';
+            let users = [];
+            try { users = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+            
+            let user = null;
+            if (isMyProfile) {
+              if (!session) {
+                console.warn("[ProfileLoader] No active session found.");
+                return;
+              }
+              user = users.find(u => u.email === session.email) || session;
+            } else {
+              // Try finding the cook in registered users, or fallback to mock cooks
+              user = users.find(u => u.id === cookId) || MOCK_COOKS.find(c => c.id === cookId);
+              if (!user) {
+                console.log("[ProfileLoader] Cook not found in database or mocks. Showing default page.");
+                return;
+              }
+            }
+
+            // SMART OWNERSHIP CHECK: Force isMyProfile to true if viewed user matches the logged-in session user
+            if (user && session && (user.email === session.email || user.id === session.id)) {
+              isMyProfile = true;
+            }
+
+            const userType = user.type || (user.cookType ? 'seller' : 'buyer');
+
+            // Ensure reviewsList exists and recalculate average rating/reviews count for sellers
+            if (userType === 'seller') {
+              if (!user.reviewsList) {
+                if (user.reviews && user.reviews > 0) {
+                  user.reviewsList = [
+                    { id: 'r1', name: 'James D.', date: 'March 2026', rating: 5, text: 'The paella was absolutely incredible! Tasted like I was in Valencia itself. Every grain of rice was perfectly cooked and the saffron aroma filled the whole apartment. Will order again without a doubt!' },
+                    { id: 'r2', name: 'Sophie K.', date: 'February 2026', rating: 5, text: 'Ordered the churros for a family party — everyone was amazed. The chocolate dipping sauce was thick and rich, and the churros were perfectly crispy on the outside. Maria is truly talented!' },
+                    { id: 'r3', name: 'Marco L.', date: 'January 2026', rating: 4, text: 'Good food but delivery was 15 mins late. The gazpacho was refreshing though — very authentic. I could taste the fresh tomatoes. Would order again but hope delivery timing improves.' }
+                  ];
+                } else {
+                  user.reviewsList = [];
+                }
+              }
+              if (user.reviewsList.length > 0) {
+                const totalRating = user.reviewsList.reduce((sum, r) => sum + r.rating, 0);
+                user.reviews = user.reviewsList.length;
+                user.rating = parseFloat((totalRating / user.reviewsList.length).toFixed(1));
+              } else {
+                user.reviews = 0;
+                user.rating = 0.0;
+              }
+            }
+
+            console.log("[ProfileLoader] Rendering profile for:", user.name, "userType:", userType);
+
+            // Update Page Title dynamically
+            document.title = user.name + ' — ' + (userType === 'seller' ? 'Cook Profile' : 'Food Lover') + ' | FoodZone';
+
+            // 1. Update Name
+            const nameEl = document.getElementById('profileName');
+            if (nameEl) nameEl.textContent = user.name;
+
+            // 2. Update Avatar
+            const avatarEl = document.getElementById('profileAvatar');
+            if (avatarEl) {
+              avatarEl.textContent = user.avatar || user.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+              avatarEl.setAttribute('aria-label', `${user.name} avatar`);
+              if (user.color && user.color2) {
+                avatarEl.style.background = `linear-gradient(135deg, ${user.color}, ${user.color2})`;
+              }
+            }
+
+            // 3. Update Location
+            const locEl = document.getElementById('profileLocation');
+            if (locEl) {
+              const city = user.city || 'Madrid';
+              const country = user.country || 'Spain';
+              const flag = user.country === 'EG' ? '🇪🇬' : (user.country === 'ES' ? '🇪🇸' : (user.country === 'NL' ? '🇳🇱' : (user.country === 'FR' ? '🇫🇷' : (user.country === 'DE' ? '🇩🇪' : (user.country === 'IT' ? '🇮🇹' : (user.country === 'PL' ? '🇵🇱' : '🇪🇺'))))));
+              locEl.textContent = `📍 ${city}, ${country} ${flag}`;
+            }
+
+            // 4. Update Bio
+            const bioEl = document.getElementById('profileBio');
+            if (bioEl) {
+              bioEl.textContent = user.bio || `Welcome to my profile! I am a passionate ${userType === 'seller' ? 'cook' : 'food lover'} at Food Zone.`;
+            }
+
+            // 5. Update Badge
+            const badgeEl = document.getElementById('profileBadge');
+            if (badgeEl) {
+              if (userType === 'seller') {
+                badgeEl.textContent = user.cookType === 'business' ? 'Business Cook' : 'Hobby Cook';
+                badgeEl.className = 'badge badge-gold';
+                badgeEl.removeAttribute('style');
+              } else {
+                badgeEl.textContent = 'Food Lover';
+                badgeEl.className = 'badge';
+                badgeEl.style.background = 'rgba(79,172,254,0.15)';
+                badgeEl.style.color = '#4FACFE';
+                badgeEl.style.border = '1px solid rgba(79,172,254,0.3)';
+              }
+            }
+
+            // 6. Action buttons (Follow, Message, Share)
+            const followBtn = document.getElementById('followBtn');
+            if (followBtn) {
+              if (isMyProfile) {
+                followBtn.textContent = '⚙️ Edit Profile';
+                followBtn.setAttribute('aria-label', 'Edit Profile');
+                followBtn.style.background = 'rgba(255,255,255,0.08)';
+                followBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+                followBtn.style.color = '#fff';
+                followBtn.onclick = (e) => {
+                  e.preventDefault();
+                  if (typeof window.openEditProfileModal === 'function') {
+                    window.openEditProfileModal();
+                  }
+                };
+              } else {
+                // If it is another cook's profile, keep standard Follow button
+                followBtn.textContent = '♡ Follow';
+                followBtn.setAttribute('aria-label', 'Follow ' + user.name);
+                followBtn.style.background = '';
+                followBtn.style.borderColor = '';
+                followBtn.style.color = '';
+                followBtn.onclick = null;
+              }
+            }
+            const messageBtn = document.getElementById('messageBtn');
+            if (messageBtn) {
+              messageBtn.style.display = isMyProfile ? 'none' : 'inline-flex';
+              messageBtn.setAttribute('aria-label', 'Message ' + user.name);
+            }
+
+            // Hide the reviews button for buyers
+            const tabBtnReviews = document.getElementById('tab-btn-reviews');
+            if (tabBtnReviews) {
+              tabBtnReviews.style.display = userType === 'buyer' ? 'none' : 'inline-flex';
+            }
+
+            // 7. If they are a buyer, customize tabs and panels
+            if (userType === 'buyer') {
+              const statsContainer = document.getElementById('profileStats');
+              if (statsContainer) {
+                statsContainer.innerHTML = `
+                  <div role="listitem"><span style="font-size:1.15rem;font-weight:800;color:#00D084">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.85rem">Orders Placed</span></div>
+                  <div role="listitem"><span style="font-size:1.15rem;font-weight:800;color:#6C63FF">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Favorite Cooks</span></div>
+                  <div role="listitem"><span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Member since ${new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}</span></div>
+                `;
+              }
+
+              const tabBtnMenu = document.getElementById('tab-btn-menu');
+              if (tabBtnMenu) tabBtnMenu.innerHTML = '❤️ Favorite Cooks';
+              const tabBtnReels = document.getElementById('tab-btn-reels');
+              if (tabBtnReels) tabBtnReels.innerHTML = '📜 Order History';
+              const tabBtnAbout = document.getElementById('tab-btn-about');
+              if (tabBtnAbout) tabBtnAbout.innerHTML = '👤 My Account';
+
+              const tabMenuPanel = document.getElementById('tab-menu');
+              if (tabMenuPanel) {
+                tabMenuPanel.innerHTML = `
+                  <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                    <span style="font-size:3rem">📍</span>
+                    <h3 style="color:#fff;margin-top:12px;margin-bottom:8px">No favorite cooks yet</h3>
+                    <p>Explore the map to find amazing cooks near you and add them to your favorites!</p>
+                    <a href="map.html" class="btn btn-primary btn-sm" style="display:inline-block;margin-top:16px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;padding:8px 16px;border-radius:10px;text-decoration:none;font-weight:bold">Find Cooks Now</a>
+                  </div>
+                `;
+              }
+
+              const tabReelsPanel = document.getElementById('tab-reels');
+              if (tabReelsPanel) {
+                tabReelsPanel.innerHTML = `
+                  <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5)">
+                    <span style="font-size:3rem">📜</span>
+                    <h3 style="color:#fff;margin-top:12px;margin-bottom:8px">No order history</h3>
+                    <p>You haven't placed any orders yet. Once you order, your receipts will show up here!</p>
+                  </div>
+                `;
+              }
+
+              const tabAboutPanel = document.getElementById('tab-about');
+              if (tabAboutPanel) {
+                tabAboutPanel.innerHTML = `
+                  <div style="max-width:600px;margin:0 auto;background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px">
+                    <h3 style="color:#fff;margin-bottom:16px;font-family:'Outfit',sans-serif">Account Information</h3>
+                    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;font-size:0.9rem">
+                      <div style="color:rgba(255,255,255,0.4)">Email:</div>
+                      <div style="color:#fff">${user.email}</div>
+                      <div style="color:rgba(255,255,255,0.4)">Phone:</div>
+                      <div style="color:#fff">${user.phone || 'Not provided'}</div>
+                      <div style="color:rgba(255,255,255,0.4)">Country/City:</div>
+                      <div style="color:#fff">${user.city || 'Not provided'}, ${user.country || ''}</div>
+                      <div style="color:rgba(255,255,255,0.4)">Account Type:</div>
+                      <div style="color:#00D084;font-weight:bold">Buyer (Customer)</div>
+                    </div>
+                  </div>
+                `;
+              }
+            } else {
+              // Cook Profile details (for dynamic or mock cooks)
+              const statsContainer = document.getElementById('profileStats');
+              const isOwnCookProfile = isMyProfile && userType === 'seller';
+              const isDynamicCook = cookId && cookId !== 'ms';
+              if (statsContainer && (isOwnCookProfile || isDynamicCook)) {
+                statsContainer.innerHTML = `
+                  <div role="listitem"><span style="font-size:1.25rem;font-weight:800;color:#FFB800">⭐ ${user.reviews ? (user.rating || '5.0') : '0.0'}</span> <span style="color:rgba(255,255,255,0.4);font-size:0.85rem">(${user.reviews || 0} reviews)</span></div>
+                  <div role="listitem"><span style="font-size:1.1rem;font-weight:700">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Followers</span></div>
+                  <div role="listitem"><span style="font-size:1.1rem;font-weight:700">0</span> <span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Orders Completed</span></div>
+                  <div role="listitem"><span style="color:rgba(255,255,255,0.4);font-size:0.82rem">Member since ${new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}</span></div>
+                `;
+              }
+
+              // Update dynamic menu panel for other cooks / own profile
+              const tabMenuPanel = document.getElementById('tab-menu');
+              if (tabMenuPanel && (isOwnCookProfile || isDynamicCook)) {
+                var dishes = user.dishes || [];
+                if (dishes.length === 0) {
+                  dishes.push({
+                    id: 'd_default',
+                    name: user.dish || 'Special Home Dish',
+                    price: user.price || '€12',
+                    prep: user.prep || '35 min',
+                    emoji: '🍳',
+                    description: 'Freshly prepared homemade signature dish.'
+                  });
+                }
+
+                var dishesHtml = '';
+                dishes.forEach(function(dish) {
+                  var pPrice = parseFloat((dish.price || '0').replace('€',''));
+                  var deleteBtnHtml = isOwnCookProfile ? `<button onclick="deleteDish('${dish.id}')" style="position:absolute;top:12px;left:12px;background:rgba(255,51,102,0.85);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;color:#fff" title="Delete Dish">🗑️</button>` : '';
+                  dishesHtml += `
+                      <article class="product-card" data-category="mains" data-product-id="${dish.id}" data-product-name="${dish.name}" data-product-price="${pPrice}">
+                        ${deleteBtnHtml}
+                        <div class="product-image" style="background:linear-gradient(135deg, ${user.color || '#FF6B35'}, ${user.color2 || '#FF3366'})">
+                          ${dish.emoji || '🍳'}
+                        </div>
+                        <div class="product-body">
+                          <div class="product-name">${dish.name}</div>
+                          <div class="product-price">${dish.price.startsWith('€') ? dish.price : '€' + dish.price}</div>
+                          <div class="product-meta">
+                            <span>⏱ Ready in ${dish.prep}</span>
+                            <span>⭐ ${user.rating || '5.0'} (${user.reviews || 0} reviews)</span>
+                          </div>
+                          <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:12px">${dish.description || 'Freshly prepared homemade dish.'}</p>
+                          <button class="btn btn-primary btn-sm btn-full add-to-cart-btn" data-price="${pPrice}" style="justify-content:center">+ Add to Cart</button>
+                        </div>
+                      </article>
+                  `;
+                });
+
+                if (isOwnCookProfile) {
+                  dishesHtml += `
+                      <article class="product-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;border:2px dashed rgba(255,255,255,0.15);background:transparent;cursor:pointer;min-height:380px" onclick="openModal('addDishModal')">
+                        <span style="font-size:3rem;margin-bottom:12px">➕</span>
+                        <h4 style="font-family:'Outfit',sans-serif;color:#fff;margin-bottom:8px">Add New Dish</h4>
+                        <p style="font-size:0.82rem;color:rgba(255,255,255,0.4);text-align:center">Introduce a new signature dish to your shop's menu!</p>
+                      </article>
+                  `;
+                }
+
+                tabMenuPanel.innerHTML = `
+                  <div class="container">
+                    <div class="category-filter" role="group" aria-label="Filter by category">
+                      <button class="cat-btn active" onclick="filterCat(this,'all')">All</button>
+                    </div>
+                    <div class="product-grid">
+                      ${dishesHtml}
+                    </div>
+                  </div>
+                `;
+
+                // Rebind click handlers for cart
+                let cartCount = 0;
+                let cartTotal = 0;
+                tabMenuPanel.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                  btn.onclick = function() {
+                    cartCount++;
+                    cartTotal += parseFloat(this.dataset.price);
+                    document.getElementById('cartItemCount').textContent = cartCount;
+                    document.getElementById('cartTotal').textContent = cartTotal.toFixed(2);
+                    document.getElementById('navCartBadge').textContent = cartCount;
+                    document.getElementById('stickyCart').classList.add('visible');
+
+                    var originalText = this.textContent;
+                    this.textContent = '✓ Added!';
+                    this.style.background = 'linear-gradient(135deg,#00D084,#0097FF)';
+                    var self = this;
+                    setTimeout(function() {
+                      self.textContent = originalText;
+                      self.style.background = '';
+                    }, 1500);
+                  };
+                });
+              }
+
+              // Update dynamic reels panel for other cooks / own profile
+              const tabReelsPanel = document.getElementById('tab-reels');
+              if (tabReelsPanel && (isOwnCookProfile || isDynamicCook)) {
+                var reels = user.reels || [];
+                if (reels.length > 0) {
+                  var reelsHtml = '<div class="reels-grid" aria-label="Cooking reels">';
+                  reels.forEach(function(reel) {
+                    var deleteBtnHtml = isOwnCookProfile ? `<button onclick="event.preventDefault(); event.stopPropagation(); deleteReel('${reel.id}')" style="position:absolute;top:10px;left:10px;background:rgba(255,51,102,0.85);border:none;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;color:#fff" title="Delete Reel">🗑️</button>` : '';
+                    var titleEsc = encodeURIComponent(reel.title);
+                    var emojiEsc = encodeURIComponent(reel.emoji);
+                    var bgEsc = encodeURIComponent(reel.bg);
+                    var nameEsc = encodeURIComponent(user.name);
+                    var avatarEsc = encodeURIComponent(user.avatar || 'MS');
+
+                    reelsHtml += `
+                      <a href="#" onclick="event.preventDefault(); openReelPlayer('${titleEsc}','${emojiEsc}','${bgEsc}','${nameEsc}','${avatarEsc}')" class="reel-card" style="background:${reel.bg};position:relative" aria-label="Watch: ${reel.title} — ${reel.views || '0 views'}">
+                        ${deleteBtnHtml}
+                        <div class="reel-emoji" aria-hidden="true">${reel.emoji || '🎥'}</div>
+                        <div class="reel-play" aria-hidden="true">▶</div>
+                        <div class="reel-meta">
+                          <div class="reel-title">${reel.title}</div>
+                          <div class="reel-views">👁 ${reel.views || '0 views'}</div>
+                        </div>
+                      </a>
+                    `;
+                  });
+                  reelsHtml += '</div>';
+
+                  tabReelsPanel.innerHTML = `
+                    <div class="container">
+                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin:0">${isOwnCookProfile ? 'My Cooking Reels' : user.name + "'s Cooking Reels"}</h2>
+                        <div>${isOwnCookProfile ? `<button class="btn btn-primary btn-sm" onclick="openModal('addReelModal')">+ Post New Reel</button>` : ''}</div>
+                      </div>
+                      ${reelsHtml}
+                    </div>
+                  `;
+                } else {
+                  if (isOwnCookProfile) {
+                    tabReelsPanel.innerHTML = `
+                      <div class="container">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:24px">My Cooking Reels</h2>
+                        <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5);background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px">
+                          <span style="font-size:3rem">🎥</span>
+                          <h3 style="color:#fff;margin-top:12px;margin-bottom:8px">Share your kitchen story</h3>
+                          <p>Upload short cooking videos (reels) to showcase your cooking skills, kitchen hygiene, and signature dishes to customers!</p>
+                          <button class="btn btn-primary btn-sm" style="display:inline-block;margin-top:16px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;padding:8px 16px;border-radius:10px;text-decoration:none;font-weight:bold" onclick="openModal('addReelModal')">Upload a Reel</button>
+                        </div>
+                      </div>
+                    `;
+                  } else {
+                    tabReelsPanel.innerHTML = `
+                      <div class="container">
+                        <h2 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:24px">${user.name}'s Cooking Reels</h2>
+                        <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.5);background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px">
+                          <span style="font-size:3rem">🎥</span>
+                          <h3 style="color:#fff;margin-top:12px;margin-bottom:8px">No reels uploaded yet</h3>
+                          <p>Follow ${user.name} to get notified when they upload their first cooking reel!</p>
+                        </div>
+                      </div>
+                    `;
+                  }
+                }
+              }
+
+              // Update dynamic about panel for other cooks / own profile
+              const tabAboutPanel = document.getElementById('tab-about');
+              if (tabAboutPanel && (isOwnCookProfile || isDynamicCook)) {
+                const cuisinesHtml = (user.cuisines || [user.cuisine || 'Home Food']).map(c => `<span style="background:rgba(255,107,53,0.15);border:1px solid rgba(255,107,53,0.3);color:#FF6B35;border-radius:20px;padding:4px 12px;font-size:0.85rem;font-weight:600">${c}</span>`).join(' ');
+                tabAboutPanel.innerHTML = `
+                  <div style="display:grid;grid-template-columns:1fr;gap:24px">
+                    <div style="background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px">
+                      <h3 style="color:#fff;margin-bottom:16px;font-family:'Outfit',sans-serif">About Me</h3>
+                      <p style="color:rgba(255,255,255,0.7);line-height:1.6">${user.bio || 'Welcome to my kitchen! I prepare fresh home cooked food.'}</p>
+                    </div>
+                    <div style="background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px">
+                      <h3 style="color:#fff;margin-bottom:16px;font-family:'Outfit',sans-serif">Kitchen Details</h3>
+                      <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;font-size:0.9rem;margin-bottom:16px">
+                        <div style="color:rgba(255,255,255,0.4)">Address:</div>
+                        <div style="color:#fff">${user.kitchenAddress || user.city || 'Not provided'}</div>
+                        <div style="color:rgba(255,255,255,0.4)">Delivery Radius:</div>
+                        <div style="color:#fff">${user.deliveryRadius ? user.deliveryRadius + ' km' : '8 km'}</div>
+                        <div style="color:rgba(255,255,255,0.4)">Account Type:</div>
+                        <div style="color:#FFB800;font-weight:bold">${user.cookType === 'business' ? 'Business Seller' : 'Hobby Seller'}</div>
+                      </div>
+                      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;color:rgba(255,255,255,0.4);font-size:0.9rem">Cuisines Specialties:</div>
+                      <div style="display:flex;gap:8px;flex-wrap:wrap">${cuisinesHtml}</div>
+                    </div>
+                  </div>
+                `;
+              }
+
+              // Update dynamic reviews panel
+              const tabReviewsPanel = document.getElementById('tab-reviews');
+              if (tabReviewsPanel && (isOwnCookProfile || isDynamicCook)) {
+                const reviewsCount = user.reviews || 0;
+                const ratingVal = user.rating || 0.0;
+                
+                // Calculate star percentages dynamically
+                let pct5 = 0, pct4 = 0, pct3 = 0, pct2 = 0, pct1 = 0;
+                if (user.reviewsList && user.reviewsList.length > 0) {
+                  const total = user.reviewsList.length;
+                  pct5 = Math.round((user.reviewsList.filter(r => r.rating === 5).length / total) * 100);
+                  pct4 = Math.round((user.reviewsList.filter(r => r.rating === 4).length / total) * 100);
+                  pct3 = Math.round((user.reviewsList.filter(r => r.rating === 3).length / total) * 100);
+                  pct2 = Math.round((user.reviewsList.filter(r => r.rating === 2).length / total) * 100);
+                  pct1 = Math.round((user.reviewsList.filter(r => r.rating === 1).length / total) * 100);
+                }
+
+                // Render reviews HTML
+                let reviewsHtml = '';
+                if (user.reviewsList && user.reviewsList.length > 0) {
+                  user.reviewsList.forEach(function(r) {
+                    const initials = r.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+                    const starsString = '⭐'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                    reviewsHtml += `
+                      <article class="review-card" style="margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                          <div class="avatar" style="width:44px;height:44px;background:linear-gradient(135deg,#6C63FF,#FF3366);font-size:1rem;font-weight:700;border-radius:50%">${initials}</div>
+                          <div style="flex:1">
+                            <div style="font-weight:700;font-size:0.95rem">${r.name}</div>
+                            <div style="color:rgba(255,255,255,0.4);font-size:0.8rem">${r.date || 'June 2026'}</div>
+                          </div>
+                          <div style="font-size:1.1rem;color:#FFB800" aria-label="${r.rating} out of 5 stars">${starsString}</div>
+                        </div>
+                        <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.65">${r.text}</p>
+                      </article>
+                    `;
+                  });
+                }
+
+                // Render write review form or login CTA
+                let writeReviewFormHtml = '';
+                if (!isMyProfile) {
+                  if (session) {
+                    writeReviewFormHtml = `
+                      <div style="background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px;margin-bottom:24px;box-sizing:border-box;">
+                        <h3 style="color:#fff;margin-bottom:12px;font-family:'Outfit',sans-serif;font-size:1.1rem;">Write a Review</h3>
+                        <form onsubmit="submitCookReview(event, '${user.id}')">
+                          <div style="margin-bottom:16px">
+                            <label style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.7)">Your Rating</label>
+                            <div style="display:flex;gap:8px;font-size:1.6rem;cursor:pointer;user-select:none;" id="interactiveStars" role="radiogroup" aria-label="Rating selector">
+                              <span onclick="setReviewRating(1)" onmouseover="highlightStars(1)" onmouseout="resetStars()" class="review-star-select" data-value="1" style="color:#FFB800">⭐</span>
+                              <span onclick="setReviewRating(2)" onmouseover="highlightStars(2)" onmouseout="resetStars()" class="review-star-select" data-value="2" style="color:#FFB800">⭐</span>
+                              <span onclick="setReviewRating(3)" onmouseover="highlightStars(3)" onmouseout="resetStars()" class="review-star-select" data-value="3" style="color:#FFB800">⭐</span>
+                              <span onclick="setReviewRating(4)" onmouseover="highlightStars(4)" onmouseout="resetStars()" class="review-star-select" data-value="4" style="color:#FFB800">⭐</span>
+                              <span onclick="setReviewRating(5)" onmouseover="highlightStars(5)" onmouseout="resetStars()" class="review-star-select" data-value="5" style="color:#FFB800">⭐</span>
+                            </div>
+                            <input type="hidden" id="submitRatingValue" value="5" required />
+                          </div>
+                          <div style="margin-bottom:16px">
+                            <label for="reviewComment" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.7)">Your Review</label>
+                            <textarea id="reviewComment" style="width:100%;height:80px;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;color:#fff;outline:none;font-family:inherit;font-size:0.9rem;resize:none;box-sizing:border-box;" placeholder="Share your experience ordering from this cook..." required></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Submit Review</button>
+                        </form>
+                      </div>
+                    `;
+                  } else {
+                    writeReviewFormHtml = `
+                      <div style="background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px;margin-bottom:24px;text-align:center;">
+                        <span style="font-size:2rem">🔒</span>
+                        <h3 style="color:#fff;margin-top:12px;margin-bottom:8px;font-family:'Outfit',sans-serif;font-size:1.1rem;">Want to leave a review?</h3>
+                        <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:16px;">You must be logged in to review this cook's dishes.</p>
+                        <a href="login.html" class="btn btn-outline btn-sm" style="display:inline-flex;width:100%;justify-content:center;box-sizing:border-box;">🔑 Login to Review</a>
+                      </div>
+                    `;
+                  }
+                }
+
+                tabReviewsPanel.innerHTML = `
+                  <div class="container">
+                    <div class="reviews-layout">
+                      <!-- Left: Rating breakdown -->
+                      <div>
+                        <div style="text-align:center;background:#1A1A28;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px 24px;margin-bottom:24px">
+                          <div style="font-size:4rem;font-weight:900;font-family:'Outfit',sans-serif;line-height:1;color:#FFB800" aria-label="Rating: ${ratingVal} out of 5">${reviewsCount > 0 ? ratingVal : '0.0'}</div>
+                          <div style="font-size:1.6rem;margin:8px 0 4px;color:#FFB800" aria-hidden="true">${'⭐'.repeat(Math.round(ratingVal)) + '☆'.repeat(5 - Math.round(ratingVal))}</div>
+                          <div style="color:rgba(255,255,255,0.45);font-size:0.88rem">${reviewsCount} reviews</div>
+                        </div>
+
+                        <!-- Rating bars -->
+                        <div aria-label="Rating breakdown">
+                          <div class="review-bar-row">
+                            <span class="review-bar-label">5⭐</span>
+                            <div class="review-bar-track" role="progressbar" aria-valuenow="${pct5}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="review-bar-fill" style="width:${pct5}%"></div>
+                            </div>
+                            <span class="review-bar-pct">${pct5}%</span>
+                          </div>
+                          <div class="review-bar-row">
+                            <span class="review-bar-label">4⭐</span>
+                            <div class="review-bar-track" role="progressbar" aria-valuenow="${pct4}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="review-bar-fill" style="width:${pct4}%"></div>
+                            </div>
+                            <span class="review-bar-pct">${pct4}%</span>
+                          </div>
+                          <div class="review-bar-row">
+                            <span class="review-bar-label">3⭐</span>
+                            <div class="review-bar-track" role="progressbar" aria-valuenow="${pct3}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="review-bar-fill" style="width:${pct3}%"></div>
+                            </div>
+                            <span class="review-bar-pct">${pct3}%</span>
+                          </div>
+                          <div class="review-bar-row">
+                            <span class="review-bar-label">2⭐</span>
+                            <div class="review-bar-track" role="progressbar" aria-valuenow="${pct2}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="review-bar-fill" style="width:${pct2}%"></div>
+                            </div>
+                            <span class="review-bar-pct">${pct2}%</span>
+                          </div>
+                          <div class="review-bar-row">
+                            <span class="review-bar-label">1⭐</span>
+                            <div class="review-bar-track" role="progressbar" aria-valuenow="${pct1}" aria-valuemin="0" aria-valuemax="100">
+                              <div class="review-bar-fill" style="width:${pct1}%"></div>
+                            </div>
+                            <span class="review-bar-pct">${pct1}%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Right: Review cards -->
+                      <div>
+                        ${writeReviewFormHtml}
+                        <div class="reviews-list" aria-label="Customer reviews">
+                          ${reviewsCount > 0 ? reviewsHtml : '<div style="color:rgba(255,255,255,0.4);text-align:center;padding:48px 24px;background:#12121C;border:1px solid rgba(255,255,255,0.08);border-radius:16px;">No reviews yet. Be the first to leave a review!</div>'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+            }
+          }
+        } catch (err) {
+          console.error("[ProfileLoader] Error in loadMyProfile:", err);
+          const errDiv = document.createElement('div');
+          errDiv.style.cssText = 'position:fixed;top:10px;left:10px;background:red;color:white;padding:20px;z-index:99999;font-family:monospace;';
+          errDiv.textContent = 'Profile Load Error: ' + err.message + '\n' + err.stack;
+          document.body.appendChild(errDiv);
+        }
+      }
+
+      // Expose to window so we can trigger refreshes from other scripts
+      window.loadMyProfile = loadMyProfile;
+      window.MOCK_COOKS = MOCK_COOKS;
+
+      // Execute immediately
+      loadMyProfile();
+      
+      // Also register for DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', loadMyProfile);
+      
+      // Also register for window load
+      window.addEventListener('load', loadMyProfile);
+    })();
+  </script>
+
+  <!-- ════════════════ MODALS SECTION ════════════════ -->
+  <style>
+    /* Float animation for play modal emoji */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .form-input, .form-textarea {
+      box-sizing: border-box;
+      transition: all 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: #FF6B35 !important;
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
+    }
+  </style>
+
+  <!-- Edit Profile Modal -->
+  <div id="editProfileModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="editProfileTitle">
+    <div class="modal" style="max-width: 500px;">
+      <button class="modal-close" onclick="closeModal('editProfileModal')" aria-label="Close modal">✕</button>
+      <h2 id="editProfileTitle" style="font-family:'Outfit',sans-serif;margin-bottom:20px;font-size:1.4rem;color:#fff">⚙️ Edit Profile Settings</h2>
+      
+      <form id="editProfileForm" onsubmit="saveProfileSettings(event)">
+        <!-- Read-only Name -->
+        <div style="margin-bottom:14px">
+          <label style="display:block;margin-bottom:6px;font-size:0.8rem;color:rgba(255,255,255,0.6)">Name (Cannot be changed)</label>
+          <input type="text" id="editName" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;color:rgba(255,255,255,0.5);font-size:0.9rem;outline:none" disabled />
+        </div>
+
+        <!-- Read-only Gewerbe (Business Reg Number) -->
+        <div id="editBusinessRegField" style="margin-bottom:14px;display:none">
+          <label style="display:block;margin-bottom:6px;font-size:0.8rem;color:rgba(255,255,255,0.6)">Business Registration No. (Gewerbenummer - Locked)</label>
+          <input type="text" id="editBusinessReg" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;color:rgba(255,255,255,0.5);font-size:0.9rem;outline:none" disabled />
+        </div>
+
+        <!-- Bio -->
+        <div style="margin-bottom:14px">
+          <label for="editBio" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Bio / Description</label>
+          <textarea id="editBio" style="width:100%;height:80px;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-family:inherit;font-size:0.9rem;resize:none" required></textarea>
+        </div>
+
+        <!-- City & Country -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <label for="editCity" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">City</label>
+            <input type="text" id="editCity" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" required />
+          </div>
+          <div>
+            <label for="editCountry" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Country</label>
+            <select id="editCountry" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" required>
+              <option value="EG">Egypt 🇪🇬</option>
+              <option value="ES">Spain 🇪🇸</option>
+              <option value="NL">Netherlands 🇳🇱</option>
+              <option value="FR">France 🇫🇷</option>
+              <option value="DE">Germany 🇩🇪</option>
+              <option value="IT">Italy 🇮🇹</option>
+              <option value="PL">Poland 🇵🇱</option>
+              <option value="GB">United Kingdom 🇬🇧</option>
+              <option value="SA">Saudi Arabia 🇸🇦</option>
+              <option value="US">United States 🇺🇸</option>
+              <option value="TR">Turkey 🇹🇷</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Address / Kitchen Details -->
+        <div style="margin-bottom:14px">
+          <label for="editAddress" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Kitchen Address</label>
+          <input type="text" id="editAddress" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. 12 El-Galaa St, Cairo" />
+        </div>
+
+        <!-- Delivery Radius slider -->
+        <div style="margin-bottom:16px">
+          <div style="display:flex;justify-content:between;margin-bottom:6px">
+            <label style="font-size:0.85rem;color:rgba(255,255,255,0.85)">Delivery Radius</label>
+            <span id="editRadiusVal" style="font-size:0.82rem;color:#FF6B35;font-weight:bold;margin-left:auto">8 km</span>
+          </div>
+          <input type="range" id="editRadiusSlider" min="1" max="30" style="width:100%;accent-color:#FF6B35" oninput="document.getElementById('editRadiusVal').textContent = this.value + ' km'" />
+        </div>
+
+        <!-- Languages & Cuisines -->
+        <div style="margin-bottom:20px">
+          <label for="editLanguages" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Cuisine Specialties (Comma-separated)</label>
+          <input type="text" id="editLanguages" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. Arabic, English" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:0.95rem">Save Profile Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Dish Modal -->
+  <div id="addDishModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="addDishTitle">
+    <div class="modal" style="max-width: 480px;">
+      <button class="modal-close" onclick="closeModal('addDishModal')" aria-label="Close modal">✕</button>
+      <h2 id="addDishTitle" style="font-family:'Outfit',sans-serif;margin-bottom:20px;font-size:1.4rem;color:#fff">🍳 Add Signature Dish</h2>
+      
+      <form id="addDishForm" onsubmit="saveNewDish(event)">
+        <!-- Dish Name -->
+        <div style="margin-bottom:14px">
+          <label for="dishName" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Dish Name</label>
+          <input type="text" id="dishName" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. Homemade Egyptian Kushari" required />
+        </div>
+
+        <!-- Price & Prep Time -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <label for="dishPrice" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Price (€)</label>
+            <input type="number" id="dishPrice" step="0.5" min="1" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. 10.50" required />
+          </div>
+          <div>
+            <label for="dishPrep" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Prep Time (mins)</label>
+            <input type="number" id="dishPrep" min="5" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. 30" required />
+          </div>
+        </div>
+
+        <!-- Emoji representation -->
+        <div style="margin-bottom:14px">
+          <label for="dishEmoji" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Dish Emoji / Icon</label>
+          <input type="text" id="dishEmoji" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. 🥘, 🍕, 🍔, 🍛" value="🍳" required />
+        </div>
+
+        <!-- Description -->
+        <div style="margin-bottom:20px">
+          <label for="dishDesc" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Short Description</label>
+          <textarea id="dishDesc" style="width:100%;height:70px;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-family:inherit;font-size:0.9rem;resize:none" placeholder="Briefly describe your dish's ingredients and flavor..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:0.95rem">Add Dish to Menu</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Reel Modal -->
+  <div id="addReelModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="addReelTitle">
+    <div class="modal" style="max-width: 440px;">
+      <button class="modal-close" onclick="closeModal('addReelModal')" aria-label="Close modal">✕</button>
+      <h2 id="addReelTitle" style="font-family:'Outfit',sans-serif;margin-bottom:20px;font-size:1.4rem;color:#fff">🎥 Post Cooking Reel</h2>
+      
+      <form id="addReelForm" onsubmit="saveNewReel(event)">
+        <!-- Reel Title -->
+        <div style="margin-bottom:14px">
+          <label for="reelTitle" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Reel Caption / Title</label>
+          <input type="text" id="reelTitle" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. Sizzling the signature dish! 🔥" required />
+        </div>
+
+        <!-- Reel Emoji -->
+        <div style="margin-bottom:14px">
+          <label for="reelEmoji" style="display:block;margin-bottom:6px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Reel Central Emoji</label>
+          <input type="text" id="reelEmoji" style="width:100%;background:#1A1A24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px;color:#fff;outline:none;font-size:0.9rem" placeholder="e.g. 🔪, 👩‍🍳, 🍲, 🥩" value="🎥" required />
+        </div>
+
+        <!-- Cover Gradient Preset -->
+        <div style="margin-bottom:20px">
+          <label style="display:block;margin-bottom:8px;font-size:0.85rem;color:rgba(255,255,255,0.85)">Reel Cover Gradient</label>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+            <label style="cursor:pointer;border-radius:8px;height:46px;background:linear-gradient(135deg,#FF6B35,#FF3366);display:flex;align-items:center;justify-content:center;border:2px solid #FF6B35;transition:border-color 0.2s" id="gradOption1">
+              <input type="radio" name="reelGrad" value="linear-gradient(160deg,#FF6B35,#FF3366,#1A1A28)" checked style="display:none" onclick="selectReelGrad('1')" />
+              <span style="font-size:1.1rem">🔥</span>
+            </label>
+            <label style="cursor:pointer;border-radius:8px;height:46px;background:linear-gradient(135deg,#FFB800,#FF6B35);display:flex;align-items:center;justify-content:center;border:2px solid transparent;transition:border-color 0.2s" id="gradOption2">
+              <input type="radio" name="reelGrad" value="linear-gradient(160deg,#FFB800,#FF6B35,#1A1A28)" style="display:none" onclick="selectReelGrad('2')" />
+              <span style="font-size:1.1rem">☀️</span>
+            </label>
+            <label style="cursor:pointer;border-radius:8px;height:46px;background:linear-gradient(135deg,#00D084,#0097FF);display:flex;align-items:center;justify-content:center;border:2px solid transparent;transition:border-color 0.2s" id="gradOption3">
+              <input type="radio" name="reelGrad" value="linear-gradient(160deg,#00D084,#0097FF,#1A1A28)" style="display:none" onclick="selectReelGrad('3')" />
+              <span style="font-size:1.1rem">🥬</span>
+            </label>
+            <label style="cursor:pointer;border-radius:8px;height:46px;background:linear-gradient(135deg,#6C63FF,#FF3366);display:flex;align-items:center;justify-content:center;border:2px solid transparent;transition:border-color 0.2s" id="gradOption4">
+              <input type="radio" name="reelGrad" value="linear-gradient(160deg,#6C63FF,#FF3366,#1A1A28)" style="display:none" onclick="selectReelGrad('4')" />
+              <span style="font-size:1.1rem">🌌</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:0.95rem">Post Reel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Play Reel Modal -->
+  <div id="playReelModal" class="modal-overlay" style="background:rgba(0,0,0,0.95)" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:380px;height:82vh;background:#000;border:1px solid rgba(255,255,255,0.15);padding:0;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;border-radius:24px;position:relative">
+      <button class="modal-close" onclick="closeModal('playReelModal')" style="top:16px;right:16px;z-index:100;background:rgba(0,0,0,0.6);color:#fff" aria-label="Close reel">✕</button>
+      
+      <!-- Video simulation area -->
+      <div id="reelPlayerBg" style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(160deg,#FF6B35,#FF3366,#1A1A28)">
+        <div id="reelPlayerEmoji" style="font-size:5.5rem;animation:float 3s ease-in-out infinite">🍳</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 65%, rgba(0,0,0,0.9) 100%)"></div>
+        
+        <!-- Overlaid TikTok stats (Like, Comment, Share) -->
+        <div style="position:absolute;right:16px;bottom:70px;display:flex;flex-direction:column;gap:16px;align-items:center;z-index:10">
+          <div onclick="togglePlayReelLike(this)" style="cursor:pointer;text-align:center">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:1.3rem" id="reelPlayLikeBtn">❤️</div>
+            <span style="font-size:0.72rem;font-weight:bold;color:#fff" id="reelPlayLikeCount">0</span>
+          </div>
+          <div onclick="alert('Comments are loaded from database!')" style="cursor:pointer;text-align:center">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:1.3rem">💬</div>
+            <span style="font-size:0.72rem;font-weight:bold;color:#fff" id="reelPlayCommentCount">0</span>
+          </div>
+          <div onclick="alert('Link copied to clipboard!')" style="cursor:pointer;text-align:center">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:1.3rem">🔗</div>
+            <span style="font-size:0.72rem;font-weight:bold;color:#fff">Share</span>
+          </div>
+        </div>
+
+        <!-- Cook details overlay -->
+        <div style="position:absolute;left:20px;bottom:20px;right:74px;color:#fff;z-index:10">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div id="reelPlayAvatar" style="width:34px;height:34px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.8rem">MS</div>
+            <span id="reelPlayCookName" style="font-weight:700;font-size:0.9rem">Maria Sanchez</span>
+          </div>
+          <div id="reelPlayTitle" style="font-weight:500;font-size:0.85rem;line-height:1.4;color:rgba(255,255,255,0.9)">How I prepare authentic dishes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Javascript Handlers for Modal Operations -->
+  <script>
+    // Selected cover gradient preset
+    var selectedGradValue = "linear-gradient(160deg,#FF6B35,#FF3366,#1A1A28)";
+    function selectReelGrad(optId) {
+      for (var i = 1; i <= 4; i++) {
+        var borderEl = document.getElementById('gradOption' + i);
+        if (borderEl) {
+          borderEl.style.borderColor = (i.toString() === optId) ? '#FF6B35' : 'transparent';
+        }
+      }
+      var grads = [
+        "linear-gradient(160deg,#FF6B35,#FF3366,#1A1A28)",
+        "linear-gradient(160deg,#FFB800,#FF6B35,#1A1A28)",
+        "linear-gradient(160deg,#00D084,#0097FF,#1A1A28)",
+        "linear-gradient(160deg,#6C63FF,#FF3366,#1A1A28)"
+      ];
+      selectedGradValue = grads[parseInt(optId) - 1];
+    }
+
+    // Populate and open Edit Profile Modal
+    window.openEditProfileModal = function() {
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var user = users.find(function(u){ return u.email === session.email; }) || session;
+
+        document.getElementById('editName').value = user.name;
+        document.getElementById('editBio').value = user.bio || '';
+        document.getElementById('editCity').value = user.city || '';
+        document.getElementById('editCountry').value = user.country || 'EG';
+        document.getElementById('editAddress').value = user.kitchenAddress || '';
+        document.getElementById('editRadiusSlider').value = user.deliveryRadius || 8;
+        document.getElementById('editRadiusVal').textContent = (user.deliveryRadius || 8) + ' km';
+        
+        var editLanguagesInput = document.getElementById('editLanguages');
+        if (editLanguagesInput) {
+          editLanguagesInput.value = (user.cuisines || [user.cuisine || 'Home Food']).join(', ');
+        }
+
+        var editBizField = document.getElementById('editBusinessRegField');
+        if (editBizField) {
+          if (user.cookType === 'business' || user.businessReg) {
+            editBizField.style.display = 'block';
+            document.getElementById('editBusinessReg').value = user.businessReg || 'Verification Pending';
+          } else {
+            editBizField.style.display = 'none';
+          }
+        }
+
+        openModal('editProfileModal');
+      } catch(e) {
+        console.error('Error opening edit profile modal:', e);
+      }
+    };
+
+    // Save Profile Settings
+    window.saveProfileSettings = function(event) {
+      event.preventDefault();
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var userIdx = users.findIndex(function(u){ return u.email === session.email; });
+        if (userIdx === -1) return;
+
+        // Update fields (Name and businessReg are preserved from users array for security)
+        users[userIdx].bio = document.getElementById('editBio').value.trim();
+        users[userIdx].city = document.getElementById('editCity').value.trim();
+        users[userIdx].country = document.getElementById('editCountry').value;
+        users[userIdx].kitchenAddress = document.getElementById('editAddress').value.trim();
+        users[userIdx].deliveryRadius = parseInt(document.getElementById('editRadiusSlider').value);
+        
+        var langStr = document.getElementById('editLanguages').value.trim();
+        if (langStr) {
+          users[userIdx].cuisines = langStr.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+        }
+
+        // Save
+        localStorage.setItem('fz_users', JSON.stringify(users));
+
+        // Update session
+        session.bio = users[userIdx].bio;
+        session.city = users[userIdx].city;
+        session.country = users[userIdx].country;
+        localStorage.setItem('fz_session', JSON.stringify(session));
+
+        closeModal('editProfileModal');
+        if (typeof showToast === 'function') showToast('Profile settings updated successfully!', 'success');
+        
+        // Refresh UI
+        if (window.loadMyProfile) window.loadMyProfile();
+      } catch(e) {
+        console.error('Error saving profile settings:', e);
+      }
+    };
+
+    // Add Dish
+    window.saveNewDish = function(event) {
+      event.preventDefault();
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var userIdx = users.findIndex(function(u){ return u.email === session.email; });
+        if (userIdx === -1) return;
+
+        var user = users[userIdx];
+        if (!user.dishes) {
+          user.dishes = [];
+          // Copy original primary dish if it exists
+          if (user.dish) {
+            user.dishes.push({
+              id: 'd_original',
+              name: user.dish,
+              price: user.price || '€12.00',
+              prep: user.prep || '35 min',
+              emoji: '🍳',
+              description: 'Our traditional signature dish.'
+            });
+          }
+        }
+
+        var newDish = {
+          id: 'd_' + Date.now(),
+          name: document.getElementById('dishName').value.trim(),
+          price: '€' + parseFloat(document.getElementById('dishPrice').value).toFixed(2),
+          prep: document.getElementById('dishPrep').value + ' min',
+          emoji: document.getElementById('dishEmoji').value.trim(),
+          description: document.getElementById('dishDesc').value.trim()
+        };
+
+        user.dishes.push(newDish);
+        localStorage.setItem('fz_users', JSON.stringify(users));
+
+        // Reset Form & Close
+        document.getElementById('addDishForm').reset();
+        closeModal('addDishModal');
+        if (typeof showToast === 'function') showToast('New dish added to your menu!', 'success');
+
+        // Refresh UI
+        if (window.loadMyProfile) window.loadMyProfile();
+      } catch(e) {
+        console.error('Error saving new dish:', e);
+      }
+    };
+
+    // Delete Dish
+    window.deleteDish = function(dishId) {
+      if (!confirm('Are you sure you want to delete this dish from your menu?')) return;
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var userIdx = users.findIndex(function(u){ return u.email === session.email; });
+        if (userIdx === -1) return;
+
+        var user = users[userIdx];
+        if (user.dishes) {
+          user.dishes = user.dishes.filter(function(d){ return d.id !== dishId; });
+          localStorage.setItem('fz_users', JSON.stringify(users));
+          if (typeof showToast === 'function') showToast('Dish removed from menu.', 'info');
+          if (window.loadMyProfile) window.loadMyProfile();
+        }
+      } catch(e) {
+        console.error('Error deleting dish:', e);
+      }
+    };
+
+    // Add Reel
+    window.saveNewReel = function(event) {
+      event.preventDefault();
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var userIdx = users.findIndex(function(u){ return u.email === session.email; });
+        if (userIdx === -1) return;
+
+        var user = users[userIdx];
+        if (!user.reels) {
+          user.reels = [];
+        }
+
+        var newReel = {
+          id: 'r_' + Date.now(),
+          title: document.getElementById('reelTitle').value.trim(),
+          emoji: document.getElementById('reelEmoji').value.trim(),
+          bg: selectedGradValue,
+          views: '0 views'
+        };
+
+        user.reels.push(newReel);
+        localStorage.setItem('fz_users', JSON.stringify(users));
+
+        // Reset Form & Close
+        document.getElementById('addReelForm').reset();
+        closeModal('addReelModal');
+        if (typeof showToast === 'function') showToast('Reel published successfully! 🎥', 'success');
+
+        // Refresh UI
+        if (window.loadMyProfile) window.loadMyProfile();
+      } catch(e) {
+        console.error('Error saving new reel:', e);
+      }
+    };
+
+    // Delete Reel
+    window.deleteReel = function(reelId) {
+      if (!confirm('Are you sure you want to delete this reel?')) return;
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) return;
+        var users = JSON.parse(localStorage.getItem('fz_users')) || [];
+        var userIdx = users.findIndex(function(u){ return u.email === session.email; });
+        if (userIdx === -1) return;
+
+        var user = users[userIdx];
+        if (user.reels) {
+          user.reels = user.reels.filter(function(r){ return r.id !== reelId; });
+          localStorage.setItem('fz_users', JSON.stringify(users));
+          if (typeof showToast === 'function') showToast('Reel deleted.', 'info');
+          if (window.loadMyProfile) window.loadMyProfile();
+        }
+      } catch(e) {
+        console.error('Error deleting reel:', e);
+      }
+    };
+
+    // Open Reel Fullscreen Player Modal
+    window.openReelPlayer = function(titleEsc, emojiEsc, bgEsc, nameEsc, avatarEsc) {
+      try {
+        var title = decodeURIComponent(titleEsc);
+        var emoji = decodeURIComponent(emojiEsc);
+        var bg = decodeURIComponent(bgEsc);
+        var name = decodeURIComponent(nameEsc);
+        var avatar = decodeURIComponent(avatarEsc);
+
+        document.getElementById('reelPlayerBg').style.background = bg;
+        document.getElementById('reelPlayerEmoji').textContent = emoji;
+        document.getElementById('reelPlayTitle').textContent = title;
+        document.getElementById('reelPlayCookName').textContent = name;
+        document.getElementById('reelPlayAvatar').textContent = avatar;
+
+        // Populate dynamic mockup stats
+        var mockLikes = Math.floor(Math.random() * 200) + 12;
+        var mockComments = Math.floor(mockLikes * 0.15);
+        document.getElementById('reelPlayLikeCount').textContent = mockLikes;
+        document.getElementById('reelPlayCommentCount').textContent = mockComments;
+        
+        var likeBtn = document.getElementById('reelPlayLikeBtn');
+        if (likeBtn) {
+          likeBtn.textContent = '❤️';
+          likeBtn.style.color = '#fff';
+        }
+
+        openModal('playReelModal');
+      } catch(e) {
+        console.error('Error launching reel player:', e);
+      }
+    };
+
+    // Like Reel in Player
+    window.togglePlayReelLike = function(el) {
+      var btn = document.getElementById('reelPlayLikeBtn');
+      var countEl = document.getElementById('reelPlayLikeCount');
+      var count = parseInt(countEl.textContent);
+      
+      if (btn.style.color === 'rgb(255, 51, 102)' || btn.style.color === '#FF3366') {
+        btn.style.color = '#fff';
+        countEl.textContent = count - 1;
+      } else {
+        btn.style.color = '#FF3366';
+        countEl.textContent = count + 1;
+        
+        // Show pulse effect
+        btn.style.transform = 'scale(1.3)';
+        setTimeout(function(){ btn.style.transform = ''; }, 200);
+      }
+    };
+
+    // Interactive Review Rating Selectors
+    var currentRatingSelection = 5;
+    window.setReviewRating = function(val) {
+      currentRatingSelection = val;
+      var input = document.getElementById('submitRatingValue');
+      if (input) input.value = val;
+      window.highlightStars(val);
+    };
+
+    window.highlightStars = function(val) {
+      var stars = document.querySelectorAll('.review-star-select');
+      stars.forEach(function(star, idx) {
+        var starVal = idx + 1;
+        if (starVal <= val) {
+          star.style.opacity = '1';
+          star.style.color = '#FFB800';
+        } else {
+          star.style.opacity = '0.25';
+          star.style.color = 'rgba(255,255,255,0.2)';
+        }
+      });
+    };
+
+    window.resetStars = function() {
+      window.highlightStars(currentRatingSelection);
+    };
+
+    // Submit Cook Review Handler
+    window.submitCookReview = function(event, targetCookId) {
+      event.preventDefault();
+      try {
+        var session = JSON.parse(localStorage.getItem('fz_session'));
+        if (!session) {
+          if (typeof showToast === 'function') showToast('Please log in to leave a review.', 'error');
+          return;
+        }
+
+        // Get rating and comment
+        var ratingVal = parseInt(document.getElementById('submitRatingValue').value) || 5;
+        var commentText = document.getElementById('reviewComment').value.trim();
+        if (!commentText) {
+          if (typeof showToast === 'function') showToast('Please write a comment.', 'error');
+          return;
+        }
+
+        // Date formatting: "June 2026"
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var d = new Date();
+        var formattedDate = months[d.getMonth()] + " " + d.getFullYear();
+
+        var newReview = {
+          id: 'r_' + Date.now(),
+          name: session.name,
+          date: formattedDate,
+          rating: ratingVal,
+          text: commentText
+        };
+
+        // Fetch target cook from fz_users in localStorage or MOCK_COOKS
+        var DB_KEY = 'fz_users';
+        var users = [];
+        try { users = JSON.parse(localStorage.getItem(DB_KEY)) || []; } catch(e) {}
+
+        var cookIdx = users.findIndex(function(u) { return u.id === targetCookId; });
+        var cook = null;
+
+        if (cookIdx !== -1) {
+          cook = users[cookIdx];
+        } else {
+          // If not in fz_users yet, find in MOCK_COOKS and add to users
+          var mockCook = (window.MOCK_COOKS || []).find(function(c) { return c.id === targetCookId; });
+          if (mockCook) {
+            // Clone mock cook
+            cook = JSON.parse(JSON.stringify(mockCook));
+            users.push(cook);
+            cookIdx = users.length - 1;
+          }
+        }
+
+        if (!cook) {
+          if (typeof showToast === 'function') showToast('Cook profile not found.', 'error');
+          return;
+        }
+
+        // Initialize reviewsList if not present
+        if (!cook.reviewsList) {
+          if (cook.reviews && cook.reviews > 0) {
+            cook.reviewsList = [
+              { id: 'r1', name: 'James D.', date: 'March 2026', rating: 5, text: 'The paella was absolutely incredible! Tasted like I was in Valencia itself. Every grain of rice was perfectly cooked and the saffron aroma filled the whole apartment. Will order again without a doubt!' },
+              { id: 'r2', name: 'Sophie K.', date: 'February 2026', rating: 5, text: 'Ordered the churros for a family party — everyone was amazed. The chocolate dipping sauce was thick and rich, and the churros were perfectly crispy on the outside. Maria is truly talented!' },
+              { id: 'r3', name: 'Marco L.', date: 'January 2026', rating: 4, text: 'Good food but delivery was 15 mins late. The gazpacho was refreshing though — very authentic. I could taste the fresh tomatoes. Would order again but hope delivery timing improves.' }
+            ];
+          } else {
+            cook.reviewsList = [];
+          }
+        }
+
+        // Push new review
+        cook.reviewsList.unshift(newReview); // add to top
+
+        // Recalculate average rating and reviews count
+        var totalRating = cook.reviewsList.reduce(function(sum, r) { return sum + r.rating; }, 0);
+        cook.reviews = cook.reviewsList.length;
+        cook.rating = parseFloat((totalRating / cook.reviewsList.length).toFixed(1));
+
+        // Save back to fz_users
+        localStorage.setItem(DB_KEY, JSON.stringify(users));
+
+        if (typeof showToast === 'function') showToast('Thank you! Your review has been submitted.', 'success');
+
+        // Reset current rating selection
+        currentRatingSelection = 5;
+
+        // Refresh profile page
+        if (window.loadMyProfile) window.loadMyProfile();
+
+      } catch(e) {
+        console.error('Error submitting review:', e);
+        if (typeof showToast === 'function') showToast('Error submitting review.', 'error');
+      }
+    };
+
+    // Wire mobile nav plus button and cart count
+    document.addEventListener('DOMContentLoaded', () => {
+      const session = JSON.parse(localStorage.getItem('fz_session'));
+      const plusBtn = document.getElementById('mNavAdd');
+      if (plusBtn) {
+        if (session) {
+          if (session.type === 'seller') {
+            plusBtn.href = 'dashboard.html';
+          } else {
+            plusBtn.href = 'profile.html?my_profile=true';
+          }
+        } else {
+          plusBtn.href = 'register.html';
+        }
+      }
+      try {
+        const cart = JSON.parse(localStorage.getItem('fz_cart')) || [];
+        const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = count;
+          el.style.display = count > 0 ? 'flex' : 'none';
+        });
+      } catch(e) {
+        console.error(e);
+      }
+    });
+  </script>
+
+<!-- MOBILE BOTTOM NAV BAR -->
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="mobile-nav-item" id="mNavHome">
+    <span class="mobile-nav-icon">🏠</span>
+    <span class="mobile-nav-label">Home</span>
+  </a>
+  <a href="map.html" class="mobile-nav-item" id="mNavMap">
+    <span class="mobile-nav-icon">🗺️</span>
+    <span class="mobile-nav-label">Map</span>
+  </a>
+  <a href="dashboard.html" class="mobile-nav-item mobile-nav-plus-btn" id="mNavAdd">
+    <div class="plus-btn-inner">
+      <span>+</span>
+    </div>
+  </a>
+  <a href="order.html" class="mobile-nav-item" id="mNavCart">
+    <span class="mobile-nav-icon" style="position:relative;">🛒<span class="cart-badge cart-count" style="position:absolute;top:-6px;right:-8px;background:#FF3366;color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:bold;">0</span></span>
+    <span class="mobile-nav-label">Cart</span>
+  </a>
+  <a href="profile.html" class="mobile-nav-item active" id="mNavProfile">
+    <span class="mobile-nav-icon">👤</span>
+    <span class="mobile-nav-label">Profile</span>
+  </a>
+</div>
+
+</body>
+</html>

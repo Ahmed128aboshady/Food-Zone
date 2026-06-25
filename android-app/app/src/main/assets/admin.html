@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Panel &mdash; Food Zone</title>
+<link rel="stylesheet" href="css/main.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080810;color:#fff;font-family:'Inter',sans-serif;display:flex;min-height:100vh}
+.sidebar{width:250px;background:#0d0d18;border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;padding:24px 0}
+.sidebar-logo{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:14px}
+.logo-text{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.3rem;background:linear-gradient(135deg,#FF6B35,#FF3366);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:0.7rem;color:#FF3366;margin-top:2px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+.sidebar-nav{flex:1;padding:0 10px;display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.875rem;font-weight:500;color:#9090AA;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,0.04);color:#fff}
+.nav-item.active{background:rgba(255,107,53,0.1);color:#FF6B35;font-weight:600}
+.nav-badge{margin-left:auto;background:rgba(255,51,102,0.2);color:#FF3366;font-size:0.68rem;padding:2px 7px;border-radius:8px;font-weight:700}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06);margin-top:auto}
+.admin-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,51,102,0.1);border:1px solid rgba(255,51,102,0.2);padding:4px 12px;border-radius:20px;font-size:0.75rem;color:#FF3366;font-weight:600}
+.main{margin-left:250px;flex:1;padding:28px;overflow-y:auto;min-height:100vh}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800}
+.header-right{display:flex;align-items:center;gap:12px}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeT 0.3s ease}
+@keyframes fadeT{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:#111118;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:18px;position:relative;overflow:hidden;transition:transform 0.2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}
+.sc-orange::before{background:linear-gradient(90deg,#FF6B35,#FF3366)}
+.sc-gold::before{background:linear-gradient(90deg,#FFB800,#FF6B35)}
+.sc-green::before{background:linear-gradient(90deg,#00D68F,#00A36C)}
+.sc-red::before{background:linear-gradient(90deg,#FF3366,#CC1A4A)}
+.sc-blue::before{background:linear-gradient(90deg,#4FACFE,#00F2FE)}
+.stat-label{font-size:0.75rem;color:#9090AA;font-weight:500;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em}
+.stat-value{font-family:'Outfit',sans-serif;font-size:1.9rem;font-weight:800;line-height:1}
+.stat-change{font-size:0.75rem;margin-top:6px}
+.change-up{color:#00D68F} .change-dn{color:#FF3366}
+.table-wrap{background:#111118;border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;margin-bottom:18px}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.table-title{font-weight:700;font-size:0.95rem}
+.search-input{background:#1A1A24;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px 14px;color:#fff;font-size:0.85rem;outline:none;width:220px}
+.search-input:focus{border-color:#FF6B35}
+table{width:100%;border-collapse:collapse}
+th{padding:11px 18px;text-align:left;font-size:0.72rem;font-weight:600;color:#9090AA;text-transform:uppercase;letter-spacing:0.06em;background:#0d0d18;border-bottom:1px solid rgba(255,255,255,0.06)}
+td{padding:13px 18px;font-size:0.85rem;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.015)}
+.status-badge{padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:600;display:inline-flex;align-items:center;gap:3px}
+.sb-active{background:rgba(0,214,143,0.12);color:#00D68F}
+.sb-pending{background:rgba(255,184,0,0.12);color:#FFB800}
+.sb-business{background:rgba(255,184,0,0.12);color:#FFB800}
+.sb-hobby{background:rgba(79,172,254,0.12);color:#4FACFE}
+.sb-suspended{background:rgba(255,51,102,0.12);color:#FF3366}
+.sb-reviewing{background:rgba(255,107,53,0.12);color:#FF6B35}
+.action-btn{padding:4px 10px;border-radius:7px;border:none;font-size:0.72rem;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-approve{background:rgba(0,214,143,0.12);color:#00D68F;border:1px solid rgba(0,214,143,0.2)}
+.btn-reject{background:rgba(255,51,102,0.1);color:#FF3366;border:1px solid rgba(255,51,102,0.18)}
+.btn-view{background:rgba(255,255,255,0.05);color:#9090AA;border:1px solid rgba(255,255,255,0.08)}
+.btn-suspend{background:rgba(255,184,0,0.1);color:#FFB800;border:1px solid rgba(255,184,0,0.18)}
+.action-btns{display:flex;gap:5px}
+.user-cell{display:flex;align-items:center;gap:10px}
+.mini-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0}
+.card{background:#111118;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;margin-bottom:18px}
+.card-title{font-weight:700;font-size:0.95rem;margin-bottom:16px}
+.verif-card{background:#111118;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:18px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;transition:border 0.2s}
+.verif-card:hover{border-color:rgba(255,107,53,0.2)}
+.verif-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0}
+.verif-info{flex:1}
+.verif-name{font-weight:700;margin-bottom:4px}
+.verif-meta{font-size:0.8rem;color:#9090AA;margin-bottom:10px}
+.verif-id{background:#1A1A24;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 12px;font-size:0.8rem;margin-bottom:10px;font-family:monospace;color:#FFB800}
+.verif-actions{display:flex;gap:8px}
+.revenue-split{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.rev-box{background:#111118;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:18px;text-align:center}
+.rev-val{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:4px}
+.rev-lab{font-size:0.78rem;color:#9090AA}
+.bar-chart-horiz{display:flex;flex-direction:column;gap:10px}
+.hb-item{display:flex;align-items:center;gap:12px}
+.hb-label{width:140px;font-size:0.8rem;color:#9090AA;text-align:right;flex-shrink:0}
+.hb-track{flex:1;height:8px;background:#1A1A24;border-radius:8px;overflow:hidden}
+.hb-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#FF6B35,#FF3366)}
+.hb-val{width:60px;font-size:0.78rem;color:#FF6B35;font-weight:600}
+.activity-feed{display:flex;flex-direction:column;gap:10px}
+.activity-item{display:flex;align-items:center;gap:12px;padding:12px;background:#0d0d18;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
+.activity-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.activity-text{flex:1;font-size:0.82rem;color:#C8C8DC}
+.activity-time{font-size:0.72rem;color:#606080;white-space:nowrap}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.revenue-split{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">&#x1F525; Food Zone</div>
+    <div class="logo-sub">Admin Panel</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" onclick="switchTab('dashboard',this)"><span>&#x1F4CA;</span> Dashboard</a>
+    <a class="nav-item" onclick="switchTab('users',this)"><span>&#x1F465;</span> Users <span class="nav-badge">48,291</span></a>
+    <a class="nav-item" onclick="switchTab('verifications',this)"><span>&#x2705;</span> Verifications <span class="nav-badge">23</span></a>
+    <a class="nav-item" onclick="switchTab('orders-admin',this)"><span>&#x1F6D2;</span> Orders</a>
+    <a class="nav-item" onclick="switchTab('revenue',this)"><span>&#x1F4B0;</span> Revenue</a>
+    <a class="nav-item" onclick="switchTab('ads-admin',this)"><span>&#x1F4E2;</span> Ads</a>
+    <div style="margin:8px 0;padding:0 12px;font-size:0.68rem;color:#606080;text-transform:uppercase;letter-spacing:0.08em">System</div>
+    <a class="nav-item"><span>&#x2699;&#xFE0F;</span> Settings</a>
+    <a class="nav-item" href="index.html"><span>&#x1F310;</span> View Live App</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-tag">&#x1F6E1;&#xFE0F; Super Admin</div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div id="tab-dashboard" class="tab-content active">
+    <div class="page-header">
+      <div class="page-title">Platform Overview &#x1F30D;</div>
+      <div class="header-right">
+        <div style="font-size:0.82rem;color:#9090AA">Last updated: just now</div>
+        <button style="background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer">&#x1F4E5; Export Report</button>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card sc-orange"><div class="stat-label">Total Users</div><div class="stat-value">48,291</div><div class="stat-change change-up">&#x2191; +1,204 this month</div></div>
+      <div class="stat-card sc-gold"><div class="stat-label">Active Cooks</div><div class="stat-value">12,847</div><div class="stat-change change-up">&#x2191; +347 this month</div></div>
+      <div class="stat-card sc-green"><div class="stat-label">Revenue (Month)</div><div class="stat-value">&euro;94,200</div><div class="stat-change change-up">&#x2191; +22% vs last month</div></div>
+      <div class="stat-card sc-red"><div class="stat-label">Pending Verif.</div><div class="stat-value">23</div><div class="stat-change change-dn">&#x26A0;&#xFE0F; Needs action</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div class="card">
+        <div class="card-title">&#x1F4CB; Recent Activity</div>
+        <div class="activity-feed">
+          <div class="activity-item"><div class="activity-icon" style="background:rgba(0,214,143,0.1)">&#x1F44D;</div><div class="activity-text"><strong>Maria S.</strong> received a 5&#x2B50; review from Laura M.</div><div class="activity-time">2 min ago</div></div>
+          <div class="activity-item"><div class="activity-icon" style="background:rgba(255,184,0,0.1)">&#x1F4BC;</div><div class="activity-text"><strong>New business application</strong>: Andreas K. from Athens, Greece</div><div class="activity-time">8 min ago</div></div>
+          <div class="activity-item"><div class="activity-icon" style="background:rgba(79,172,254,0.1)">&#x1F6D2;</div><div class="activity-text"><strong>Order #FZ-8851</strong> placed &mdash; &euro;28.00 from Madrid</div><div class="activity-time">12 min ago</div></div>
+          <div class="activity-item"><div class="activity-icon" style="background:rgba(255,107,53,0.1)">&#x1F4E2;</div><div class="activity-text"><strong>New ad submitted</strong> by Sofia R. for approval</div><div class="activity-time">25 min ago</div></div>
+          <div class="activity-item"><div class="activity-icon" style="background:rgba(255,51,102,0.1)">&#x26A0;&#xFE0F;</div><div class="activity-text"><strong>Dispute opened</strong> on Order #FZ-8819 by John D.</div><div class="activity-time">1h ago</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">&#x1F30D; Cooks by Country</div>
+        <div class="bar-chart-horiz">
+          <div class="hb-item"><span class="hb-label">&#x1F1EA;&#x1F1F8; Spain</span><div class="hb-track"><div class="hb-fill" style="width:85%"></div></div><span class="hb-val">2,841</span></div>
+          <div class="hb-item"><span class="hb-label">&#x1F1EE;&#x1F1F9; Italy</span><div class="hb-track"><div class="hb-fill" style="width:78%"></div></div><span class="hb-val">2,604</span></div>
+          <div class="hb-item"><span class="hb-label">&#x1F1EB;&#x1F1F7; France</span><div class="hb-track"><div class="hb-fill" style="width:71%"></div></div><span class="hb-val">2,370</span></div>
+          <div class="hb-item"><span class="hb-label">&#x1F1E9;&#x1F1EA; Germany</span><div class="hb-track"><div class="hb-fill" style="width:62%"></div></div><span class="hb-val">2,068</span></div>
+          <div class="hb-item"><span class="hb-label">&#x1F1F5;&#x1F1F1; Poland</span><div class="hb-track"><div class="hb-fill" style="width:45%"></div></div><span class="hb-val">1,502</span></div>
+          <div class="hb-item"><span class="hb-label">&#x1F1F3;&#x1F1F1; Netherlands</span><div class="hb-track"><div class="hb-fill" style="width:38%"></div></div><span class="hb-val">1,267</span></div>
+          <div class="hb-item"><span class="hb-label">Other EU</span><div class="hb-track"><div class="hb-fill" style="width:60%"></div></div><span class="hb-val">195</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div id="tab-users" class="tab-content">
+    <div class="page-header"><div class="page-title">&#x1F465; Users</div>
+      <div class="header-right"><input class="search-input" type="text" placeholder="&#x1F50D; Search users..."/><button style="background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer">+ Add User</button></div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">All Users</div>
+        <div style="display:flex;gap:8px">
+          <select style="background:#1A1A24;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:6px 10px;color:#fff;font-size:0.82rem;outline:none"><option>All Types</option><option>Buyers</option><option>Hobby Cooks</option><option>Business Cooks</option></select>
+          <select style="background:#1A1A24;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:6px 10px;color:#fff;font-size:0.82rem;outline:none"><option>All Countries</option><option>Spain</option><option>France</option><option>Germany</option><option>Italy</option></select>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>User</th><th>Email</th><th>Type</th><th>Country</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><div class="user-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,#FF6B35,#FF3366)">MS</div><div><div style="font-weight:600">Maria S.</div><div style="font-size:0.72rem;color:#9090AA">&#x2B50; 4.9 &middot; 287 reviews</div></div></div></td><td>maria.s@example.com</td><td><span class="status-badge sb-business">&#x1F4BC; Business</span></td><td>&#x1F1EA;&#x1F1F8; Spain</td><td>Jan 2024</td><td><span class="status-badge sb-active">&#x25CF; Active</span></td><td class="action-btns"><button class="action-btn btn-view">View</button><button class="action-btn btn-suspend">Warn</button></td></tr>
+          <tr><td><div class="user-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,#00b4d8,#0077b6)">YT</div><div><div style="font-weight:600">Yuki T.</div><div style="font-size:0.72rem;color:#9090AA">&#x2B50; 4.8 &middot; 143 reviews</div></div></div></td><td>yuki.t@example.com</td><td><span class="status-badge sb-hobby">&#x1F3A8; Hobby</span></td><td>&#x1F1F3;&#x1F1F1; Netherlands</td><td>Mar 2024</td><td><span class="status-badge sb-active">&#x25CF; Active</span></td><td class="action-btns"><button class="action-btn btn-view">View</button><button class="action-btn btn-suspend">Warn</button></td></tr>
+          <tr><td><div class="user-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,#c77dff,#7b2d8b)">FA</div><div><div style="font-weight:600">Fatima A.</div><div style="font-size:0.72rem;color:#9090AA">&#x2B50; 4.9 &middot; 412 reviews</div></div></div></td><td>fatima.a@example.com</td><td><span class="status-badge sb-business">&#x1F4BC; Business</span></td><td>&#x1F1EB;&#x1F1F7; France</td><td>Dec 2023</td><td><span class="status-badge sb-active">&#x25CF; Active</span></td><td class="action-btns"><button class="action-btn btn-view">View</button><button class="action-btn btn-suspend">Warn</button></td></tr>
+          <tr><td><div class="user-cell"><div class="mini-avatar" style="background:linear-gradient(135deg,#e63946,#8b0000)">KM</div><div><div style="font-weight:600">Klaus M.</div><div style="font-size:0.72rem;color:#9090AA">&#x2B50; 4.7 &middot; 98 reviews</div></div></div></td><td>klaus.m@example.com</td><td><span class="status-badge sb-hobby">&#x1F3A8; Hobby</span></td><td>&#x1F1E9;&#x1F1EA; Germany</td><td>Feb 2024</td><td><span class="status-badge sb-active">&#x25CF; Active</span></td><td class="action-btns"><button class="action-btn btn-view">View</button><button class="action-btn btn-suspend">Warn</button></td></tr>
+          <tr><td><div class="user-cell"><div class="mini-avatar" style="background:#333">??</div><div><div style="font-weight:600">Unknown User</div><div style="font-size:0.72rem;color:#FF3366">Reported x3</div></div></div></td><td>unknown@suspicious.com</td><td><span class="status-badge sb-hobby">&#x1F3A8; Hobby</span></td><td>&#x1F1EC;&#x1F1E7; UK</td><td>Jun 2024</td><td><span class="status-badge sb-suspended">&#x26D4; Suspended</span></td><td class="action-btns"><button class="action-btn btn-view">View</button><button class="action-btn btn-reject">Ban</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VERIFICATIONS -->
+  <div id="tab-verifications" class="tab-content">
+    <div class="page-header"><div class="page-title">&#x2705; Business Verifications</div><div style="font-size:0.85rem;color:#FFB800">&#x26A0;&#xFE0F; 23 applications pending review</div></div>
+    <div class="verif-card">
+      <div class="verif-avatar" style="background:linear-gradient(135deg,#4FACFE,#00F2FE)">AK</div>
+      <div class="verif-info">
+        <div class="verif-name">Andreas K. &#x1F1EC;&#x1F1F7; Athens, Greece</div>
+        <div class="verif-meta">Applied 2 hours ago &middot; Greek cuisine &middot; 5 dishes listed</div>
+        <div class="verif-id">&#x1F4C4; VAT Number: EL123456789 &middot; Business: &quot;Andreas Kitchen LLC&quot;</div>
+        <div class="verif-actions">
+          <button class="action-btn btn-approve" style="padding:7px 16px;font-size:0.82rem">&#x2713; Approve</button>
+          <button class="action-btn btn-reject" style="padding:7px 16px;font-size:0.82rem">&#x2717; Reject</button>
+          <button class="action-btn btn-view" style="padding:7px 16px;font-size:0.82rem">&#x1F4C1; View Docs</button>
+          <button class="action-btn btn-suspend" style="padding:7px 16px;font-size:0.82rem">&#x1F4E9; Request More Info</button>
+        </div>
+      </div>
+    </div>
+    <div class="verif-card">
+      <div class="verif-avatar" style="background:linear-gradient(135deg,#f4d03f,#e67e22)">LP</div>
+      <div class="verif-info">
+        <div class="verif-name">Luca P. &#x1F1EE;&#x1F1F9; Milan, Italy</div>
+        <div class="verif-meta">Applied 5 hours ago &middot; Italian cuisine &middot; 8 dishes listed</div>
+        <div class="verif-id">&#x1F4C4; VAT Number: IT12345678901 &middot; Business: &quot;Casa Luca Cucina&quot;</div>
+        <div class="verif-actions">
+          <button class="action-btn btn-approve" style="padding:7px 16px;font-size:0.82rem">&#x2713; Approve</button>
+          <button class="action-btn btn-reject" style="padding:7px 16px;font-size:0.82rem">&#x2717; Reject</button>
+          <button class="action-btn btn-view" style="padding:7px 16px;font-size:0.82rem">&#x1F4C1; View Docs</button>
+          <button class="action-btn btn-suspend" style="padding:7px 16px;font-size:0.82rem">&#x1F4E9; Request More Info</button>
+        </div>
+      </div>
+    </div>
+    <div class="verif-card">
+      <div class="verif-avatar" style="background:linear-gradient(135deg,#e63946,#8b0000)">HB</div>
+      <div class="verif-info">
+        <div class="verif-name">Helena B. &#x1F1F5;&#x1F1F9; Lisbon, Portugal</div>
+        <div class="verif-meta">Applied 1 day ago &middot; Portuguese/Mediterranean &middot; 6 dishes listed</div>
+        <div class="verif-id">&#x1F4C4; NIF: 123456789 &middot; Business: &quot;Sabores de Lisboa&quot;</div>
+        <div class="verif-actions">
+          <button class="action-btn btn-approve" style="padding:7px 16px;font-size:0.82rem">&#x2713; Approve</button>
+          <button class="action-btn btn-reject" style="padding:7px 16px;font-size:0.82rem">&#x2717; Reject</button>
+          <button class="action-btn btn-view" style="padding:7px 16px;font-size:0.82rem">&#x1F4C1; View Docs</button>
+          <button class="action-btn btn-suspend" style="padding:7px 16px;font-size:0.82rem">&#x1F4E9; Request More Info</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS ADMIN -->
+  <div id="tab-orders-admin" class="tab-content">
+    <div class="page-header"><div class="page-title">&#x1F6D2; All Platform Orders</div></div>
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card sc-green"><div class="stat-label">Today's Orders</div><div class="stat-value">847</div><div class="stat-change change-up">&#x2191; +12%</div></div>
+      <div class="stat-card sc-gold"><div class="stat-label">In Progress</div><div class="stat-value">124</div></div>
+      <div class="stat-card sc-orange"><div class="stat-label">Delivered Today</div><div class="stat-value">698</div></div>
+      <div class="stat-card sc-red"><div class="stat-label">Disputes Open</div><div class="stat-value">7</div><div class="stat-change change-dn">&#x26A0;&#xFE0F; Needs attention</div></div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header"><div class="table-title">Recent Orders</div><input class="search-input" type="text" placeholder="&#x1F50D; Search order ID..."/></div>
+      <table><thead><tr><th>Order ID</th><th>Customer</th><th>Cook</th><th>Country</th><th>Total</th><th>Commission</th><th>Status</th></tr></thead><tbody>
+        <tr><td style="font-weight:600;color:#FF6B35">#FZ-8851</td><td>John D.</td><td>Maria S.</td><td>&#x1F1EA;&#x1F1F8;</td><td>&euro;28.00</td><td style="color:#00D68F">&euro;4.20</td><td><span class="status-badge sb-reviewing">In Progress</span></td></tr>
+        <tr><td style="font-weight:600;color:#FF6B35">#FZ-8850</td><td>Emma L.</td><td>Yuki T.</td><td>&#x1F1F3;&#x1F1F1;</td><td>&euro;22.00</td><td style="color:#00D68F">&euro;3.30</td><td><span class="status-badge sb-active">Delivered</span></td></tr>
+        <tr><td style="font-weight:600;color:#FF6B35">#FZ-8849</td><td>Ahmed R.</td><td>Fatima A.</td><td>&#x1F1EB;&#x1F1F7;</td><td>&euro;32.00</td><td style="color:#00D68F">&euro;4.80</td><td><span class="status-badge sb-active">Delivered</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- REVENUE -->
+  <div id="tab-revenue" class="tab-content">
+    <div class="page-header"><div class="page-title">&#x1F4B0; Revenue Overview</div></div>
+    <div class="revenue-split">
+      <div class="rev-box"><div class="rev-val" style="color:#FF6B35">&euro;94,200</div><div class="rev-lab">Platform Revenue (Month)</div></div>
+      <div class="rev-box"><div class="rev-val" style="color:#00D68F">&euro;627K</div><div class="rev-lab">Cook Earnings (Month)</div></div>
+      <div class="rev-box"><div class="rev-val" style="color:#FFB800">15%</div><div class="rev-lab">Avg Commission Rate</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">&#x1F31F; Top Earning Cooks This Month</div>
+      <div class="bar-chart-horiz">
+        <div class="hb-item"><span class="hb-label">Maria S. &#x1F1EA;&#x1F1F8;</span><div class="hb-track"><div class="hb-fill" style="width:95%"></div></div><span class="hb-val">&euro;2,840</span></div>
+        <div class="hb-item"><span class="hb-label">Fatima A. &#x1F1EB;&#x1F1F7;</span><div class="hb-track"><div class="hb-fill" style="width:88%"></div></div><span class="hb-val">&euro;2,640</span></div>
+        <div class="hb-item"><span class="hb-label">Sofia R. &#x1F1EE;&#x1F1F9;</span><div class="hb-track"><div class="hb-fill" style="width:80%"></div></div><span class="hb-val">&euro;2,400</span></div>
+        <div class="hb-item"><span class="hb-label">Yuki T. &#x1F1F3;&#x1F1F1;</span><div class="hb-track"><div class="hb-fill" style="width:64%"></div></div><span class="hb-val">&euro;1,920</span></div>
+        <div class="hb-item"><span class="hb-label">Anna K. &#x1F1F5;&#x1F1F1;</span><div class="hb-track"><div class="hb-fill" style="width:51%"></div></div><span class="hb-val">&euro;1,530</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADS ADMIN -->
+  <div id="tab-ads-admin" class="tab-content">
+    <div class="page-header"><div class="page-title">&#x1F4E2; Ads Management</div></div>
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card sc-gold"><div class="stat-label">Active Ads</div><div class="stat-value">47</div></div>
+      <div class="stat-card sc-orange"><div class="stat-label">Ad Revenue (Month)</div><div class="stat-value">&euro;3,840</div><div class="stat-change change-up">&#x2191; +28%</div></div>
+      <div class="stat-card sc-red"><div class="stat-label">Pending Approval</div><div class="stat-value">8</div></div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header"><div class="table-title">Ads Pending Approval</div></div>
+      <table><thead><tr><th>Cook</th><th>Ad Title</th><th>Type</th><th>Budget</th><th>Submitted</th><th>Actions</th></tr></thead><tbody>
+        <tr><td>Sofia R.</td><td>Fresh Pasta Special!</td><td>Home Banner</td><td>&euro;29/week</td><td>1h ago</td><td class="action-btns"><button class="action-btn btn-approve">Approve</button><button class="action-btn btn-reject">Reject</button></td></tr>
+        <tr><td>Klaus M.</td><td>Sunday Schnitzel Deal</td><td>Boosted Reel</td><td>&euro;19/week</td><td>3h ago</td><td class="action-btns"><button class="action-btn btn-approve">Approve</button><button class="action-btn btn-reject">Reject</button></td></tr>
+        <tr><td>Anna K.</td><td>Pierogi Family Pack</td><td>Map Pin Feature</td><td>&euro;24/week</td><td>5h ago</td><td class="action-btns"><button class="action-btn btn-approve">Approve</button><button class="action-btn btn-reject">Reject</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+</main>
+<script>
+function switchTab(name, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  if(el) el.classList.add('active');
+}
+</script>
+</body>
+</html>

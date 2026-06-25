@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Reels — Food Zone</title>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/nav.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0A0A0F;color:#fff;font-family:'Inter',sans-serif;overflow:hidden}
+.reels-container{width:100vw;height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.reels-container::-webkit-scrollbar{display:none}
+.reel{width:100vw;height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.reel-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.reel-emoji{font-size:12rem;opacity:0.15;filter:blur(2px);animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
+.reel-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0.4) 100%)}
+.reel-top{position:absolute;top:0;left:0;right:0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+.reel-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.2rem;background:linear-gradient(135deg,#FF6B35,#FF3366);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.reel-tabs{display:flex;gap:24px}
+.reel-tab{font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.6);cursor:pointer;padding-bottom:4px;transition:all 0.2s}
+.reel-tab.active{color:#fff;border-bottom:2px solid #FF6B35}
+.reel-views{font-size:0.8rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px}
+.reel-bottom{position:absolute;bottom:0;left:0;right:80px;padding:20px;z-index:10}
+.reel-cook{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.reel-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#FF6B35,#FF3366);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;border:2px solid rgba(255,255,255,0.3)}
+.reel-cook-info .cook-name{font-weight:700;font-size:1rem}
+.reel-cook-info .follow-btn{font-size:0.75rem;color:#FF6B35;border:1px solid #FF6B35;padding:2px 10px;border-radius:20px;cursor:pointer;display:inline-block;margin-top:2px}
+.reel-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;line-height:1.4}
+.reel-dish-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,53,0.2);border:1px solid rgba(255,107,53,0.4);padding:4px 12px;border-radius:20px;font-size:0.85rem;color:#FF6B35;font-weight:600}
+.reel-right{position:absolute;right:16px;bottom:80px;display:flex;flex-direction:column;align-items:center;gap:20px;z-index:10}
+.reel-action{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.reel-action-btn{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:1.4rem;transition:all 0.2s;border:1px solid rgba(255,255,255,0.15)}
+.reel-action-btn:hover,.reel-action-btn:active{transform:scale(1.15);background:rgba(255,107,53,0.3)}
+.reel-action-count{font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.9)}
+.order-btn{position:absolute;bottom:24px;right:16px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;padding:10px 18px;border-radius:24px;font-size:0.85rem;font-weight:700;cursor:pointer;z-index:10;box-shadow:0 4px 20px rgba(255,107,53,0.4);display:flex;align-items:center;gap:6px;transition:transform 0.2s}
+.order-btn:hover{transform:scale(1.05)}
+.liked{color:#FF3366!important;animation:heartPop 0.4s ease}
+@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.heart-burst{position:absolute;pointer-events:none;font-size:5rem;animation:burstAnim 0.8s ease forwards;z-index:100}
+@keyframes burstAnim{0%{opacity:1;transform:scale(0.5)}60%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(2)}}
+.mute-btn{position:fixed;bottom:100px;left:20px;z-index:200;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:all 0.2s}
+.progress-dots{position:fixed;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:200}
+.progress-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s;cursor:pointer}
+.progress-dot.active{background:#FF6B35;height:20px;border-radius:3px}
+.back-home{position:fixed;top:16px;left:16px;z-index:200;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:8px 14px;font-size:0.8rem;color:#fff;text-decoration:none;display:flex;align-items:center;gap:6px}
+
+/* Mobile TikTok-style Overrides */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 0 !important;
+  }
+  
+  .back-home {
+    display: none !important;
+  }
+  
+  /* Top Bar */
+  .reel-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 9990;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  }
+  
+  .reel-logo .desktop-logo {
+    display: none !important;
+  }
+  
+  .reel-logo .mobile-live-btn {
+    display: inline-block !important;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  
+  .reel-tabs {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .reel-tab {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    position: relative;
+    padding-bottom: 4px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  
+  .reel-tab.active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+  
+  .reel-views {
+    display: none !important;
+  }
+  
+  .reel-mobile-search-btn {
+    display: block !important;
+  }
+  
+  /* Right Action Column */
+  .reel-right {
+    bottom: 90px;
+    right: 12px;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .reel-right .reel-action {
+    order: 2;
+  }
+  
+  .reel-right .reel-action:nth-child(5) {
+    order: 1 !important;
+    position: relative;
+    margin-bottom: 12px;
+  }
+  
+  .reel-right .reel-action:nth-child(5) .reel-avatar {
+    width: 46px;
+    height: 46px;
+    border: 2px solid #fff !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  
+  .reel-right .reel-action:nth-child(5)::after {
+    content: '+';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #FF3366;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 900;
+    border: 1.5px solid #0A0A0F;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    pointer-events: none;
+  }
+  
+  .reel-right .reel-action:nth-child(5).followed::after {
+    display: none !important;
+  }
+  
+  .reel-action-btn {
+    width: 44px;
+    height: 44px;
+    background: none !important;
+    border: none !important;
+    font-size: 1.8rem !important;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    backdrop-filter: none !important;
+  }
+  
+  .reel-action-count {
+    font-size: 0.72rem;
+    margin-top: -2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    color: rgba(255,255,255,0.9);
+  }
+  
+  .reel-right::after {
+    content: '';
+    order: 3;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FF3366 0%, #FF6B35 20%, #000 21%, #222 25%, #000 30%, #111 100%);
+    border: 3px solid #333;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    animation: rotateDisc 4s linear infinite;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  /* Bottom Caption */
+  .reel-bottom {
+    right: 75px;
+    bottom: 12px;
+    padding: 16px;
+  }
+  
+  .reel-cook {
+    display: none !important;
+  }
+  
+  .reel-cook-name-link {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 6px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  
+  .reel-title {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 10px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  .reel-dish-tag {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    font-size: 0.78rem !important;
+    padding: 4px 10px !important;
+    backdrop-filter: blur(5px);
+  }
+  
+  .reel-music-ticker {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 180px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  .music-ticker-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  .music-ticker-text {
+    display: inline-block;
+    animation: scrollText 12s linear infinite;
+    padding-left: 100%;
+  }
+  
+  .order-btn {
+    bottom: 90px !important;
+    right: auto !important;
+    left: 16px !important;
+    background: linear-gradient(135deg, #00D084, #0097FF) !important;
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 4px 15px rgba(0, 208, 132, 0.3) !important;
+  }
+  
+  .mobile-top-search {
+    top: 0 !important;
+    z-index: 10005 !important;
+    background: rgba(10, 10, 15, 0.98) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+@keyframes rotateDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scrollText {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<a href="index.html" class="back-home">← Home</a>
+<button class="mute-btn" id="muteBtn" onclick="toggleMute()" title="Toggle sound">🔊</button>
+<div class="progress-dots" id="progressDots"></div>
+
+<div class="reels-container" id="reelsContainer">
+
+<!-- REEL 1 -->
+<div class="reel" style="background:linear-gradient(135deg,#1a0a00,#3d1500,#1a0800)" data-reel="0">
+  <div class="reel-bg"><span class="reel-emoji">🥘</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 28.4K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar">MS</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Maria S. 🇪🇸</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@maria_s</a>
+    <div class="reel-title">Perfect Paella Recipe 🥘 — My grandmother's secret</div>
+    <span class="reel-dish-tag">🥘 Paella Valenciana · €14</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Maria S. 🇪🇸</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">4.2K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">318</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">16.9K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">21.7K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;border:2px solid #FF6B35;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">MS</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Maria S.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+<!-- REEL 2 -->
+<div class="reel" style="background:linear-gradient(135deg,#001a1a,#003d3d,#001515)" data-reel="1">
+  <div class="reel-bg"><span class="reel-emoji">🍜</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 14.1K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar" style="background:linear-gradient(135deg,#00b4d8,#0077b6)">YT</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Yuki T. 🇳🇱</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@yuki_t</a>
+    <div class="reel-title">Homemade Ramen Broth 🍜 — 12 hours of love in a bowl</div>
+    <span class="reel-dish-tag">🍜 Ramen Bowl · €11</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Yuki T. 🇳🇱</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">2.8K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">156</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">8.4K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">12.1K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;background:linear-gradient(135deg,#00b4d8,#0077b6);border:2px solid #00b4d8;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">YT</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Yuki T.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+<!-- REEL 3 -->
+<div class="reel" style="background:linear-gradient(135deg,#1a0a1a,#3d003d,#1a001a)" data-reel="2">
+  <div class="reel-bg"><span class="reel-emoji">🫕</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 31.7K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar" style="background:linear-gradient(135deg,#c77dff,#7b2d8b)">FA</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Fatima A. 🇫🇷</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@fatima_a</a>
+    <div class="reel-title">Lamb Tagine Secrets 🫕 — My Moroccan heritage on a plate</div>
+    <span class="reel-dish-tag">🫕 Lamb Tagine · €16</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Fatima A. 🇫🇷</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">5.1K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">421</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">19.2K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">24.5K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;background:linear-gradient(135deg,#c77dff,#7b2d8b);border:2px solid #c77dff;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">FA</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Fatima A.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+<!-- REEL 4 -->
+<div class="reel" style="background:linear-gradient(135deg,#001a08,#003d14,#001508)" data-reel="3">
+  <div class="reel-bg"><span class="reel-emoji">🍝</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 19.3K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar" style="background:linear-gradient(135deg,#06d6a0,#1b4332)">SR</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Sofia R. 🇮🇹</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@sofia_r</a>
+    <div class="reel-title">Fresh Pasta from Scratch 🍝 — No machine needed!</div>
+    <span class="reel-dish-tag">🍝 Tagliatelle Ragù · €12</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Sofia R. 🇮🇹</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">3.4K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">287</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">11.4K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">15.2K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;background:linear-gradient(135deg,#06d6a0,#1b4332);border:2px solid #06d6a0;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">SR</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Sofia R.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+<!-- REEL 5 -->
+<div class="reel" style="background:linear-gradient(135deg,#0d1a00,#2d3d00,#0a1500)" data-reel="4">
+  <div class="reel-bg"><span class="reel-emoji">🥐</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 9.8K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar" style="background:linear-gradient(135deg,#f4d03f,#e67e22)">AK</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Anna K. 🇵🇱</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@anna_k</a>
+    <div class="reel-title">Polish Pierogi Masterclass 🥐 — 3 fillings, endless joy</div>
+    <span class="reel-dish-tag">🥟 Pierogi Mix · €10</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Anna K. 🇵🇱</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">1.9K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">134</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">4.8K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">6.2K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;background:linear-gradient(135deg,#f4d03f,#e67e22);border:2px solid #f4d03f;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">AK</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Anna K.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+<!-- REEL 6 -->
+<div class="reel" style="background:linear-gradient(135deg,#1a0000,#3d0808,#1a0400)" data-reel="5">
+  <div class="reel-bg"><span class="reel-emoji">🥩</span></div>
+  <div class="reel-overlay"></div>
+  <div class="reel-top">
+    <div class="reel-logo">
+      <span class="desktop-logo">🔥 Food Zone</span>
+      <span class="mobile-live-btn" style="display:none;">📺 LIVE</span>
+    </div>
+    <div class="reel-tabs">
+      <span class="reel-tab">Explore</span>
+      <span class="reel-tab">Following</span>
+      <span class="reel-tab active">For You</span>
+    </div>
+    <div class="reel-views">👁 22.5K</div>
+    <button class="reel-mobile-search-btn" onclick="toggleMobileSearchInput()" style="display:none;background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;">🔍</button>
+  </div>
+  <div class="reel-bottom">
+    <div class="reel-cook">
+      <div class="reel-avatar" style="background:linear-gradient(135deg,#e63946,#8b0000)">KM</div>
+      <div class="reel-cook-info">
+        <div class="cook-name">Klaus M. 🇩🇪</div>
+        <span class="follow-btn">+ Follow</span>
+      </div>
+    </div>
+    <a href="profile.html" class="reel-cook-name-link">@klaus_m</a>
+    <div class="reel-title">Authentic Schnitzel & Spätzle 🥩 — Sunday tradition since 1985</div>
+    <span class="reel-dish-tag">🥩 Schnitzel & Spätzle · €13</span>
+    <div class="reel-music-ticker" style="display:none;">
+      <span>🎵</span>
+      <div class="music-ticker-container">
+        <span class="music-ticker-text">original sound - Klaus M. 🇩🇪</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel-right">
+    <div class="reel-action" onclick="toggleLike(this)">
+      <div class="reel-action-btn like-btn">❤️</div>
+      <span class="reel-action-count">3.7K</span>
+    </div>
+    <div class="reel-action" onclick="openComment()">
+      <div class="reel-action-btn">💬</div>
+      <span class="reel-action-count">298</span>
+    </div>
+    <div class="reel-action" onclick="shareReel()">
+      <div class="reel-action-btn">✈️</div>
+      <span class="reel-action-count">9.8K</span>
+    </div>
+    <div class="reel-action">
+      <div class="reel-action-btn">🔖</div>
+      <span class="reel-action-count">14.1K</span>
+    </div>
+    <div class="reel-action" style="position:relative;">
+      <div onclick="location.href='profile.html'" class="reel-avatar" style="width:44px;height:44px;font-size:0.9rem;background:linear-gradient(135deg,#e63946,#8b0000);border:2px solid #e63946;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;">KM</div>
+      <div class="plus-btn" onclick="followCookFromReel(this, 'Klaus M.'); event.stopPropagation();" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#FF3366;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;border:1.5px solid #0A0A0F;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:pointer;">+</div>
+    </div>
+  </div>
+  <button class="order-btn" onclick="location.href='order.html'">🛒 Order Now</button>
+</div>
+
+</div>
+
+<!-- Comment Modal -->
+<div id="commentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:300;align-items:flex-end;justify-content:center">
+  <div style="background:#1A1A24;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px;max-height:70vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="font-size:1rem;font-weight:700">Comments</h3>
+      <button onclick="closeComment()" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px">
+      <div style="display:flex;gap:10px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FF6B35,#FF3366);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0">JD</div><div><div style="font-weight:600;font-size:0.85rem">John D. <span style="color:#FFB800;font-size:0.75rem">⭐ Regular</span></div><div style="font-size:0.875rem;color:#C8C8DC;margin-top:4px">This looks absolutely amazing! Can you deliver to Barcelona? 😍</div></div></div>
+      <div style="display:flex;gap:10px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4FACFE,#00F2FE);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0">LM</div><div><div style="font-weight:600;font-size:0.85rem">Laura M.</div><div style="font-size:0.875rem;color:#C8C8DC;margin-top:4px">I ordered this last week, honestly the best food I've had in months! 🙌</div></div></div>
+      <div style="display:flex;gap:10px"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#06d6a0,#1b4332);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0">TK</div><div><div style="font-weight:600;font-size:0.85rem">Tom K.</div><div style="font-size:0.875rem;color:#C8C8DC;margin-top:4px">Recipe video was so helpful. Tried making it myself but yours is still better 😂</div></div></div>
+    </div>
+    <div style="display:flex;gap:10px;border-top:1px solid rgba(255,255,255,0.08);padding-top:16px">
+      <input type="text" placeholder="Add a comment..." style="flex:1;background:#22222F;border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:10px 16px;color:#fff;font-size:0.875rem;outline:none"/>
+      <button style="background:linear-gradient(135deg,#FF6B35,#FF3366);border:none;border-radius:24px;padding:10px 18px;color:#fff;font-weight:600;cursor:pointer">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const container = document.getElementById('reelsContainer');
+const reels = document.querySelectorAll('.reel');
+const dotsContainer = document.getElementById('progressDots');
+let currentReel = 0;
+let muted = false;
+
+// Create dots
+reels.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => scrollToReel(i);
+  dotsContainer.appendChild(dot);
+});
+
+function scrollToReel(idx) {
+  container.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+}
+
+container.addEventListener('scroll', () => {
+  const idx = Math.round(container.scrollTop / window.innerHeight);
+  if (idx !== currentReel) {
+    currentReel = idx;
+    document.querySelectorAll('.progress-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' && currentReel < reels.length - 1) scrollToReel(currentReel + 1);
+  if (e.key === 'ArrowUp' && currentReel > 0) scrollToReel(currentReel - 1);
+});
+
+// Like toggle
+function toggleLike(el) {
+  const btn = el.querySelector('.like-btn');
+  const countEl = el.querySelector('.reel-action-count');
+  const isLiked = btn.classList.toggle('liked');
+  btn.style.animation = 'none';
+  btn.offsetHeight;
+  btn.style.animation = '';
+  // Burst
+  const burst = document.createElement('div');
+  burst.className = 'heart-burst';
+  burst.textContent = '❤️';
+  burst.style.cssText = 'position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);';
+  document.body.appendChild(burst);
+  setTimeout(() => burst.remove(), 800);
+}
+
+// Double tap
+let lastTap = 0;
+container.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTap < 300) {
+    const reel = e.target.closest('.reel');
+    if (reel) {
+      const likeEl = reel.querySelector('.reel-action');
+      if (likeEl) toggleLike(likeEl);
+    }
+  }
+  lastTap = now;
+});
+
+function toggleMute() {
+  muted = !muted;
+  document.getElementById('muteBtn').textContent = muted ? '🔇' : '🔊';
+}
+
+function openComment() {
+  const m = document.getElementById('commentModal');
+  m.style.display = 'flex';
+}
+function closeComment() {
+  document.getElementById('commentModal').style.display = 'none';
+}
+
+function shareReel() {
+  if (navigator.share) {
+    navigator.share({ title: 'Food Zone Reel', url: window.location.href });
+  } else {
+    showToast('Link copied to clipboard!', 'success');
+  }
+}
+
+// Follow cook action
+function followCookFromReel(button, cookName) {
+  button.parentElement.classList.add('followed');
+  showToast('✓ Following ' + cookName, 'success');
+}
+
+// Toast Notification Helper
+let toastTimeout;
+function showToast(msg, type) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  if (toastTimeout) clearTimeout(toastTimeout);
+
+  const toast = document.createElement('div');
+  toast.className = `toast ${type || ''}`;
+  toast.textContent = msg;
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    background: rgba(26, 26, 40, 0.97);
+    border: 1px solid ${type === 'success' ? '#00D084' : 'rgba(255,255,255,0.12)'};
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 0.88rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    color: #fff;
+  `;
+  document.body.appendChild(toast);
+  toastTimeout = setTimeout(() => toast.remove(), 4000);
+}
+
+// Search Functions
+function triggerMobileTopSearch() {
+  const q = document.getElementById('mobileTopSearchInput').value.trim();
+  if (q) {
+    window.location.href = 'map.html?q=' + encodeURIComponent(q);
+  } else {
+    window.location.href = 'map.html';
+  }
+}
+
+function toggleMobileSearchInput() {
+  const searchBar = document.getElementById('mobileTopSearch');
+  if (searchBar) {
+    searchBar.classList.toggle('active');
+    if (searchBar.classList.contains('active')) {
+      document.getElementById('mobileTopSearchInput').focus();
+    }
+  }
+}
+
+// Auto-wire plus button and active cart count
+document.addEventListener('DOMContentLoaded', () => {
+  const session = JSON.parse(localStorage.getItem('fz_session'));
+  const plusBtn = document.getElementById('mNavAdd');
+  if (plusBtn) {
+    if (session) {
+      if (session.type === 'seller') {
+        plusBtn.href = 'dashboard.html';
+      } else {
+        plusBtn.href = 'profile.html?my_profile=true';
+      }
+    } else {
+      plusBtn.href = 'register.html';
+    }
+  }
+
+  // Update dynamic cart badge count
+  try {
+    const cart = JSON.parse(localStorage.getItem('fz_cart')) || [];
+    const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+    });
+  } catch(e) {
+    console.error("Cart update error", e);
+  }
+});
+</script>
+
+<!-- MOBILE TOP DROPDOWN SEARCH -->
+<div class="mobile-top-search" id="mobileTopSearch">
+  <div class="mobile-top-search-inner">
+    <input type="text" id="mobileTopSearchInput" placeholder="Search cooks, dishes..." onkeydown="if(event.key==='Enter')triggerMobileTopSearch()">
+    <button onclick="triggerMobileTopSearch()">Search</button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV BAR -->
+<div class="mobile-bottom-nav">
+  <a href="index.html" class="mobile-nav-item" id="mNavHome">
+    <span class="mobile-nav-icon">🏠</span>
+    <span class="mobile-nav-label">Home</span>
+  </a>
+  <a href="map.html" class="mobile-nav-item" id="mNavMap">
+    <span class="mobile-nav-icon">🗺️</span>
+    <span class="mobile-nav-label">Map</span>
+  </a>
+  <a href="dashboard.html" class="mobile-nav-item mobile-nav-plus-btn" id="mNavAdd">
+    <div class="plus-btn-inner">
+      <span>+</span>
+    </div>
+  </a>
+  <a href="order.html" class="mobile-nav-item" id="mNavCart">
+    <span class="mobile-nav-icon" style="position:relative;">🛒<span class="cart-badge cart-count" style="position:absolute;top:-6px;right:-8px;background:#FF3366;color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:bold;">0</span></span>
+    <span class="mobile-nav-label">Cart</span>
+  </a>
+  <a href="profile.html" class="mobile-nav-item" id="mNavProfile">
+    <span class="mobile-nav-icon">👤</span>
+    <span class="mobile-nav-label">Profile</span>
+  </a>
+</div>
+
+</body>
+</html>
